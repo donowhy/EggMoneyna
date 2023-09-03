@@ -1,4 +1,4 @@
-package com.ssafy.hifes.util.network
+package com.shbhack.eggmoneyna.data.util.network
 
 import okhttp3.ResponseBody
 import retrofit2.Call

@@ -1,4 +1,4 @@
-package com.ssafy.hifes.util.network
+package com.shbhack.eggmoneyna.data.util.network
 
 import java.io.IOException
 
