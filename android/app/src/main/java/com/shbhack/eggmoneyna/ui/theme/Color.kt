@@ -2,10 +2,20 @@ package com.shbhack.eggmoneyna.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val backgroundColor1 = Color(0xFFD5DBE6)
+val keyColorLight1 = Color(0xFFF2F6FA)
+val keyColorLight2 = Color(0xFFE0E9FF)
+val keyColorLight3 = Color(0xFFCEDCFF)
+val keyColor1 = Color(0xFF5C89FF)
+val keyColor2 = Color(0xFF3D69DD)
+val keyColorDark1 = Color(0xFF0C1F51)
+val logoColor = Color(0xFF0046FF)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val secondaryBackgroundColor1 = Color(0xFFE3C9CF)
+val secondaryColorLight1 = Color(0xFFFFD8E1)
+val secondaryColorLight2 = Color(0xFFFFB1C4)
+val secondaryColor1 = Color(0xFFF73261)
+val secondaryColor2 = Color(0xFFD81544)
+val secondaryColorDark1 = Color(0xFF590016)
+
+val underlineColor = Color(0x7FCBDCF3)
