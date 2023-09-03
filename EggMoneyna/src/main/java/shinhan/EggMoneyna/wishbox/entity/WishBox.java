@@ -1,11 +1,12 @@
 package shinhan.EggMoneyna.wishbox.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.account.entity.Account;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,4 +25,6 @@ public class WishBox {
 
     private int balance;
 
+    @OneToOne(mappedBy = "wishBox")
+    private Account account;
 }
