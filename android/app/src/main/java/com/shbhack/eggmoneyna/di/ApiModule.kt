@@ -2,7 +2,7 @@ package com.shbhack.eggmoneyna.di
 
 import com.google.gson.GsonBuilder
 import com.shbhack.eggmoneyna.data.remote.ApiService
-import com.shbhack.eggmoneyna.data.util.network.NetworkResponseAdapterFactory
+import com.shbhack.eggmoneyna.util.network.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
