@@ -1,4 +1,4 @@
-package com.shbhack.eggmoneyna.data.util.network
+package com.shbhack.eggmoneyna.util.network
 
 import retrofit2.Call
 import retrofit2.CallAdapter
