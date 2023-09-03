@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -66,4 +68,41 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // 서버통신을 위한 Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:3.11.0")
+
+    // 느슨한 통신규칙을 위해서 gson
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.squareup.retrofit2:converter-scalars:2.1.0")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
+
+    // coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+
+    // SSA를 위한 navigation
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
+
+    // coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // compose nav controller
+    implementation ("androidx.navigation:navigation-compose:2.5.3")
+
+    // liveData for compose
+    implementation ("androidx.compose.runtime:runtime-livedata:1.3.2")
+
+    // lottie
+    implementation ("com.airbnb.android:lottie-compose:6.1.0")
+}
+
+kapt {
+    correctErrorTypes = true
 }
