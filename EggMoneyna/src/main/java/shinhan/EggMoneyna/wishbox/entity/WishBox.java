@@ -27,4 +27,13 @@ public class WishBox {
 
     @OneToOne(mappedBy = "wishBox")
     private Account account;
+
+    public WishBox(Long id, String nickName, String wishName, int price, int balance, Account account) {
+        this.id = id;
+        this.nickName = nickName;
+        this.wishName = wishName;
+        this.price = price;
+        this.balance = balance;
+        this.account = account;
+    }
 }

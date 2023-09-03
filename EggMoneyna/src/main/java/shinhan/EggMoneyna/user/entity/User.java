@@ -3,6 +3,7 @@ package shinhan.EggMoneyna.user.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.monster.entity.Monster;
 
 import javax.persistence.*;
@@ -33,8 +34,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Monster> monsterList;
 
+    @OneToOne(mappedBy = "user")
+    private Account account;
+
     @Builder
-    public User(Long id, String userId, String password, String nickName, Boolean isParent, int pocketMoney, int pocketMoneyDate, List<Monster> monsterList) {
+    public User(Long id, String userId, String password, String nickName, Boolean isParent, int pocketMoney, int pocketMoneyDate, List<Monster> monsterList, Account account) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -43,6 +47,7 @@ public class User {
         this.pocketMoney = pocketMoney;
         this.pocketMoneyDate = pocketMoneyDate;
         this.monsterList = monsterList;
+        this.account = account;
     }
 
     public String setNickName(String nickname) {
