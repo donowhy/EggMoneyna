@@ -51,5 +51,5 @@ public class MonsterController {
         return ResponseEntity.ok("삭제 성공");
     }
 
-    
+
 }

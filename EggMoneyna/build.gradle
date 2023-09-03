@@ -17,6 +17,16 @@ configurations {
 	}
 }
 
+ext {
+	set('springCloudVersion', "2021.0.4")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -35,6 +45,9 @@ dependencies {
 
 	//swagger 의존성
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+	// openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 }
 
