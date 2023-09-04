@@ -2,33 +2,31 @@ package com.shbhack.eggmoneyna.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import com.shbhack.eggmoneyna.R
 
-// Set of Material typography styles to start with
+val pretendard = FontFamily(
+    Font(R.font.pretendard_bold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.pretendard_medium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.pretendard_regular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.pretendard_light, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.pretendard_thin, FontWeight.Thin, FontStyle.Normal),
+    Font(R.font.pretendard_black, FontWeight.W900, FontStyle.Normal),
+    Font(R.font.pretendard_extrabold, FontWeight.W800, FontStyle.Normal),
+    Font(R.font.pretendard_bold, FontWeight.W700, FontStyle.Normal),
+    Font(R.font.pretendard_semibold, FontWeight.W600, FontStyle.Normal),
+    Font(R.font.pretendard_medium, FontWeight.W500, FontStyle.Normal),
+    Font(R.font.pretendard_regular, FontWeight.W400, FontStyle.Normal),
+    Font(R.font.pretendard_light, FontWeight.W300, FontStyle.Normal),
+    Font(R.font.pretendard_extralight, FontWeight.W200, FontStyle.Normal),
+    Font(R.font.pretendard_thin, FontWeight.W100, FontStyle.Normal)
+)
+
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontFamily = pretendard
     )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
 )
