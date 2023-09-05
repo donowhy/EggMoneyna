@@ -44,3 +44,8 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /v1/**
+
+token:
+  secret: fsdakjfhasjkfhaewbkjbfdjskabnsmvb3dsajkhbrhjawekbnmdsbvjhkabewjkhbfasdfm # 임의의 문자열
+  access-token-expiration-time: 900000  # 15분 1000(ms) x 60(s) x 15(m)
+  refresh-token-expiration-time: 1209600000 # 2주 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)

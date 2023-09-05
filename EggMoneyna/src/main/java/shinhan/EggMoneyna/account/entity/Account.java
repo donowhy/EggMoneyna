@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.user.entity.User;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -32,10 +29,9 @@ public class Account {
     @JsonIgnore
     private WishBox wishBox;
 
-    @OneToOne(mappedBy = "account")
-    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
-
     @Builder
     public Account(Long id, String nickName, Long accountNumber, int balance, WishBox wishBox, User user) {
         this.id = id;

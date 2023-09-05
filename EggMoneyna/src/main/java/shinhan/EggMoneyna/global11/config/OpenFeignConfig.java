@@ -1,4 +1,4 @@
-package shinhan.EggMoneyna.global.config;
+package shinhan.EggMoneyna.global11.config;
 
 import org.springframework.context.annotation.Configuration;
 

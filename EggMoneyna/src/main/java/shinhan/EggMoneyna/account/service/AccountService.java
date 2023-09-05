@@ -3,6 +3,8 @@ package shinhan.EggMoneyna.account.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shinhan.EggMoneyna.account.dto.AccountCheckSelfRequestDto;
+import shinhan.EggMoneyna.account.dto.AccountCheckSelfResponseDto;
 import shinhan.EggMoneyna.account.dto.AccountCreateDto;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
@@ -50,4 +52,9 @@ public class AccountService {
         accountRepository.deleteById(id);
         return "성공";
     }
+
+    // 1원 이체
+//    public AccountCheckSelfResponseDto checkSelf (AccountCheckSelfRequestDto checkSelfRequest){
+//        return AccountCheckSelfResponseDto;
+//    }
 }

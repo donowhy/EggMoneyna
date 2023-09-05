@@ -1,4 +1,4 @@
-package shinhan.EggMoneyna.global.config;
+package shinhan.EggMoneyna.global11.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

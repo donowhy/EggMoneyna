@@ -25,7 +25,8 @@ public class WishBox {
 
     private int balance;
 
-    @OneToOne(mappedBy = "wishBox")
+    @OneToOne
+    @JoinColumn(name = "id")
     private Account account;
 
     public WishBox(Long id, String nickName, String wishName, int price, int balance, Account account) {
