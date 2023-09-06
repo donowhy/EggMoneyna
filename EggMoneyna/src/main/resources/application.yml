@@ -1,34 +1,34 @@
-spring:
-  h2:
-    console:
-      enabled: true
-  datasource:
-    url: jdbc:h2:./test
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
-        show_sql: true
-    hibernate:
-      ddl-auto: update
-
-jpa:
-  properties:
-    hibernate:
-      auto_quote_keyword: true
-
 server:
+  port: 8080
   servlet:
+    context-path: /
     encoding:
       charset: UTF-8
       enabled: true
       force: true
 
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/shinhan
+#    url : jdbc:h2:./shinhan
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  main:
+    allow-circular-references: true
+
+  profiles:
+    include: db
+
+  jpa:
+    hibernate:
+      ddl-auto: create #create update none
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
 
 springdoc:
   swagger-ui:
@@ -45,7 +45,5 @@ springdoc:
   paths-to-match:
     - /v1/**
 
-token:
-  secret: fsdakjfhasjkfhaewbkjbfdjskabnsmvb3dsajkhbrhjawekbnmdsbvjhkabewjkhbfasdfm # 임의의 문자열
-  access-token-expiration-time: 900000  # 15분 1000(ms) x 60(s) x 15(m)
-  refresh-token-expiration-time: 1209600000 # 2주 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
+jwt:
+  password: testPassword
