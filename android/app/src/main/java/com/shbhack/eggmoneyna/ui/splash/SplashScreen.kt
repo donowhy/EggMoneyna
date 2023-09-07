@@ -35,6 +35,14 @@ import kotlinx.coroutines.withContext
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         delay(1500)
+        withContext(Dispatchers.Main) {
+            if (AppPreferences.isOnBoardingShowed()) {
+                navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
+            } else {
+                AppPreferences.checkOnBoardingShowed()
+                navController.navigate(EggMoneynaDestination.ON_BOARDING)
+            }
+        }
     }
 
     CommonUtils.setSystemBarColor(color = logoColor)
