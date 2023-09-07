@@ -22,14 +22,14 @@ public class UsersController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/users/save")
-    public String save (@RequestBody SignUpRequestDto signUpRequestDto){
+    public String save (@RequestBody SignUpRequestDto signUpRequestDto) throws Exception {
         return usersService.save(signUpRequestDto);
     }
 
-    @PostMapping("/users/{id}")
-    public Users login (@PathVariable Long id) throws Exception {
-        return usersService.login(id);
-    }
+    // @PostMapping("/users/{id}")
+    // public Users login (@PathVariable Long id) throws Exception {
+    //     return usersService.login(id);
+    // }
 
     @PutMapping("/users/update")
     public Users updateUser (@RequestBody UpdateRequestDto updateRequestDto, HttpServletRequest httpServletRequest) throws Exception {
