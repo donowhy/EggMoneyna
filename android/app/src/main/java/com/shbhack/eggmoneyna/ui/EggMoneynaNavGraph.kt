@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.App
+import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
+import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
 import com.shbhack.eggmoneyna.ui.splash.SplashScreen
 
 @Composable
@@ -22,6 +24,12 @@ fun EggMoneynaNavGraph(
     ) {
         composable(EggMoneynaDestination.SPLASH) {
             SplashScreen(navController)
+        }
+        composable(EggMoneynaDestination.ON_BOARDING) {
+            OnBoardingScreen(navController)
+        }
+        composable(EggMoneynaDestination.CHOOSE_WHO) {
+            ChooseWhoScreen(navController)
         }
     }
 }
