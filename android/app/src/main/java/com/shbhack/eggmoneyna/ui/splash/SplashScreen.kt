@@ -37,8 +37,10 @@ fun SplashScreen(navController: NavController) {
         delay(1500)
         withContext(Dispatchers.Main) {
             if (AppPreferences.isOnBoardingShowed()) {
+                navController.popBackStack()
                 navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
             } else {
+                navController.popBackStack()
                 AppPreferences.checkOnBoardingShowed()
                 navController.navigate(EggMoneynaDestination.ON_BOARDING)
             }
