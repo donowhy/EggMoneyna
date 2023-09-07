@@ -1,6 +1,7 @@
 package com.shbhack.eggmoneyna.ui.onboarding
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,18 +25,18 @@ import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
-import com.shbhack.eggmoneyna.ui.theme.onboardingColor1
+import com.shbhack.eggmoneyna.ui.theme.onboardingColor2
 import com.shbhack.eggmoneyna.util.CommonUtils
 
 @Composable
-fun OnBoardingScreen(navController: NavController) {
+fun OnBoarding2Screen(navController: NavController) {
 
-    CommonUtils.setSystemBarColor(color = onboardingColor1)
+    CommonUtils.setSystemBarColor(color = onboardingColor2)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = onboardingColor1)
+            .background(color = onboardingColor2)
             .padding(30.dp)
     ) {
         ClickableText(
@@ -56,13 +57,13 @@ fun OnBoardingScreen(navController: NavController) {
                 .weight(1.5f)
         )
         Text(
-            text = stringResource(id = R.string.onboarding1Title),
+            text = stringResource(id = R.string.onboarding2Title),
             fontWeight = FontWeight.Black,
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 30.dp)
         )
         Text(
-            text = stringResource(id = R.string.onboarding1Content),
+            text = stringResource(id = R.string.onboarding2Content),
             fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
             color = contextTextColor
@@ -73,14 +74,13 @@ fun OnBoardingScreen(navController: NavController) {
                 .weight(1f)
         )
         CommonUtils.LottieLoader(
-            source = R.raw.onboarding_summary,
+            source = R.raw.onboarding_compliment,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .padding(bottom = 20.dp)
         )
         CommonUtils.buttonRadius40(color = Color.Black) {
-            navController.navigate(EggMoneynaDestination.ON_BOARDING2)
+            navController.navigate(EggMoneynaDestination.ON_BOARDING3)
         }
     }
 }

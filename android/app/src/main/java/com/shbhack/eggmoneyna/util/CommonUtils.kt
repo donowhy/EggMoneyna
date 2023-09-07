@@ -32,7 +32,6 @@ object CommonUtils {
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp)
                 .background(color = color, shape = RoundedCornerShape(40.dp)),
             colors = ButtonDefaults.buttonColors(color, Color.White)
         ) {
