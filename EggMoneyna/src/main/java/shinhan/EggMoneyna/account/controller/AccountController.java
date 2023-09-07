@@ -9,6 +9,8 @@ import shinhan.EggMoneyna.account.dto.AccountCreateDto;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.jwt.JwtProvider;
+import shinhan.EggMoneyna.jwt.UserInfo;
+import shinhan.EggMoneyna.jwt.UsersInfo;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,27 +21,18 @@ public class AccountController {
    private final AccountService accountService;
    private final JwtProvider jwtProvider;
 
-    private String getId(HttpServletRequest httpServletRequest) {
-        String header = httpServletRequest.getHeader("Authorization");
-        String id = (String) jwtProvider.parseJwtToken(header).get("sub");
-        return id;
+    private Account getId(@UserInfo UsersInfo usersInfo) {
+        return accountService.getAccount(usersInfo.getId());
     }
 
-    @GetMapping("")
-   public Account getAccount (HttpServletRequest httpServletRequest){
-        String id = getId(httpServletRequest);
-        return accountService.getAccount(id);
-   }
 
    @DeleteMapping()
-   public String delete (HttpServletRequest httpServletRequest){
-       String id = getId(httpServletRequest);
-       return accountService.delete(id);
+   public String delete (@UserInfo UsersInfo usersInfo){
+       return accountService.delete(usersInfo.getId());
    }
 
    @PutMapping()
-   public Account updateNickName( String name, HttpServletRequest httpServletRequest){
-       String id1 = getId(httpServletRequest);
-       return accountService.updateNickName(name, id1);
+   public Account updateNickName( String name, @UserInfo UsersInfo usersInfo){
+       return accountService.updateNickName(name, usersInfo.getId());
    }
 }

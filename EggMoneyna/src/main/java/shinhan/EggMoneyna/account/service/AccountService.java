@@ -56,22 +56,21 @@ public class AccountService {
 		return build.getId();
 	}
 
-	public Account getAccount(String id) {
-		Users users = usersRepository.findByUserId(id).orElseThrow();
-		Account account = users.getAccount();
-		return account;
+	public Account getAccount(Long id) {
+		Users users = usersRepository.findById(id).orElseThrow();
+        return users.getAccount();
 	}
 
-	public Account updateNickName(String name, String ids) {
-		Users users = usersRepository.findByUserId(ids).orElseThrow();
+	public Account updateNickName(String name, Long id) {
+		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = users.getAccount();
 		account.setNickName(name);
 
 		return account;
 	}
 
-	public String delete(String ids) {
-		Users users = usersRepository.findByUserId(ids).orElseThrow();
+	public String delete(Long id) {
+		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = users.getAccount();
 		accountRepository.delete(account);
 		return "성공";
