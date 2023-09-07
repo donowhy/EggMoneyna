@@ -46,4 +46,4 @@ springdoc:
     - /v1/**
 
 jwt:
-  password: testPassword
+  password: testPasswordtestPasswordtestPasswordtestPasswordtestPasswordtestPassword!testPassword
