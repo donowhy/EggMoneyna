@@ -19,3 +19,5 @@ val secondaryColor2 = Color(0xFFD81544)
 val secondaryColorDark1 = Color(0xFF590016)
 
 val underlineColor = Color(0x7FCBDCF3)
+
+val EggmoneynaPurple = Color(0xFF8084EA)
