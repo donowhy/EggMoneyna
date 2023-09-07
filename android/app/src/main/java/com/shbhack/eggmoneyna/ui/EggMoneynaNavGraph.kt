@@ -7,13 +7,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.App
+import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.splash.SplashScreen
 
 @Composable
 fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = EggMoneynaDestination.SPLASH
+//    startDestination: String = EggMoneynaDestination.SPLASH
+    startDestination: String = EggMoneynaDestination.EGGMONEYNA
 ) {
     NavHost(
         navController = navController,
@@ -22,6 +24,9 @@ fun EggMoneynaNavGraph(
     ) {
         composable(EggMoneynaDestination.SPLASH) {
             SplashScreen(navController)
+        }
+        composable(EggMoneynaDestination.EGGMONEYNA) {
+            EggMoneynaScreen(navController)
         }
     }
 }
