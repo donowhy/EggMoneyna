@@ -3,6 +3,10 @@ package com.shbhack.eggmoneyna.ui
 object EggMoneynaDestination {
     const val SPLASH = "splash"
     const val ON_BOARDING = "on_boarding"
+    const val ON_BOARDING2 = "on_boarding2"
+    const val ON_BOARDING3 = "on_boarding3"
+    const val ON_BOARDING4 = "on_boarding4"
+    const val ON_BOARDING5 = "on_boarding5"
     const val CHOOSE_WHO = "choose_who"
     const val AUTH_USER = "auth_user"
     const val MAIN_PARENT = "main_parent"
