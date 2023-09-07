@@ -18,4 +18,11 @@ val secondaryColor1 = Color(0xFFF73261)
 val secondaryColor2 = Color(0xFFD81544)
 val secondaryColorDark1 = Color(0xFF590016)
 
+val onboardingColor1 = Color(0xFFFCFCFC)
+val onboardingColor2 = Color(0xFFDCDCDC)
+val onboardingColor3 = Color(0xFFCEDCFF)
+val onboardingColor4 = Color(0xFFFFFFFF)
+val onboardingColor5 = Color(0xFFFABF7B)
+
+val contextTextColor = Color(0xFF808080)
 val underlineColor = Color(0x7FCBDCF3)
