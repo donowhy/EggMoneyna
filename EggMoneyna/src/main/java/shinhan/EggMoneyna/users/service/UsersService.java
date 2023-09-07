@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import shinhan.EggMoneyna.account.dto.AccountCreateDto;
 import shinhan.EggMoneyna.account.service.AccountService;
-import shinhan.EggMoneyna.jwt.JwtService;
+import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.users.dto.SignUpRequestDto;
 import shinhan.EggMoneyna.users.dto.UpdateRequestDto;
 import shinhan.EggMoneyna.users.entity.Users;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Transactional
 public class UsersService {
     private final UsersRepository usersRepository;
-    private final JwtService jwtService;
+    private final JwtProvider jwtProvider;
     private final AccountService accountService;
 
     public String save(SignUpRequestDto signUpRequestDto) throws Exception {
@@ -43,25 +43,22 @@ public class UsersService {
             .build();
 
         accountService.create(accountCreateDto, user.getUserId());
-        return signUpRequestDto.getUserId();
+        return jwtProvider.createToken(user);
     }
 
     private Users login(Long id) throws Exception {
         log.info("user login");
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with ID " + id + " not found."));
-        JwtService.TokenResponse<JwtService.TokenDataResponse> tokenResponse = jwtService.createToken(user.getUserId());
-        user.setToken(tokenResponse.getData().getToken());
+//        JwtService.TokenResponse tokenResponse = jwtService.createToken(user.getId());
+//        user.setToken(String.valueOf(tokenResponse.getData().getClass()));
         return user;
     }
 
     public Users findUser(Long id) throws Exception {
-        Users user = usersRepository.findById(id)
+
+        return usersRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with ID " + id + " not found."));
-        if (!jwtService.checkToken(user.getToken()).getCode().equals("200")) {
-            throw new Exception("Invalid token for user with ID " + id);
-        }
-        return user;
     }
 
     public String delete(Long id) throws Exception {
@@ -70,8 +67,8 @@ public class UsersService {
         return "Success";
     }
 
-    public Users update(String id, UpdateRequestDto updateRequestDto) throws Exception {
-        Users user = usersRepository.findByUserId(id)
+    public Users update(Long id, UpdateRequestDto updateRequestDto) throws Exception {
+        Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with ID " + id + " not found."));
 
         user.update(updateRequestDto.getNickName(), updateRequestDto.getLimitMoney(), updateRequestDto.getMoney(), updateRequestDto.getDate());
