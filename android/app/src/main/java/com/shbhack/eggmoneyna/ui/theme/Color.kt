@@ -20,7 +20,7 @@ val secondaryColorDark1 = Color(0xFF590016)
 
 val onboardingColor1 = Color(0xFFFCFCFC)
 val onboardingColor2 = Color(0xFFDCDCDC)
-val onboardingColor3 = Color(0xFFCEDCFF)
+val onboardingColor3 = Color(0xFFE0E9FF)
 val onboardingColor4 = Color(0xFFFFFFFF)
 val onboardingColor5 = Color(0xFFFABF7B)
 

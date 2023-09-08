@@ -79,7 +79,7 @@ fun OnBoardingScreen(navController: NavController) {
                 .aspectRatio(1f)
                 .padding(bottom = 20.dp)
         )
-        CommonUtils.buttonRadius40(color = Color.Black) {
+        CommonUtils.buttonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
             navController.navigate(EggMoneynaDestination.ON_BOARDING2)
         }
     }
