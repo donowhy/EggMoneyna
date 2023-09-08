@@ -25,17 +25,18 @@ import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
-import com.shbhack.eggmoneyna.ui.theme.onboardingColor3
+import com.shbhack.eggmoneyna.ui.theme.onboardingColor4
 import com.shbhack.eggmoneyna.util.CommonUtils
 
 @Composable
-fun OnBoarding3Screen(navController: NavController) {
-    CommonUtils.setSystemBarColor(color = onboardingColor3)
+fun OnBoarding4Screen(navController: NavController) {
+
+    CommonUtils.setSystemBarColor(color = onboardingColor4)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = onboardingColor3)
+            .background(color = onboardingColor4)
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -51,8 +52,13 @@ fun OnBoarding3Screen(navController: NavController) {
                 navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
             },
         )
+        Spacer(
+            modifier = Modifier
+                .height(0.dp)
+                .weight(1f)
+        )
         CommonUtils.LottieLoader(
-            source = R.raw.onboarding_egg,
+            source = R.raw.onboarding_wishbox,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
@@ -61,17 +67,17 @@ fun OnBoarding3Screen(navController: NavController) {
         Spacer(
             modifier = Modifier
                 .height(0.dp)
-                .weight(1.5f)
+                .weight(0.5f)
         )
         Text(
-            text = stringResource(id = R.string.onboarding3Title),
+            text = stringResource(id = R.string.onboarding4Title),
             fontWeight = FontWeight.Black,
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 30.dp),
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(id = R.string.onboarding3Content),
+            text = stringResource(id = R.string.onboarding4Content),
             fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
             color = contextTextColor,
@@ -84,7 +90,7 @@ fun OnBoarding3Screen(navController: NavController) {
         )
 
         CommonUtils.buttonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
-            navController.navigate(EggMoneynaDestination.ON_BOARDING4)
+            navController.navigate(EggMoneynaDestination.ON_BOARDING5)
         }
     }
 }
