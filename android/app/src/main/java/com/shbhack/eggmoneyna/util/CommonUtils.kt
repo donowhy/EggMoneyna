@@ -27,7 +27,7 @@ import com.shbhack.eggmoneyna.R
 
 object CommonUtils {
     @Composable
-    fun buttonRadius40(color: Color, onClick: () -> Unit) {
+    fun buttonRadius40(text : String, color: Color, onClick: () -> Unit) {
         Button(
             onClick = onClick,
             modifier = Modifier
@@ -36,7 +36,7 @@ object CommonUtils {
             colors = ButtonDefaults.buttonColors(color, Color.White)
         ) {
             Text(
-                text = stringResource(id = R.string.next),
+                text = text,
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp
             )
