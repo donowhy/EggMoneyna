@@ -26,12 +26,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -43,6 +44,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -58,12 +60,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.himanshoe.kalendar.KalendarEvent
 import com.himanshoe.kalendar.KalendarEvents
 import com.himanshoe.kalendar.color.KalendarColors
-import com.himanshoe.kalendar.ui.component.day.KalendarDay
 import com.himanshoe.kalendar.ui.component.day.KalendarDayKonfig
 import com.himanshoe.kalendar.ui.component.header.KalendarHeader
 import com.himanshoe.kalendar.ui.component.header.KalendarTextKonfig
@@ -71,6 +73,7 @@ import com.himanshoe.kalendar.ui.firey.DaySelectionMode
 import com.himanshoe.kalendar.ui.firey.KalendarSelectedDayRange
 import com.himanshoe.kalendar.ui.firey.RangeSelectionError
 import com.himanshoe.kalendar.ui.oceanic.util.isLeapYear
+import com.shbhack.eggmoneyna.ui.eggmoneyna.calendar.KalendarDay
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -78,6 +81,7 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDate
 import kotlinx.datetime.todayIn
+import java.lang.Math.ceil
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -140,9 +144,9 @@ internal fun KalendarFirey(
 
     Column(
         modifier = modifier
-            .background(
-                color = kalendarColors.color[currentMonthIndex].backgroundColor
-            )
+//            .background(
+//                color = kalendarColors.color[currentMonthIndex].backgroundColor
+//            )
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(all = 8.dp)
@@ -176,16 +180,39 @@ internal fun KalendarFirey(
                 },
             )
         }
+//        Divider(thickness = 0.5.dp, color = Color.LightGray)
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        val dayItemHeight = 40.dp
+        val labelHeight = if (showLabel) 40.dp else 0.dp
+
+// 첫 주의 시작 요일을 고려하여 그 주에 표시될 날짜의 수 계산
+        val daysInFirstWeek = 7 - getFirstDayOfMonth(firstDayOfMonth)
+        val daysRemainingAfterFirstWeek = daysInMonth - daysInFirstWeek
+
+// 첫 주를 제외한 총 필요한 주의 수 계산
+        val weeksAfterFirst = daysRemainingAfterFirstWeek / 7
+// 마지막 주가 필요한 경우 행 수 추가
+        val additionalWeek = if (daysRemainingAfterFirstWeek % 7 > 0) 1 else 0
+
+// 총 주의 수
+        val totalWeeks = 1 + weeksAfterFirst + additionalWeek
+
+// 그리드의 총 높이 = (총 주의 수 * 각 항목의 높이) + 요일 레이블의 높이
+        val gridHeight: Dp = (dayItemHeight * totalWeeks) + labelHeight
+
+
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(340.dp),
+            userScrollEnabled = false,
             columns = GridCells.Fixed(7),
             content = {
                 if (showLabel) {
                     items(WeekDays) { item ->
                         Text(
                             modifier = Modifier,
-                            color = kalendarDayKonfig.textColor,
+                            color = Color.Gray,
                             fontSize = kalendarDayKonfig.textSize,
                             text = item,
                             fontWeight = FontWeight.SemiBold,
@@ -193,7 +220,6 @@ internal fun KalendarFirey(
                         )
                     }
                 }
-
                 items((getFirstDayOfMonth(firstDayOfMonth)..daysInMonth).toList()) {
                     if (it > 0) {
                         val day = calculateDay(it, currentMonth, currentYear)
@@ -269,8 +295,7 @@ fun KalendarHeader2(
     kalendarTextKonfig: KalendarTextKonfig,
     modifier: Modifier = Modifier,
     onPreviousClick: () -> Unit = {},
-    onNextClick: () -> Unit = {},
-    arrowShown: Boolean = true
+    onNextClick: () -> Unit = {}
 ) {
     var isNext by remember { mutableStateOf(true) }
 
@@ -278,7 +303,7 @@ fun KalendarHeader2(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(all = 8.dp),
+            .padding(all = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
