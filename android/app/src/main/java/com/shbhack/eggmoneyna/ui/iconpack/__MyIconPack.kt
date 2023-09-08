@@ -1,7 +1,6 @@
 package com.shbhack.eggmoneyna.ui.iconpack
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.shbhack.eggmoneyna.ui.iconpack.myiconpack.Camera
 import com.shbhack.eggmoneyna.ui.iconpack.myiconpack.Search
 import kotlin.collections.List as ____KtList
 
@@ -14,6 +13,6 @@ public val MyIconPack.AllIcons: ____KtList<ImageVector>
     if (__AllIcons != null) {
       return __AllIcons!!
     }
-    __AllIcons = listOf(Camera, Search)
+    __AllIcons = listOf(Search)
     return __AllIcons!!
   }
