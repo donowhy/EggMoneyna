@@ -5,4 +5,8 @@
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
 
+    <!-- shinhanMong -->
+    <string name="shinhanmong_appbar_title">신한몽</string>
+    <string name="shinhanmong_button_collection">도감</string>
+
 </resources>
