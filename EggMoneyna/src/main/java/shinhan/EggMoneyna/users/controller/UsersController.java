@@ -9,6 +9,7 @@ import shinhan.EggMoneyna.jwt.UsersInfo;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.users.dto.SignUpRequestDto;
 import shinhan.EggMoneyna.users.dto.UpdateRequestDto;
+import shinhan.EggMoneyna.users.dto.returnTokenDto;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.service.UsersService;
 
@@ -19,10 +20,9 @@ import shinhan.EggMoneyna.users.service.UsersService;
 public class UsersController {
 
     private final UsersService usersService;
-    private final JwtProvider jwtProvider;
 
     @PostMapping("/users/save")
-    public String save (@RequestBody SignUpRequestDto signUpRequestDto) throws Exception {
+    public returnTokenDto save (@RequestBody SignUpRequestDto signUpRequestDto) throws Exception {
         return usersService.save(signUpRequestDto);
     }
 

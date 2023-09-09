@@ -9,11 +9,11 @@ import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.users.dto.SignUpRequestDto;
 import shinhan.EggMoneyna.users.dto.UpdateRequestDto;
+import shinhan.EggMoneyna.users.dto.returnTokenDto;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Service
 @Slf4j
@@ -24,34 +24,48 @@ public class UsersService {
     private final JwtProvider jwtProvider;
     private final AccountService accountService;
 
-    public String save(SignUpRequestDto signUpRequestDto) throws Exception {
+    public returnTokenDto save(SignUpRequestDto signUpRequestDto) throws Exception {
         log.info("users save");
-        Users user = Users.builder()
+        Users parent = Users.builder()
                 .isParents(signUpRequestDto.getIsParent())
-                .userId(signUpRequestDto.getUserId())
+                .userId(signUpRequestDto.getParentId())
+                .nickName("부모")
+                .password("123")
+                .build();
+
+        usersRepository.saveAndFlush(parent);
+
+        Users child = Users.builder()
+                .isParents(!signUpRequestDto.getIsParent())
+                .userId(signUpRequestDto.getChildId())
                 .nickName(signUpRequestDto.getNickName())
                 .password("123")
                 .pocketMoney(0)
                 .build();
 
-        usersRepository.saveAndFlush(user);
-        log.info("User saved with ID = {}", signUpRequestDto.getUserId());
-        login(user.getId());
+        usersRepository.saveAndFlush(child);
+
+
+        parent.addChild(child);
+
+        login(parent.getId());
+        login(child.getId());
 
         AccountCreateDto accountCreateDto = AccountCreateDto.builder()
-            .nickName(user.getNickName())
+            .nickName(child.getNickName())
             .build();
 
-        accountService.create(accountCreateDto, user.getUserId());
-        return jwtProvider.createToken(user);
+        accountService.create(accountCreateDto, child.getUserId());
+        return returnTokenDto.builder()
+                .parentToken(jwtProvider.createToken(parent))
+                .childToken(jwtProvider.createToken(child))
+                .build();
     }
 
     private Users login(Long id) throws Exception {
         log.info("user login");
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with ID " + id + " not found."));
-//        JwtService.TokenResponse tokenResponse = jwtService.createToken(user.getId());
-//        user.setToken(String.valueOf(tokenResponse.getData().getClass()));
         return user;
     }
 
@@ -74,4 +88,5 @@ public class UsersService {
         user.update(updateRequestDto.getNickName(), updateRequestDto.getLimitMoney(), updateRequestDto.getMoney(), updateRequestDto.getDate());
         return user;
     }
+    
 }
