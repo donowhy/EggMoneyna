@@ -3,15 +3,11 @@ package shinhan.EggMoneyna.users.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.domain.common.BaseEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +42,16 @@ public class Users extends BaseEntity {
     @OneToOne
     private Account account;
 
-    // @OneToMany
-    // private List<Users> parents;
-    //
-    // @OneToMany
-    // private List<Users> child;
+    @ManyToMany
+    @JoinTable(
+            name = "user_relations",
+            joinColumns = @JoinColumn(name = "child_id"),
+            inverseJoinColumns = @JoinColumn(name = "parent_id")
+    )
+    private List<Users> parents = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "parents")
+    private List<Users> children = new ArrayList<>();
 
     @Builder
     public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney,
@@ -78,4 +79,15 @@ public class Users extends BaseEntity {
     public void setToken(String actualToken) {
         this.token = actualToken;
     }
+
+    public void addParent(Users parent) {
+        this.parents.add(parent);
+        parent.getChildren().add(this);
+    }
+
+    public void addChild(Users child) {
+        this.children.add(child);
+        child.getParents().add(this);
+    }
+
 }
