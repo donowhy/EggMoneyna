@@ -8,7 +8,7 @@ import shinhan.EggMoneyna.monster.entity.enumType.Benefit;
 import shinhan.EggMoneyna.monster.entity.enumType.Feel;
 import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
 import shinhan.EggMoneyna.monster.entity.enumType.ShinhanMong;
-import shinhan.EggMoneyna.user.entity.User;
+import shinhan.EggMoneyna.users.entity.Users;
 
 import javax.persistence.*;
 import java.util.Random;
@@ -40,10 +40,10 @@ public class Monster {
     private Benefit benefit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Users user;
 
     @Builder
-    public Monster(Long id, ShinhanMong name, String nickName, MonsterStatus status, int point, Feel feel, int exp, Benefit benefit, User user) {
+    public Monster(Long id, ShinhanMong name, String nickName, MonsterStatus status, int point, Feel feel, int exp, Benefit benefit, Users user) {
         this.id = id;
         this.name = name;
         this.nickName = nickName;

@@ -1,33 +1,47 @@
 package shinhan.EggMoneyna.monster.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterUpdateResponseDto;
 import shinhan.EggMoneyna.monster.entity.Monster;
+import shinhan.EggMoneyna.monster.entity.enumType.Feel;
 import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
 import shinhan.EggMoneyna.monster.repository.MonsterRepository;
+import shinhan.EggMoneyna.users.dto.UpdateRequestDto;
+import shinhan.EggMoneyna.users.entity.Users;
+import shinhan.EggMoneyna.users.repository.UsersRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class MonsterService {
 
-    private MonsterRepository monsterRepository;
-
-
+    private final UsersRepository usersRepository;
+    private final MonsterRepository monsterRepository;
 
     // CREATE
-    public MonsterSaveResponseDto save(MonsterSaveRequestDto monsterSaveRequestDto) {
+    public MonsterSaveResponseDto save(MonsterSaveRequestDto monsterSaveRequestDto, Long id) {
+
+        Users users = usersRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+        log.info("name={}", Monster.getRandomMong());
+
         Monster monster = Monster.builder()
                 .name(Monster.getRandomMong())
                 .nickName(monsterSaveRequestDto.getNickName())
                 .status(MonsterStatus.Egg)
                 .benefit(monsterSaveRequestDto.getBenefitEnum())
+                .user(users)
+                .feel(Feel.Noting)
                 .build();
 
         Monster savedMonster = monsterRepository.save(monster);
@@ -36,10 +50,9 @@ public class MonsterService {
     }
 
     // READ
-    public MonsterResponseDto findById(Long id) {
+    public MonsterResponseDto findById(Long id, Long myId) {
+        Users users = usersRepository.findById(myId).orElseThrow();
         Monster monster = monsterRepository.findById(id).orElse(null);
-
-
         return MonsterResponseDto.of(monster);
     }
 
