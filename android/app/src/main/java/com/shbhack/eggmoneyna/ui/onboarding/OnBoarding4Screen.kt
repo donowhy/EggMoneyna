@@ -24,14 +24,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
+import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius40
+import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
+import com.shbhack.eggmoneyna.ui.common.system.SetSystemBarColor
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
 import com.shbhack.eggmoneyna.ui.theme.onboardingColor4
-import com.shbhack.eggmoneyna.util.CommonUtils
 
 @Composable
 fun OnBoarding4Screen(navController: NavController) {
 
-    CommonUtils.setSystemBarColor(color = onboardingColor4)
+    SetSystemBarColor(color = onboardingColor4)
 
     Column(
         modifier = Modifier
@@ -57,7 +59,7 @@ fun OnBoarding4Screen(navController: NavController) {
                 .height(0.dp)
                 .weight(1f)
         )
-        CommonUtils.LottieLoader(
+        LottieLoader(
             source = R.raw.onboarding_wishbox,
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,7 +91,7 @@ fun OnBoarding4Screen(navController: NavController) {
                 .weight(1f)
         )
 
-        CommonUtils.buttonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
+        ButtonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
             navController.navigate(EggMoneynaDestination.ON_BOARDING5)
         }
     }
