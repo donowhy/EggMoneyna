@@ -11,7 +11,6 @@ import shinhan.EggMoneyna.inputoutput.dto.InputOutRequestDto;
 import shinhan.EggMoneyna.inputoutput.dto.InputOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
-import shinhan.EggMoneyna.jwt.UsersInfo;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
