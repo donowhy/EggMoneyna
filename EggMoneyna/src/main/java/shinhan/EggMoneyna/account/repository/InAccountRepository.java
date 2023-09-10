@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InAccountRepository extends JpaRepository<InAccount, Long> {
-    Optional<InAccount> findByAccount(Account account);
-
-    List<InAccount> findAllByAccount(Account account);
-
-    @Query("SELECT ia FROM InAccount ia JOIN FETCH ia.account acc WHERE acc = :account AND ia.sendUser = :sendUser ORDER BY ia.createdDate DESC")
-    List<InAccount> findLatestByAccountAndSendUser(@Param("account") Account account, @Param("sendUser") String sendUser, Pageable pageable);
+//    Optional<InAccount> findByAccount(Account account);
+//
+//    List<InAccount> findAllByAccount(Account account);
+//
+//    @Query("SELECT ia FROM InAccount ia JOIN FETCH ia.account acc WHERE acc = :account AND ia.sendUser = :sendUser ORDER BY ia.createdDate DESC")
+//    List<InAccount> findLatestByAccountAndSendUser(@Param("account") Account account, @Param("sendUser") String sendUser, Pageable pageable);
 }

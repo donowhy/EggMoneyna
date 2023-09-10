@@ -6,10 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,6 +46,9 @@ public class Account extends BaseEntity {
 
    @Column(columnDefinition = "boolean default false")
    private Boolean autoTermination;
+
+   @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<InputOutput> inputOutputs = new ArrayList<>();
 
 
    @Builder

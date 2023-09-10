@@ -106,43 +106,43 @@ public class AccountService {
 	}
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
-	public Boolean checkAccount(Long id, String random) {
-		Users users = usersRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
-		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow(() -> new NoSuchElementException("Account not found"));
-
-		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
-		List<InAccount> inAccounts = inAccountRepository.findLatestByAccountAndSendUser(account, "신한은행", pageRequest);
-
-		if(inAccounts.isEmpty()) {
-			throw new NoSuchElementException("InAccount not found with the specified sendUser");
-		}
-
-		InAccount inAccount = inAccounts.get(0);
-
-		return random.equals(inAccount.getMemo());
-	}
-
-
-	public List<DetailAccountResponseDto> getAccountDetail(Long id){
-
-		Users users = usersRepository.findById(id).orElseThrow();
-		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow();
-		List<InAccount> inAccounts = inAccountRepository.findAllByAccount(account);
-
-		List<DetailAccountResponseDto> detailAccountResponseDtos = new ArrayList<>();
-
-		for(InAccount inAccount : inAccounts) {
-			DetailAccountResponseDto detailAccountResponseDto = DetailAccountResponseDto.builder()
-					.memo(inAccount.getMemo())
-					.sendUser(inAccount.getSendUser())
-					.money(inAccount.getMoney())
-					.build();
-
-			detailAccountResponseDtos.add(detailAccountResponseDto);
-		}
-
-		return detailAccountResponseDtos;
-	}
+//	public Boolean checkAccount(Long id, String random) {
+//		Users users = usersRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
+//		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow(() -> new NoSuchElementException("Account not found"));
+//
+//		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
+//		List<InAccount> inAccounts = inAccountRepository.findLatestByAccountAndSendUser(account, "신한은행", null);
+//
+//		if(inAccounts.isEmpty()) {
+//			throw new NoSuchElementException("InAccount not found with the specified sendUser");
+//		}
+//
+//		InAccount inAccount = inAccounts.get(0);
+//
+//		return random.equals(inAccount.getMemo());
+//	}
+//
+//
+//	public List<DetailAccountResponseDto> getAccountDetail(Long id){
+//
+//		Users users = usersRepository.findById(id).orElseThrow();
+//		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow();
+//		List<InAccount> inAccounts = inAccountRepository.findAllByAccount(account);
+//
+//		List<DetailAccountResponseDto> detailAccountResponseDtos = new ArrayList<>();
+//
+//		for(InAccount inAccount : inAccounts) {
+//			DetailAccountResponseDto detailAccountResponseDto = DetailAccountResponseDto.builder()
+//					.memo(inAccount.getMemo())
+//					.sendUser(inAccount.getSendUser())
+//					.money(inAccount.getMoney())
+//					.build();
+//
+//			detailAccountResponseDtos.add(detailAccountResponseDto);
+//		}
+//
+//		return detailAccountResponseDtos;
+//	}
 
 	public Account updateNickName(String name, Long id) {
 		Users users = usersRepository.findById(id).orElseThrow();
