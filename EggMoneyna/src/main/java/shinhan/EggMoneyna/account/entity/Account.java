@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Account extends BaseEntity {
+public class Account extends BaseTimeEntity {
 
    @Id
    @GeneratedValue
@@ -23,8 +23,8 @@ public class Account extends BaseEntity {
 
    private String nickName;
 
-//   @Enumerated(EnumType.STRING)
-//   private Code bankCode;
+   @Enumerated(EnumType.STRING)
+   private BankCode bankCode;
 
    private Long accountNumber;
 
@@ -47,10 +47,10 @@ public class Account extends BaseEntity {
 
 
    @Builder
-    public Account(Long id, String nickName, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
+    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
         this.id = id;
         this.nickName = nickName;
-//        this.bankCode = bankCode;
+        this.bankCode = bankCode;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.wishBox = wishBox;
