@@ -65,8 +65,8 @@ fun OnBoardingScreen(navController: NavController) {
         )
         Text(
             text = stringResource(id = R.string.onboarding1Content),
-            fontWeight = FontWeight.Medium,
-            fontSize = 18.sp,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
             color = contextTextColor
         )
         Spacer(
