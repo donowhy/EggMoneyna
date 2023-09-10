@@ -19,7 +19,7 @@ import com.shbhack.eggmoneyna.ui.theme.keyColorLight2
 import com.shbhack.eggmoneyna.ui.theme.logoColor
 
 @Composable
-fun CharacterView() {
+fun CharacterView(onClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,12 +38,10 @@ fun CharacterView() {
                 stringResource(id = R.string.shinhanmong_button_collection),
                 16,
                 logoColor
-            )
+            ) {
+                onClick()
+            }
         }
     }
-
-}
-
-fun ButtonCollection() {
 
 }
