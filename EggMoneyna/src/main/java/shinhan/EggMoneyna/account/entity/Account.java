@@ -71,4 +71,12 @@ public class Account extends BaseEntity {
     public void setBalance(int i) {
         this.balance = i;
     }
+
+    public void inBalance(int input) {
+        this.balance += input;
+    }
+
+    public void outBalance(int output) {
+        this.balance -= output;
+    }
 }
