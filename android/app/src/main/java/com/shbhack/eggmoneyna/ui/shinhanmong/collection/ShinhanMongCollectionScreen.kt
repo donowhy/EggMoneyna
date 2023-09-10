@@ -2,9 +2,11 @@ package com.shbhack.eggmoneyna.ui.shinhanmong.collection
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Indication
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -28,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
+import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 
 @Composable
 fun ShinhanMongCollectionScreen(navController: NavController) {
@@ -71,10 +74,13 @@ fun ShinhanMongCollectionScreen(navController: NavController) {
                 navController = navController,
                 title = stringResource(id = R.string.shinhanmong_collection_appbar_title)
             )
-        }) {
+        }
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
+                .fillMaxSize()
+                .background(keyColorLight1)
                 .padding(it)
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(40.dp),
