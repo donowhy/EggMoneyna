@@ -37,6 +37,13 @@
   </br>
   </br>
 
+## 📒 관련 자료
+[노션](https://www.notion.so/67657d60eaef48adba3bd08c29e131f7)  
+[Figma](https://www.figma.com/file/TK7jyqrHjc7ZXnz24KH1aT/%EB%A6%AC%ED%8B%80-%EC%8B%A0%ED%95%9C?type=design&node-id=0-1&mode=design&t=gFEQhnP7kQyGE7L2-0)
+  </br>
+  </br>
+  </br>
+
 ## 👩‍👩‍👧‍👧 팀원
 SSAFY 9기
 | 강민승 | 김은하 | 김진영 | 이기표 |
