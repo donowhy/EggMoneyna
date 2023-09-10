@@ -1,15 +1,20 @@
 package shinhan.EggMoneyna.account.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 
 import javax.persistence.*;
 
+/**
+ * 거래 내역 디테일
+ */
 @Getter
 @Entity
 @NoArgsConstructor
-public class InAccount {
+public class InAccount extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
