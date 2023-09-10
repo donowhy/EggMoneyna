@@ -12,6 +12,7 @@ import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.ShinhanMongMainScreen
+import com.shbhack.eggmoneyna.ui.shinhanmong.collection.ShinhanMongCollectionScreen
 import com.shbhack.eggmoneyna.ui.splash.SplashScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -41,6 +42,9 @@ fun EggMoneynaNavGraph(
         }
         composable(EggMoneynaDestination.SHINHAN_MON) {
             ShinhanMongMainScreen(navController)
+        }
+        composable(EggMoneynaDestination.SHINHAN_MON_COLLECTION) {
+            ShinhanMongCollectionScreen(navController)
         }
     }
 }

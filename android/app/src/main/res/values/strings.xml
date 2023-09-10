@@ -10,4 +10,7 @@
     <string name="shinhanmong_button_collection">도감</string>
     <string name="shinhanmong_my_shinhanmong_point">나의 신한몽 포인트</string>
 
+    <!-- shinhanMong Collection-->
+    <string name="shinhanmong_collection_appbar_title">신한몽 도감</string>
+
 </resources>
