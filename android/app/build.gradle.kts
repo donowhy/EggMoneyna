@@ -101,6 +101,12 @@ dependencies {
 
     // lottie
     implementation ("com.airbnb.android:lottie-compose:6.1.0")
+
+    // custom calendar
+    implementation ("com.himanshoe:kalendar:1.3.2")
+
+    // datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 }
 
 kapt {
