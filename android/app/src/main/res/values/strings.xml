@@ -8,5 +8,6 @@
     <!-- shinhanMong -->
     <string name="shinhanmong_appbar_title">신한몽</string>
     <string name="shinhanmong_button_collection">도감</string>
+    <string name="shinhanmong_my_shinhanmong_point">나의 신한몽 포인트</string>
 
 </resources>

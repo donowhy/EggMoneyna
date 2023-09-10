@@ -51,7 +51,7 @@ fun ShinhanMongMainScreen(navController: NavController) {
             item {
                 Text(
                     modifier = Modifier.padding(20.dp),
-                    text = "나의 신한몽 포인트", fontSize = 16.sp, fontWeight = FontWeight.SemiBold
+                    text = stringResource(id = R.string.shinhanmong_my_shinhanmong_point), fontSize = 16.sp, fontWeight = FontWeight.SemiBold
                 )
             }
             items(pointItemList.size) { idx ->
