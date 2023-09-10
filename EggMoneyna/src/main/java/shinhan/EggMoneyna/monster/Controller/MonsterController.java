@@ -14,6 +14,8 @@ import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterUpdateResponseDto;
 import shinhan.EggMoneyna.monster.service.MonsterService;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -33,9 +35,9 @@ public class MonsterController {
     // READ
     @Operation(summary = "신한몽 조회", description = "신한몽 조회.", tags = { "Monster Controller" })
     @GetMapping("/{id}")
-    public Response<MonsterResponseDto> getMonster(@PathVariable Long id, @UserInfo UsersInfo usersInfo) {
-        MonsterResponseDto responseDto = monsterService.findById(id, usersInfo.getId());
-        return new Response<>("성공", "신한몽 조회", responseDto);
+    public Response<?> getMonster(@PathVariable Long id, @UserInfo UsersInfo usersInfo) {
+        List<MonsterResponseDto> byId = monsterService.findById(usersInfo.getId());
+        return new Response<>("성공", "신한몽 조회", byId);
     }
 
     // UPDATE

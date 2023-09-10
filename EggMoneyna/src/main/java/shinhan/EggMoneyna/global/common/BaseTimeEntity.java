@@ -1,4 +1,4 @@
-package shinhan.EggMoneyna.domain.common;
+package shinhan.EggMoneyna.global.common;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
