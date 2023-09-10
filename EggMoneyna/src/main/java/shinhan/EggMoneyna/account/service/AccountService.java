@@ -6,17 +6,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import shinhan.EggMoneyna.account.dto.AccountCheckSelfRequestDto;
-import shinhan.EggMoneyna.account.dto.AccountCheckSelfResponseDto;
-import shinhan.EggMoneyna.account.dto.AccountCreateDto;
-import shinhan.EggMoneyna.account.dto.DetailAccountResponseDto;
+import shinhan.EggMoneyna.account.dto.*;
 import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.account.entity.BankCode;
 import shinhan.EggMoneyna.account.entity.InAccount;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.account.repository.InAccountRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
+import java.awt.print.Pageable;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,18 +43,18 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-
 		Users users = usersRepository.findById(id).orElseThrow();
 
 		Account build = Account.builder()
+				.nickName("에그머니나, " + accountCreateDto.getNickName())
+				.bankCode(BankCode.Shinhan)
 				.accountNumber(accountNumber)
 				.balance(0)
 				.nickName(accountCreateDto.getNickName())
 				.users(users)
 				.build();
-		users.setAccount(build);
+
 		accountRepository.save(build);
-		usersRepository.save(users);
 		return build.getId();
 	}
 
@@ -110,11 +110,11 @@ public class AccountService {
 		Users users = usersRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
 		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow(() -> new NoSuchElementException("Account not found"));
 
-		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
-		List<InAccount> inAccounts = inAccountRepository.findLatestByAccountAndSendUser(account, "신한은행", pageRequest);
+		PageRequest pageRequest = PageRequest.of(0, 1);
+		List<InAccount> inAccounts = inAccountRepository.findLatestByAccountAndSendUser(account, "신한은행");
 
 		if(inAccounts.isEmpty()) {
-			throw new NoSuchElementException("InAccount not found with the specified sendUser");
+			throw new NoSuchElementException();
 		}
 
 		InAccount inAccount = inAccounts.get(0);
@@ -123,6 +123,7 @@ public class AccountService {
 	}
 
 
+	// 거래내역 상세 조회
 	public List<DetailAccountResponseDto> getAccountDetail(Long id){
 
 		Users users = usersRepository.findById(id).orElseThrow();
@@ -144,6 +145,7 @@ public class AccountService {
 		return detailAccountResponseDtos;
 	}
 
+	// 계좌 닉네임 변경
 	public Account updateNickName(String name, Long id) {
 		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = users.getAccount();
@@ -152,6 +154,7 @@ public class AccountService {
 		return account;
 	}
 
+	// 계좌 삭제
 	public String delete(Long id) {
 		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = users.getAccount();
@@ -159,19 +162,63 @@ public class AccountService {
 		return "성공";
 	}
 
-	public InAccount payment(Long id, InAccount inAccount){
+	// 결제
+	public PaymentResponseDto payment(Long id, PaymentRequestDto requestDto){
 
 		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow();
 
-		InAccount inAccount1 = InAccount.builder()
+		// 결제 ( 브랜드 위치명, 회사명, 쓴 돈, 메모)
+		InAccount inAccount = InAccount.builder()
 				.account(account)
-				.useWhere(inAccount.getUseWhere())
-				.sendUser(inAccount.getSendUser())
-				.money(inAccount.getMoney())
+				.useWhere(requestDto.getUseWhere())
+				.sendUser(requestDto.getSendUser())
+				.money(requestDto.getSpentMoney())
+				.memo(requestDto.getMemo())
 				.build();
-		inAccountRepository.save(inAccount1);
 
-		return inAccount1;
+		// 체크카드 형식이기 때문, 카드에 돈이 없으면 결제 못함.
+		if(account.getBalance() - requestDto.getSpentMoney() >= 0) {
+			account.setBalance(account.getBalance() - requestDto.getSpentMoney());
+		}else {
+			throw new RuntimeException();
+		}
+
+		inAccountRepository.save(inAccount);
+
+		return PaymentResponseDto.builder()
+				.spentTime(inAccount.getCreateTime())
+				.modifyTime(inAccount.getUpdateTime())
+				.sendUser(requestDto.getSendUser())
+				.useWhere(requestDto.getUseWhere())
+				.spentMoney(requestDto.getSpentMoney())
+				.memo(requestDto.getMemo())
+				.build();
 	}
+
+	// 결제 취소
+	public String cancel(Long id, CancelRequestDto requestDto) {
+		Users users = usersRepository.findById(id).orElseThrow();
+		List<InAccount> inAccountList = users.getAccount().getInAccountList();
+
+		// inAccount 리스트 중 정확한 것만 찾아서 삭제한다. 추후 쿼리문으로 최적화 얘정.
+		// 총 4개의 확인 절차. 브랜드, 회사명, 취소하려는 돈, 30일이 지나지 않은 시간
+		for (InAccount inAccount : inAccountList) {
+			if (inAccount.getUseWhere().equals(requestDto.getUseWhere())
+					&& inAccount.getSendUser().equals(requestDto.getSendUser())
+					&& inAccount.getMoney() == requestDto.getMoney()) {
+
+				if (inAccount.getCreateTime().isAfter(LocalDateTime.now().minusDays(30))) {
+					int money = inAccount.getMoney();
+					inAccount.getAccount().setBalance(money + inAccount.getAccount().getBalance());
+					inAccountRepository.delete(inAccount);
+					return "성공";
+				} else {
+					return "실패, 취소 할 수 있는 기간이 지났습니다.";
+				}
+			}
+		}
+		return "실패, 해당 거래 내역을 찾을 수 없습니다.";
+	}
+
 }
