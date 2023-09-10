@@ -88,7 +88,7 @@ dependencies {
 
     // SSA를 위한 navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-alpha01")
 
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
