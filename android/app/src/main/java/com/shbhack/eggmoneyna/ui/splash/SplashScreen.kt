@@ -25,8 +25,8 @@ import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
+import com.shbhack.eggmoneyna.ui.common.system.SetSystemBarColor
 import com.shbhack.eggmoneyna.ui.theme.logoColor
-import com.shbhack.eggmoneyna.util.CommonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -47,7 +47,7 @@ fun SplashScreen(navController: NavController) {
         }
     }
 
-    CommonUtils.setSystemBarColor(color = logoColor)
+    SetSystemBarColor(color = logoColor)
 
     Column(
         modifier = Modifier
