@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import shinhan.EggMoneyna.account.entity.Account;
-import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
+import shinhan.EggMoneyna.monster.entity.Monster;
+import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
+import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Users extends BaseEntity {
+public class Users extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -43,6 +46,17 @@ public class Users extends BaseEntity {
     @OneToOne
     private Account account;
 
+    @OneToMany(mappedBy = "user")
+    private List<Monster> monsters = new ArrayList<>();
+
+    private int cntMonsters;
+
+    @OneToOne
+    private MonsterEncyclopedia monsterEncyclopedia;
+
+    @OneToMany(mappedBy = "users")
+    private List<WishBox> wishBoxes;
+
     @ManyToMany
     @JoinTable(
             name = "user_relations",
@@ -57,8 +71,7 @@ public class Users extends BaseEntity {
     private String firebaseToken;
 
     @Builder
-    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney,
-        int limitMoney, int pocketMoneyDate, String token, Account account, String firebaseToken) {
+    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, String firebaseToken) {
         this.id = id;
         this.isParents = isParents;
         this.userId = userId;
@@ -69,6 +82,8 @@ public class Users extends BaseEntity {
         this.pocketMoneyDate = pocketMoneyDate;
         this.token = token;
         this.account = account;
+        this.monsters = monsters;
+        this.cntMonsters = cntMonsters;
         this.firebaseToken = firebaseToken;
     }
 
@@ -96,5 +111,9 @@ public class Users extends BaseEntity {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void setCntMonsters(int i) {
+        this.cntMonsters = i;
     }
 }
