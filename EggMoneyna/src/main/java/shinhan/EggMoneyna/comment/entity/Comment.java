@@ -1,13 +1,12 @@
 package shinhan.EggMoneyna.comment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -25,4 +24,8 @@ public class Comment extends BaseEntity {
     private Boolean isParent;
 
     private Boolean isChild;
+
+    @OneToOne(mappedBy = "comment")
+    @JsonIgnore
+    private InputOutput inputOutput;
 }

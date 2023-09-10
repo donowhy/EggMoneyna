@@ -1,10 +1,12 @@
 package shinhan.EggMoneyna.inputoutput.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.comment.entity.Comment;
 import shinhan.EggMoneyna.global.common.BaseEntity;
 
 import javax.persistence.*;
@@ -34,7 +36,13 @@ public class InputOutput extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
+    @JsonIgnore
     private Account account;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    @JsonIgnore
+    private Comment comment;
 
     @Builder
     public InputOutput(Long id, String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output, Account account) {
