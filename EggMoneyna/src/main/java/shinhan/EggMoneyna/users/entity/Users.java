@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import shinhan.EggMoneyna.account.entity.Account;
-import shinhan.EggMoneyna.domain.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ public class Users extends BaseEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "users_id")
     private Long id;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
@@ -53,9 +54,11 @@ public class Users extends BaseEntity {
     @ManyToMany(mappedBy = "parents")
     private List<Users> children = new ArrayList<>();
 
+    private String firebaseToken;
+
     @Builder
     public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney,
-        int limitMoney, int pocketMoneyDate, String token, Account account) {
+        int limitMoney, int pocketMoneyDate, String token, Account account, String firebaseToken) {
         this.id = id;
         this.isParents = isParents;
         this.userId = userId;
@@ -66,6 +69,7 @@ public class Users extends BaseEntity {
         this.pocketMoneyDate = pocketMoneyDate;
         this.token = token;
         this.account = account;
+        this.firebaseToken = firebaseToken;
     }
 
     public void update(String nickName, int limitMoney, int pocketMoney, int pocketMoneyDate) {
@@ -90,4 +94,7 @@ public class Users extends BaseEntity {
         child.getParents().add(this);
     }
 
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }
