@@ -58,6 +58,8 @@ dependencies {
 
 	implementation group: 'p6spy', name: 'p6spy', version: '3.9.1'
 
+	// firebase
+	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.1'
 
 
 
