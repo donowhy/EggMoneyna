@@ -1,33 +1,35 @@
 spring:
-  h2:
-    console:
-      enabled: true
   datasource:
-    url: jdbc:h2:./test
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://3.37.95.36:3306/eggmoneyna
+    username: root
+    password: 12341234
+
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
-        show_sql: true
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+        jdbc:
+          time_zone: Asia/Seoul
 
-jpa:
-  properties:
-    hibernate:
-      auto_quote_keyword: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 
 server:
+  port: 8080
   servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+    context-path: /
 
 
 springdoc:

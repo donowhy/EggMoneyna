@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "회원 가입", description = "회원 가입은 공통으로 진행", tags = { "User Controller" })
-    @PostMapping
+    @PostMapping("signup")
     public ResponseEntity<UserSaveResponseDto> createUser(@RequestBody UserSaveRequestDto userSaveRequestDto) {
         return ResponseEntity.ok(userService.save(userSaveRequestDto));
     }
