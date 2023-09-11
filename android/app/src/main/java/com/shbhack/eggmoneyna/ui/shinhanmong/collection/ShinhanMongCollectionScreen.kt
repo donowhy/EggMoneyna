@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 
@@ -87,7 +88,9 @@ fun ShinhanMongCollectionScreen(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(40.dp)
         ) {
             items(shinHanMongItems.size) { idx ->
-                ShinHanMongImage(shinHanMongItems[idx])
+                ShinHanMongImage(shinHanMongItems[idx]){
+                    navController.navigate(EggMoneynaDestination.SHINHAN_MON_COLLECTION_DETAIL)
+                }
             }
 
         }
