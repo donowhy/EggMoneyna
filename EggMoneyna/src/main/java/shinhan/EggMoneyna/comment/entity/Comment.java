@@ -3,7 +3,7 @@ package shinhan.EggMoneyna.comment.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comment extends BaseEntity {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import shinhan.EggMoneyna.account.entity.Account;
-import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Users extends BaseEntity {
+public class Users extends BaseTimeEntity {
 
     @Id
     @GeneratedValue

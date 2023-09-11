@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Account extends BaseEntity {
+public class Account extends BaseTimeEntity {
 
    @Id
    @GeneratedValue

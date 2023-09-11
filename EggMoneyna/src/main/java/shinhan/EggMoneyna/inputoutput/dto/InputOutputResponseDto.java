@@ -3,24 +3,17 @@ package shinhan.EggMoneyna.inputoutput.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class InputOutputResponseDto {
-//    private String brandName;
-//    private String brandImg;
-    private String bigCategory;
-    private String smallCategory;
-    private int input;
-    private int output;
+    private List<InputOutput> inputOutputs;
 
     @Builder
-    public InputOutputResponseDto(String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output) {
-//        this.brandName = brandName;
-//        this.brandImg = brandImg;
-        this.bigCategory = bigCategory;
-        this.smallCategory = smallCategory;
-        this.input = input;
-        this.output = output;
+    public InputOutputResponseDto(List<InputOutput> inputOutputs) {
+        this.inputOutputs = inputOutputs;
     }
 }

@@ -8,7 +8,7 @@ import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
 @Getter
 @NoArgsConstructor
-public class InputOutRequestDto {
+public class AddInputOutRequestDto {
     private String brandName;
     private String brandImg;
     private String bigCategory;
@@ -17,7 +17,7 @@ public class InputOutRequestDto {
     private int output;
 
     @Builder
-    public InputOutRequestDto(String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output) {
+    public AddInputOutRequestDto(String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output) {
         this.brandName = brandName;
         this.brandImg = brandImg;
         this.bigCategory = bigCategory;
@@ -33,6 +33,7 @@ public class InputOutRequestDto {
                 .bigCategory(bigCategory)
                 .smallCategory(smallCategory)
                 .input(input)
-                .output(output).build();
+                .output(output)
+                .account(account).build();
     }
 }

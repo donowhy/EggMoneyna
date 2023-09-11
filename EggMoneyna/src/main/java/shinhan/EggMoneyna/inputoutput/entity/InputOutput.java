@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.comment.entity.Comment;
-import shinhan.EggMoneyna.global.common.BaseEntity;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class InputOutput extends BaseEntity {
+public class InputOutput extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
