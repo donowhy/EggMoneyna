@@ -6,9 +6,10 @@ import shinhan.EggMoneyna.users.entity.Users;
 
 import java.util.Optional;
 
+import java.util.Optional;
+
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByAccountNumber(Long accountNumber);
 
-    Optional<Account> findByUsers(Users users);
 }

@@ -11,6 +11,7 @@ import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class Account extends BaseTimeEntity {
 
    private String nickName;
 
-//   @Enumerated(EnumType.STRING)
-//   private Code bankCode;
+   @Enumerated(EnumType.STRING)
+   private BankCode bankCode;
 
    private Long accountNumber;
 
@@ -47,6 +48,7 @@ public class Account extends BaseTimeEntity {
    @Column(columnDefinition = "boolean default false")
    private Boolean autoTermination;
 
+
    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
    private List<InputOutput> inputOutputs = new ArrayList<>();
 
@@ -55,7 +57,12 @@ public class Account extends BaseTimeEntity {
     public Account(Long id, String nickName, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
         this.id = id;
         this.nickName = nickName;
-//        this.bankCode = bankCode;
+
+   @Builder
+    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
+        this.id = id;
+        this.nickName = nickName;
+        this.bankCode = bankCode;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.wishBox = wishBox;

@@ -6,16 +6,26 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+
 import shinhan.EggMoneyna.account.dto.AccountCheckSelfRequestDto;
 import shinhan.EggMoneyna.account.dto.AccountCheckSelfResponseDto;
 import shinhan.EggMoneyna.account.dto.AccountCreateDto;
 import shinhan.EggMoneyna.account.dto.DetailAccountResponseDto;
 import shinhan.EggMoneyna.account.entity.Account;
+
+import shinhan.EggMoneyna.account.dto.*;
+import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.account.entity.BankCode;
+
 import shinhan.EggMoneyna.account.entity.InAccount;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.account.repository.InAccountRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
+
+
+import java.awt.print.Pageable;
+import java.time.LocalDateTime;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,18 +53,22 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-
 		Users users = usersRepository.findById(id).orElseThrow();
 
 		Account build = Account.builder()
+		Users users = usersRepository.findById(id).orElseThrow();
+
+		Account build = Account.builder()
+				.nickName("에그머니나, " + accountCreateDto.getNickName())
+				.bankCode(BankCode.Shinhan)
 				.accountNumber(accountNumber)
 				.balance(0)
 				.nickName(accountCreateDto.getNickName())
 				.users(users)
 				.build();
-		users.setAccount(build);
 		accountRepository.save(build);
-		usersRepository.save(users);
+
+
 		return build.getId();
 	}
 
@@ -67,42 +81,6 @@ public class AccountService {
 
 	}
 
-	// 1원 체크를 위한 send 내역
-	public DetailAccountResponseDto sendCheck1 (Long id){
-		Users users = usersRepository.findById(id).orElseThrow();
-		Account account = users.getAccount();
-		account.setBalance(account.getBalance()  + 1);
-		String s = generateRandomString(4);
-
-		InAccount inAccount = InAccount.builder()
-				.money(account.getBalance())
-				.memo(s)
-				.sendUser("신한은행")
-				.account(account)
-				.build();
-
-		inAccountRepository.save(inAccount);
-
-		return DetailAccountResponseDto.builder()
-				.money(account.getBalance())
-				.memo(s)
-				.sendUser("신한은행")
-				.build();
-
-	}
-
-	// 랜덤 4글자를 위한 메서드
-	private String generateRandomString(int length) {
-		Random random = new Random();
-		StringBuilder stringBuilder = new StringBuilder(length);
-
-		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-		for (int i = 0; i < length; i++) {
-			int index = random.nextInt(characters.length());
-			stringBuilder.append(characters.charAt(index));
-		}
-		return stringBuilder.toString();
 	}
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
@@ -144,6 +122,8 @@ public class AccountService {
 //		return detailAccountResponseDtos;
 //	}
 
+	}
+
 	public Account updateNickName(String name, Long id) {
 		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = users.getAccount();
@@ -152,26 +132,11 @@ public class AccountService {
 		return account;
 	}
 
+	// 계좌 삭제
 	public String delete(Long id) {
 		Users users = usersRepository.findById(id).orElseThrow();
 		Account account = users.getAccount();
 		accountRepository.delete(account);
 		return "성공";
-	}
-
-	public InAccount payment(Long id, InAccount inAccount){
-
-		Users users = usersRepository.findById(id).orElseThrow();
-		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow();
-
-		InAccount inAccount1 = InAccount.builder()
-				.account(account)
-				.useWhere(inAccount.getUseWhere())
-				.sendUser(inAccount.getSendUser())
-				.money(inAccount.getMoney())
-				.build();
-		inAccountRepository.save(inAccount1);
-
-		return inAccount1;
 	}
 }

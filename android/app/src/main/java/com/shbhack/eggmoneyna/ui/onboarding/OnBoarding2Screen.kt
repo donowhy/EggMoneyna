@@ -27,17 +27,17 @@ import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius40
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
 import com.shbhack.eggmoneyna.ui.common.system.SetSystemBarColor
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
-import com.shbhack.eggmoneyna.ui.theme.onboardingColor1
+import com.shbhack.eggmoneyna.ui.theme.onboardingColor2
 
 @Composable
-fun OnBoardingScreen(navController: NavController) {
+fun OnBoarding2Screen(navController: NavController) {
 
-    SetSystemBarColor(color = onboardingColor1)
+    SetSystemBarColor(color = onboardingColor2)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = onboardingColor1)
+            .background(color = onboardingColor2)
             .padding(30.dp)
     ) {
         ClickableText(
@@ -58,13 +58,13 @@ fun OnBoardingScreen(navController: NavController) {
                 .weight(1.5f)
         )
         Text(
-            text = stringResource(id = R.string.onboarding1Title),
+            text = stringResource(id = R.string.onboarding2Title),
             fontWeight = FontWeight.Black,
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 30.dp)
         )
         Text(
-            text = stringResource(id = R.string.onboarding1Content),
+            text = stringResource(id = R.string.onboarding2Content),
             fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
             color = contextTextColor
@@ -75,14 +75,13 @@ fun OnBoardingScreen(navController: NavController) {
                 .weight(1f)
         )
         LottieLoader(
-            source = R.raw.onboarding_summary,
+            source = R.raw.onboarding_compliment,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .padding(bottom = 20.dp)
         )
         ButtonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
-            navController.navigate(EggMoneynaDestination.ON_BOARDING2)
+            navController.navigate(EggMoneynaDestination.ON_BOARDING3)
         }
     }
 }
