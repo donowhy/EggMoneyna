@@ -107,6 +107,9 @@ dependencies {
 
     // datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+
+    // sdp-compose
+    implementation ("com.github.Kaaveh:sdp-compose:1.1.0")
 }
 
 kapt {
