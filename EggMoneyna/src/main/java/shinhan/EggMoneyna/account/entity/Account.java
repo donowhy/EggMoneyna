@@ -6,10 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,6 +49,15 @@ public class Account extends BaseTimeEntity {
    private Boolean autoTermination;
 
 
+   @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<InputOutput> inputOutputs = new ArrayList<>();
+
+
+   @Builder
+    public Account(Long id, String nickName, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
+        this.id = id;
+        this.nickName = nickName;
+
    @Builder
     public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
         this.id = id;
@@ -65,5 +77,13 @@ public class Account extends BaseTimeEntity {
 
     public void setBalance(int i) {
         this.balance = i;
+    }
+
+    public void inBalance(int input) {
+        this.balance += input;
+    }
+
+    public void outBalance(int output) {
+        this.balance -= output;
     }
 }

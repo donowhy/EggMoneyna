@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
+
 import shinhan.EggMoneyna.monster.entity.Monster;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
@@ -72,6 +73,7 @@ public class Users extends BaseTimeEntity {
 
     @Builder
     public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, String firebaseToken) {
+
         this.id = id;
         this.isParents = isParents;
         this.userId = userId;
@@ -116,4 +118,5 @@ public class Users extends BaseTimeEntity {
     public void setCntMonsters(int i) {
         this.cntMonsters = i;
     }
+
 }
