@@ -55,7 +55,7 @@ public class Users extends BaseTimeEntity {
     private MonsterEncyclopedia monsterEncyclopedia;
 
     @OneToMany(mappedBy = "users")
-    private List<WishBox> wishBoxes;
+    private List<WishBox> wishBoxes = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -69,6 +69,8 @@ public class Users extends BaseTimeEntity {
     private List<Users> children = new ArrayList<>();
 
     private String firebaseToken;
+
+
 
     @Builder
     public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, String firebaseToken) {

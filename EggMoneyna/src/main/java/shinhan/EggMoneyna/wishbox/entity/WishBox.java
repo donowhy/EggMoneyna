@@ -1,12 +1,14 @@
 package shinhan.EggMoneyna.wishbox.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.account.entity.BankCode;
+import shinhan.EggMoneyna.users.entity.Users;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -25,16 +27,29 @@ public class WishBox {
 
    private int balance;
 
-   @OneToOne
-   @JoinColumn(name = "id")
+   @Enumerated(EnumType.STRING)
+   private BankCode bankCode;
+
+   private Long virtualAccount;
+
+   @ManyToOne(fetch = FetchType.LAZY)
    private Account account;
 
-   public WishBox(Long id, String nickName, String wishName, int price, int balance, Account account) {
-       this.id = id;
-       this.nickName = nickName;
-       this.wishName = wishName;
-       this.price = price;
-       this.balance = balance;
-       this.account = account;
-   }
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private Users users;
+
+
+    @Builder
+    public WishBox(Long id, String nickName, String wishName, int price, int balance, BankCode bankCode, Long virtualAccount, Account account, Users users) {
+        this.id = id;
+        this.nickName = nickName;
+        this.wishName = wishName;
+        this.price = price;
+        this.balance = balance;
+        this.bankCode = BankCode.Shinhan;
+        this.virtualAccount = virtualAccount;
+        this.account = account;
+        this.users = users;
+    }
 }

@@ -19,6 +19,7 @@ public class Account extends BaseTimeEntity {
 
    @Id
    @GeneratedValue
+   @Column(name = "accountId")
    private Long id;
 
    private String nickName;
@@ -30,31 +31,27 @@ public class Account extends BaseTimeEntity {
 
    private int balance;
 
-   @OneToOne(mappedBy = "account")
-   @JsonIgnore
-   private WishBox wishBox;
-
    @OneToMany(mappedBy = "account")
-   private List<InAccount> inAccountList;
+   private List<WishBox> wishBoxs;
 
    @OneToOne
    @JoinColumn(name = "users_id")
    @JsonIgnore
    private Users users;
 
+   // 계좌 만기날 있는지?
    @Column(columnDefinition = "boolean default false")
    private Boolean autoTermination;
 
 
-   @Builder
-    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, WishBox wishBox, List<InAccount> inAccountList, Users users, Boolean autoTermination) {
+    @Builder
+    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, List<WishBox> wishBoxs, Users users, Boolean autoTermination) {
         this.id = id;
         this.nickName = nickName;
         this.bankCode = bankCode;
         this.accountNumber = accountNumber;
         this.balance = balance;
-        this.wishBox = wishBox;
-        this.inAccountList = inAccountList;
+        this.wishBoxs = wishBoxs;
         this.users = users;
         this.autoTermination = autoTermination;
     }
