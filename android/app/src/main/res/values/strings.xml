@@ -16,6 +16,10 @@
     <string name="onboarding5Title">일정관리\n걱정 마세요</string>
     <string name="onboarding5Content">우리 아이 용돈 날짜\n잊지 않도록 도와드려요</string>
 
+    <!--  chooseWho  -->
+    <string name="chooseWhoBannerTitle">알록달록 계정 선택하기</string>
+    <string name="chooseWhoBannerContent">부모와 자녀에게\n꼭 맞는 서비스를 제공해드립니다.</string>
+
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
