@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,37 +24,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
-import com.shbhack.eggmoneyna.ui.common.system.SetSystemBarColor
 import com.shbhack.eggmoneyna.ui.theme.logoColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController, activity: MainActivity) {
+
     LaunchedEffect(Unit) {
         delay(1500)
         withContext(Dispatchers.Main) {
-            if (AppPreferences.isOnBoardingShowed()) {
-                navController.popBackStack()
-                navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
+            navController.popBackStack()
+            if (AppPreferences.isFirstShowed()) {
+                activity.setStatusBarOrigin()
+                if (AppPreferences.isParent()) {
+                    navController.navigate(EggMoneynaDestination.MAIN_PARENT)
+                } else {
+                    navController.navigate(EggMoneynaDestination.MAIN_CHILD)
+                }
             } else {
-                navController.popBackStack()
-                AppPreferences.checkOnBoardingShowed()
+                AppPreferences.checkFirstShowed()
                 navController.navigate(EggMoneynaDestination.ON_BOARDING)
             }
         }
     }
 
-    SetSystemBarColor(color = logoColor)
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = logoColor),
+            .background(color = logoColor)
+            .statusBarsPadding()
+            .navigationBarsPadding(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Spacer(

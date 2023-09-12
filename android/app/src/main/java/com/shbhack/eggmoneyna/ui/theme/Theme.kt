@@ -1,6 +1,7 @@
 package com.shbhack.eggmoneyna.ui.theme
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -59,8 +60,10 @@ fun EggMoneynaTheme(
         SideEffect {
             val activity  = view.context as Activity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                activity.window.navigationBarColor = colorScheme.primary.copy(alpha = 0.08f).compositeOver(colorScheme.surface.copy()).toArgb()
-                activity.window.statusBarColor = colorScheme.background.toArgb()
+            activity.window.navigationBarColor = Color.TRANSPARENT
+            activity.window.statusBarColor = Color.TRANSPARENT
+//                activity.window.navigationBarColor = colorScheme.primary.copy(alpha = 0.08f).compositeOver(colorScheme.surface.copy()).toArgb()
+//                activity.window.statusBarColor = colorScheme.background.toArgb()
                 WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = !darkTheme
                 WindowCompat.getInsetsController(activity.window, view).isAppearanceLightNavigationBars = !darkTheme
             }

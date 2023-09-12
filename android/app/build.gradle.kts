@@ -108,6 +108,10 @@ dependencies {
     // datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
+    // Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.20.1")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.20.1")
+
     // sdp-compose
     implementation ("com.github.Kaaveh:sdp-compose:1.1.0")
 }

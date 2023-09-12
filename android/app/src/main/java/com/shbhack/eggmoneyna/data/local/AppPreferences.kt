@@ -9,15 +9,22 @@ object AppPreferences {
     private val gson = GsonBuilder().create()
 
     private const val LOGIN_SESSION = "login.session"
-    private const val SHOWED_ON_BOARDING = "showedOnBoarding"
+    private const val SHOWED_FIRST = "showedFirst"
+    private const val IS_PARENT = "isParent"
 
     fun openSharedPreferences(context: Context) {
         preferences = context.getSharedPreferences(LOGIN_SESSION, Context.MODE_PRIVATE)
     }
 
-    fun checkOnBoardingShowed() {
-        preferences.edit().putBoolean(SHOWED_ON_BOARDING, true).apply()
+    fun checkFirstShowed() {
+        preferences.edit().putBoolean(SHOWED_FIRST, true).apply()
     }
 
-    fun isOnBoardingShowed() = preferences.getBoolean(SHOWED_ON_BOARDING, false)
+    fun isFirstShowed() = preferences.getBoolean(SHOWED_FIRST, false)
+
+    fun checkSelectParent(choose: Boolean) {
+        preferences.edit().putBoolean(IS_PARENT, choose).apply()
+    }
+
+    fun isParent() = preferences.getBoolean(IS_PARENT, false)
 }

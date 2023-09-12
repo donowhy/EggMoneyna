@@ -13,12 +13,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
-import com.shbhack.eggmoneyna.ui.onboarding.OnBoarding2Screen
-import com.shbhack.eggmoneyna.ui.onboarding.OnBoarding3Screen
-import com.shbhack.eggmoneyna.ui.onboarding.OnBoarding4Screen
-import com.shbhack.eggmoneyna.ui.onboarding.OnBoarding5Screen
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
+import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
+import com.shbhack.eggmoneyna.ui.mainparent.MainParentScreen
 import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.ShinhanMongMainScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.ShinhanMongCollectionScreen
@@ -28,10 +27,11 @@ import com.shbhack.eggmoneyna.ui.splash.SplashScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EggMoneynaNavGraph(
+    activity: MainActivity,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-//    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.SHINHAN_MON
+    startDestination: String = EggMoneynaDestination.SPLASH
+//    startDestination: String = EggMoneynaDestination.SHINHAN_MON
 ) {
 
     NavHost(
@@ -75,29 +75,23 @@ fun EggMoneynaNavGraph(
             )
         }
 
-        composable(EggMoneynaDestination.SPLASH) {
-            SplashScreen(navController)
+        defaultSlideTransitions(EggMoneynaDestination.SPLASH) {
+            SplashScreen(navController, activity)
         }
-        composable(EggMoneynaDestination.EGGMONEYNA) {
+        defaultSlideTransitions(EggMoneynaDestination.EGGMONEYNA) {
             EggMoneynaScreen(navController)
         }
-        composable(EggMoneynaDestination.ON_BOARDING) {
-            OnBoardingScreen(navController)
+        defaultSlideTransitions(EggMoneynaDestination.ON_BOARDING) {
+            OnBoardingScreen(navController, activity)
         }
-        composable(EggMoneynaDestination.ON_BOARDING2) {
-            OnBoarding2Screen(navController)
-        }
-        composable(EggMoneynaDestination.ON_BOARDING3) {
-            OnBoarding3Screen(navController)
-        }
-        composable(EggMoneynaDestination.ON_BOARDING4) {
-            OnBoarding4Screen(navController)
-        }
-        composable(EggMoneynaDestination.ON_BOARDING5) {
-            OnBoarding5Screen(navController)
-        }
-        composable(EggMoneynaDestination.CHOOSE_WHO) {
+        defaultSlideTransitions(EggMoneynaDestination.CHOOSE_WHO) {
             ChooseWhoScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.MAIN_CHILD) {
+            MainChildScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.MAIN_PARENT) {
+            MainParentScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.SHINHAN_MON) {
             ShinhanMongMainScreen(navController)
