@@ -1,6 +1,7 @@
 package shinhan.EggMoneyna.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
@@ -19,7 +20,9 @@ public class Comment extends BaseTimeEntity {
 
     private Boolean compliment;
 
-    private String comment;
+    private String parentComment;
+
+    private String childComment;
 
     private Boolean isParent;
 
@@ -28,4 +31,31 @@ public class Comment extends BaseTimeEntity {
     @OneToOne(mappedBy = "comment")
     @JsonIgnore
     private InputOutput inputOutput;
+
+    @Builder
+    public Comment(Long id, Boolean compliment, String parentComment, String childComment, Boolean isParent, Boolean isChild, InputOutput inputOutput) {
+        this.id = id;
+        this.compliment = compliment;
+        this.parentComment = parentComment;
+        this.childComment = childComment;
+        this.isParent = isParent;
+        this.isChild = isChild;
+        this.inputOutput = inputOutput;
+    }
+
+    public void addChildComment(String childComment) {
+        this.childComment = childComment;
+    }
+
+    public void addParentComment(String parentComment) {
+        this.parentComment = parentComment;
+    }
+
+    public void removeChildComment() {
+        this.childComment = null;
+    }
+
+    public void removeParentComment() {
+        this.parentComment = null;
+    }
 }
