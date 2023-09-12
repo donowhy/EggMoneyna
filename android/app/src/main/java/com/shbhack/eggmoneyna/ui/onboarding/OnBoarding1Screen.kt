@@ -10,46 +10,50 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
-import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius40
+import com.shbhack.eggmoneyna.ui.common.button.ButtonSkip
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
-import com.shbhack.eggmoneyna.ui.theme.onboardingColor5
+import com.shbhack.eggmoneyna.ui.theme.onboardingColor1
 
 @Composable
-fun OnBoarding5Screen(navController: NavController, activity: MainActivity) {
+fun OnBoarding1Screen(navController: NavController, activity: MainActivity) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = onboardingColor5)
+            .background(color = onboardingColor1)
             .statusBarsPadding()
             .navigationBarsPadding()
             .padding(30.dp)
     ) {
+        ButtonSkip(navController = navController, activity = activity)
         Spacer(
             modifier = Modifier
                 .height(0.dp)
                 .weight(1.5f)
         )
         Text(
-            text = stringResource(id = R.string.onboarding5Title),
+            text = stringResource(id = R.string.onboarding1Title),
             fontWeight = FontWeight.Black,
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 30.dp)
         )
         Text(
-            text = stringResource(id = R.string.onboarding5Content),
+            text = stringResource(id = R.string.onboarding1Content),
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             color = contextTextColor
@@ -60,15 +64,11 @@ fun OnBoarding5Screen(navController: NavController, activity: MainActivity) {
                 .weight(1f)
         )
         LottieLoader(
-            source = R.raw.onboarding_plan,
+            source = R.raw.onboarding_summary,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
+                .padding(bottom = 20.dp)
         )
-        ButtonRadius40(text = stringResource(id = R.string.start), color = Color.Black) {
-            navController.popBackStack()
-            navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-            activity.setStatusBarOrigin()
-        }
     }
 }

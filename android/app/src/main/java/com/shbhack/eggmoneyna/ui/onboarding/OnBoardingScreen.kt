@@ -1,88 +1,60 @@
 package com.shbhack.eggmoneyna.ui.onboarding
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.shbhack.eggmoneyna.R
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
+import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
-import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius40
-import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
-import com.shbhack.eggmoneyna.ui.common.system.SetSystemBarColor
-import com.shbhack.eggmoneyna.ui.theme.contextTextColor
-import com.shbhack.eggmoneyna.ui.theme.onboardingColor1
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnBoardingScreen(navController: NavController) {
+fun OnBoardingScreen(navController: NavController, activity: MainActivity) {
 
-    SetSystemBarColor(color = onboardingColor1)
+    Box(modifier = Modifier.fillMaxSize()) {
+        val pageCount = 5
+        val pageState = rememberPagerState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = onboardingColor1)
-            .padding(30.dp)
-    ) {
-        ClickableText(
-            text = AnnotatedString(text = stringResource(id = R.string.skip)),
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-            },
-        )
-        Spacer(
+        HorizontalPager(
+            modifier = Modifier.fillMaxSize(),
+            state = pageState,
+            count = pageCount
+        ) { page ->
+            when (page) {
+                0 -> OnBoarding1Screen(navController, activity)
+                1 -> OnBoarding2Screen(navController, activity)
+                2 -> OnBoarding3Screen(navController, activity)
+                3 -> OnBoarding4Screen(navController, activity)
+                4 -> OnBoarding5Screen(navController, activity)
+            }
+        }
+
+        Row(
             modifier = Modifier
-                .height(0.dp)
-                .weight(1.5f)
-        )
-        Text(
-            text = stringResource(id = R.string.onboarding1Title),
-            fontWeight = FontWeight.Black,
-            fontSize = 28.sp,
-            modifier = Modifier.padding(bottom = 30.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.onboarding1Content),
-            fontWeight = FontWeight.Medium,
-            fontSize = 18.sp,
-            color = contextTextColor
-        )
-        Spacer(
-            modifier = Modifier
-                .height(0.dp)
-                .weight(1f)
-        )
-        LottieLoader(
-            source = R.raw.onboarding_summary,
-            modifier = Modifier
+                .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .aspectRatio(1f)
-                .padding(bottom = 20.dp)
-        )
-        ButtonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
-            navController.navigate(EggMoneynaDestination.ON_BOARDING2)
+                .statusBarsPadding()
+                .padding(top = 70.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            HorizontalPagerIndicator(
+                pagerState = pageState,
+                activeColor = Color.Black.copy(alpha = 0.9f),
+                inactiveColor = Color.Black.copy(alpha = 0.4f)
+            )
         }
     }
 }
