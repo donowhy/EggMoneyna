@@ -29,3 +29,5 @@ val underlineColor = Color(0x7FCBDCF3)
 
 val EggmoneynaPurple = Color(0xFF8084EA)
 val EggmoneynaOrange = Color(0xFFFFD6BA)
+
+val ExpenseAnalysisPink = Color(0xFFEA80C0)

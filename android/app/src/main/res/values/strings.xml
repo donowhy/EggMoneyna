@@ -28,4 +28,8 @@
     <!-- shinhanMong Collection-->
     <string name="shinhanmong_collection_appbar_title">신한몽 도감</string>
 
+    <!-- expense Analysis -->
+    <string name="expense_analysis_appbar_title">자녀 지출 분석</string>
+    <string name="expense_analysis_month_expense">이 달의 총 지출액</string>
+
 </resources>
