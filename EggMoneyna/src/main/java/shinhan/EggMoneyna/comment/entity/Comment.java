@@ -51,4 +51,11 @@ public class Comment extends BaseTimeEntity {
         this.parentComment = parentComment;
     }
 
+    public void removeChildComment() {
+        this.childComment = null;
+    }
+
+    public void removeParentComment() {
+        this.parentComment = null;
+    }
 }

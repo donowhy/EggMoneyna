@@ -24,4 +24,16 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> addComment(@UserInfo UsersInfo usersInfo, @PathVariable Long inputOutputId, @RequestBody CommentRequestDto commentRequestDto) {
         return ResponseEntity.ok(commentService.addComment(usersInfo.getId(), inputOutputId, commentRequestDto));
     }
+
+    @PutMapping("/{inputOutputId}/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateComment(@UserInfo UsersInfo usersInfo, @PathVariable Long inputOutputId, @PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+        return ResponseEntity.ok(commentService.updateComment(usersInfo.getId(), inputOutputId, commentId, commentRequestDto));
+    }
+
+    @DeleteMapping("/{inputOutputId}/{commentId}")
+    public ResponseEntity<CommentResponseDto> deleteComment(@UserInfo UsersInfo usersInfo, @PathVariable Long inputOutputId, @PathVariable Long commentId) {
+        return ResponseEntity.ok(commentService.deleteComment(usersInfo.getId(), inputOutputId, commentId));
+    }
+
+
 }

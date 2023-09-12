@@ -62,4 +62,37 @@ public class CommentService {
                 .childComment(comment.getChildComment())
                 .build();
     }
+
+    public CommentResponseDto updateComment(Long userId, Long inputOutputId, Long commentId, CommentRequestDto commentRequestDto) {
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
+
+        if (users.getIsParents()) {
+            comment.addParentComment(commentRequestDto.getComment());
+            return CommentResponseDto.builder()
+                    .parentComment(commentRequestDto.getComment())
+                    .build();
+        }
+        comment.addChildComment(commentRequestDto.getComment());
+        return CommentResponseDto.builder()
+                .childComment(comment.getChildComment())
+                .build();
+    }
+
+    public CommentResponseDto deleteComment(Long userId, Long inputOutputId, Long commentId) {
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
+
+        if (users.getIsParents()) {
+            comment.removeParentComment();
+        } else {
+            comment.removeChildComment();
+        }
+
+        return CommentResponseDto.builder().build();
+    }
 }
