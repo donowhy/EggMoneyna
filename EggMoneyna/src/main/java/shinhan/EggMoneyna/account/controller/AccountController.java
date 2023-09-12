@@ -13,7 +13,6 @@ import shinhan.EggMoneyna.account.dto.AccountCreateDto;
 import shinhan.EggMoneyna.account.dto.CheckAccountRequestDto;
 import shinhan.EggMoneyna.account.dto.DetailAccountResponseDto;
 import shinhan.EggMoneyna.account.entity.Account;
-import shinhan.EggMoneyna.account.entity.InAccount;
 import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.global.response.Response;
 import shinhan.EggMoneyna.jwt.UserInfo;

@@ -2,10 +2,7 @@ package shinhan.EggMoneyna.inputoutput.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import shinhan.EggMoneyna.account.entity.Account;
-import shinhan.EggMoneyna.account.entity.InAccount;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
 import java.awt.print.Pageable;

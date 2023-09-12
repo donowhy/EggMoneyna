@@ -7,25 +7,13 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-import shinhan.EggMoneyna.account.dto.AccountCheckSelfRequestDto;
-import shinhan.EggMoneyna.account.dto.AccountCheckSelfResponseDto;
 import shinhan.EggMoneyna.account.dto.AccountCreateDto;
-import shinhan.EggMoneyna.account.dto.DetailAccountResponseDto;
-import shinhan.EggMoneyna.account.entity.Account;
-
-import shinhan.EggMoneyna.account.dto.*;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
-import shinhan.EggMoneyna.account.entity.InAccount;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
-import shinhan.EggMoneyna.account.repository.InAccountRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
-
-
-import java.awt.print.Pageable;
-import java.time.LocalDateTime;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +25,6 @@ public class AccountService {
 
 	private final AccountRepository accountRepository;
 	private final UsersRepository usersRepository;
-	private final InAccountRepository inAccountRepository;
 
 	// 생성
 	public Long create(AccountCreateDto accountCreateDto, Long id) {
@@ -53,9 +40,6 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-		Users users = usersRepository.findById(id).orElseThrow();
-
-		Account build = Account.builder()
 		Users users = usersRepository.findById(id).orElseThrow();
 
 		Account build = Account.builder()
@@ -81,7 +65,7 @@ public class AccountService {
 
 	}
 
-	}
+
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
 //	public Boolean checkAccount(Long id, String random) {
@@ -121,8 +105,6 @@ public class AccountService {
 //
 //		return detailAccountResponseDtos;
 //	}
-
-	}
 
 	public Account updateNickName(String name, Long id) {
 		Users users = usersRepository.findById(id).orElseThrow();

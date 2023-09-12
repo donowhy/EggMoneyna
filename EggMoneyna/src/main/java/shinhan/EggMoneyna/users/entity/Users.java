@@ -71,9 +71,9 @@ public class Users extends BaseTimeEntity {
 
     private String firebaseToken;
 
-    @Builder
-    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, String firebaseToken) {
 
+    @Builder
+    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken) {
         this.id = id;
         this.isParents = isParents;
         this.userId = userId;
@@ -86,6 +86,8 @@ public class Users extends BaseTimeEntity {
         this.account = account;
         this.monsters = monsters;
         this.cntMonsters = cntMonsters;
+        this.monsterEncyclopedia = monsterEncyclopedia;
+        this.wishBoxes = wishBoxes;
         this.firebaseToken = firebaseToken;
     }
 
