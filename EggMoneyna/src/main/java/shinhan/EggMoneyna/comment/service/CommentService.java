@@ -33,6 +33,14 @@ public class CommentService {
 
         if (comment.getChildComment() == null && comment.getParentComment() == null) {
             return CommentResponseDto.builder().build();
+        } else if (comment.getIsChild() == null) {
+            return CommentResponseDto.builder()
+                    .parentComment(comment.getParentComment())
+                    .build();
+        } else if (comment.getIsParent() == null) {
+            return CommentResponseDto.builder()
+                    .childComment(comment.getChildComment())
+                    .build();
         }
 
         return CommentResponseDto.builder()
