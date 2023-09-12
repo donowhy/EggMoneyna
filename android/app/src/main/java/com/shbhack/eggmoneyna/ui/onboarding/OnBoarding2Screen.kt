@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -21,37 +22,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
-import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius40
+import com.shbhack.eggmoneyna.ui.common.button.ButtonSkip
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
-import com.shbhack.eggmoneyna.ui.common.system.SetSystemBarColor
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
 import com.shbhack.eggmoneyna.ui.theme.onboardingColor2
 
 @Composable
-fun OnBoarding2Screen(navController: NavController) {
-
-    SetSystemBarColor(color = onboardingColor2)
-
+fun OnBoarding2Screen(navController: NavController, activity: MainActivity) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = onboardingColor2)
-            .padding(30.dp)
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(top = 30.dp, start = 30.dp, end = 30.dp)
     ) {
-        ClickableText(
-            text = AnnotatedString(text = stringResource(id = R.string.skip)),
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-            },
-        )
+        ButtonSkip(navController = navController, activity = activity)
         Spacer(
             modifier = Modifier
                 .height(0.dp)
@@ -80,8 +69,5 @@ fun OnBoarding2Screen(navController: NavController) {
                 .fillMaxWidth()
                 .aspectRatio(1f)
         )
-        ButtonRadius40(text = stringResource(id = R.string.next), color = Color.Black) {
-            navController.navigate(EggMoneynaDestination.ON_BOARDING3)
-        }
     }
 }
