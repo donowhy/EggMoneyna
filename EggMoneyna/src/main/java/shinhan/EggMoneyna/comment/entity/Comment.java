@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
@@ -18,10 +19,13 @@ public class Comment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Boolean compliment;
 
+    @Column(nullable = false)
     private String parentComment;
 
+    @Column(nullable = false)
     private String childComment;
 
     private Boolean isParent;
@@ -52,10 +56,10 @@ public class Comment extends BaseTimeEntity {
     }
 
     public void removeChildComment() {
-        this.childComment = null;
+        this.childComment = "";
     }
 
     public void removeParentComment() {
-        this.parentComment = null;
+        this.parentComment = "";
     }
 }
