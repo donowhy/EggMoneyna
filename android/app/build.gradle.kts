@@ -88,7 +88,7 @@ dependencies {
 
     // SSA를 위한 navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-alpha01")
 
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -111,6 +111,9 @@ dependencies {
     // Pager
     implementation ("com.google.accompanist:accompanist-pager:0.20.1")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.20.1")
+
+    // sdp-compose
+    implementation ("com.github.Kaaveh:sdp-compose:1.1.0")
 }
 
 kapt {

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 public class SignUpRequestDto {
 
     private String parentId;
+
     private Boolean isParent;
 
     private String childId;

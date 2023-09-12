@@ -1,5 +1,6 @@
 package shinhan.EggMoneyna.users.service;
 
+import com.google.firebase.auth.FirebaseAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,17 +24,29 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final JwtProvider jwtProvider;
     private final AccountService accountService;
+    private final FirebaseAuth firebaseAuth;
 
     public returnTokenDto save(SignUpRequestDto signUpRequestDto) throws Exception {
         log.info("users save");
+
+        String uid = "some-uid";
+
+//        String customToken = firebaseAuth.createCustomToken(uid); // 수정된 부분
+//        log.info("customToken={}", customToken);
+
         Users parent = Users.builder()
                 .isParents(signUpRequestDto.getIsParent())
                 .userId(signUpRequestDto.getParentId())
                 .nickName("부모")
                 .password("123")
+//                .firebaseToken(customToken)
                 .build();
 
         usersRepository.saveAndFlush(parent);
+
+
+//        customToken = firebaseAuth.createCustomToken(uid);
+
 
         Users child = Users.builder()
                 .isParents(!signUpRequestDto.getIsParent())
@@ -41,21 +54,23 @@ public class UsersService {
                 .nickName(signUpRequestDto.getNickName())
                 .password("123")
                 .pocketMoney(0)
+//                .firebaseToken(customToken)
                 .build();
 
         usersRepository.saveAndFlush(child);
 
 
-        parent.addChild(child);
 
         login(parent.getId());
         login(child.getId());
+
+        parent.addChild(child);
 
         AccountCreateDto accountCreateDto = AccountCreateDto.builder()
             .nickName(child.getNickName())
             .build();
 
-        accountService.create(accountCreateDto, child.getUserId());
+        accountService.create(accountCreateDto, child.getId());
         return returnTokenDto.builder()
                 .parentToken(jwtProvider.createToken(parent))
                 .childToken(jwtProvider.createToken(child))
@@ -88,5 +103,5 @@ public class UsersService {
         user.update(updateRequestDto.getNickName(), updateRequestDto.getLimitMoney(), updateRequestDto.getMoney(), updateRequestDto.getDate());
         return user;
     }
-    
+
 }
