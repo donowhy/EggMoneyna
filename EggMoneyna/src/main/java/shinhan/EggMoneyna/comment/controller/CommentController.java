@@ -2,10 +2,8 @@ package shinhan.EggMoneyna.comment.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import shinhan.EggMoneyna.comment.dto.CommentRequestDto;
 import shinhan.EggMoneyna.comment.dto.CommentResponseDto;
 import shinhan.EggMoneyna.comment.service.CommentService;
 import shinhan.EggMoneyna.jwt.UserInfo;
@@ -19,6 +17,11 @@ public class CommentController {
 
     @GetMapping("/{inputOutputId}")
     public ResponseEntity<CommentResponseDto> getComment(@UserInfo UsersInfo usersInfo, @PathVariable Long inputOutputId) {
-        return ResponseEntity.ok(commentService.getComment(usersInfo.getId(), inputOutputId));
+        return ResponseEntity.ok(commentService.getComment(inputOutputId));
+    }
+
+    @PostMapping("/{inputOutputId}")
+    public ResponseEntity<CommentResponseDto> addComment(@UserInfo UsersInfo usersInfo, @PathVariable Long inputOutputId, @RequestBody CommentRequestDto commentRequestDto) {
+        return ResponseEntity.ok(commentService.addComment(usersInfo.getId(), inputOutputId, commentRequestDto));
     }
 }

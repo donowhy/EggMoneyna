@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
+import shinhan.EggMoneyna.comment.entity.Comment;
+import shinhan.EggMoneyna.comment.repository.CommentRepository;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.dto.AddInputOutRequestDto;
@@ -27,12 +29,16 @@ public class InputOutputService {
     private final InputOutputRepository inputOutputRepository;
     private final AccountRepository accountRepository;
     private final UsersRepository usersRepository;
+    private final CommentRepository commentRepository;
 
     public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
-        InputOutput inputOutput = addInputOutRequestDto.of(account);
+        Comment comment = Comment.builder().build();
+        commentRepository.save(comment);
+
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment);
         inputOutputRepository.save(inputOutput);
         account.inBalance(addInputOutRequestDto.getInput());
 
@@ -48,7 +54,10 @@ public class InputOutputService {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
-        InputOutput inputOutput = addInputOutRequestDto.of(account);
+        Comment comment = Comment.builder().build();
+        commentRepository.save(comment);
+
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment);
         inputOutputRepository.save(inputOutput);
         account.outBalance(addInputOutRequestDto.getOutput());
 

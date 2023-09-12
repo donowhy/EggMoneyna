@@ -34,7 +34,16 @@ public enum ErrorCode {
     INVALID_USER_DATA(HttpStatus.BAD_REQUEST, "U-008", "잘못된 유저 정보입니다."),
     NOT_EXISTS_FOLLOWER(HttpStatus.BAD_REQUEST, "U-009", "존재하지 않는 팔로워입니다."),
     NOT_EXISTS_FOLLOWING(HttpStatus.BAD_REQUEST, "U-010", "존재하지 않는 팔로윙입니다."),
-    INVALID_ADMIN(HttpStatus.BAD_REQUEST, "U-011", "Admin은 제외 시켜주세요.");
+    INVALID_ADMIN(HttpStatus.BAD_REQUEST, "U-011", "Admin은 제외 시켜주세요."),
+
+    // 입출금
+    NOT_EXISTS_INPUTOUTPUT_ID(HttpStatus.BAD_REQUEST, "I-001", "존재하지 않는 입출금 아이디입니다."),
+
+    // 코멘트
+    NOT_EXISTS_COMMENT_ID(HttpStatus.BAD_REQUEST, "C-001", "존재하지 않는 코멘트 아이디입니다."),
+    NOT_EXISTS_COMPLIMENT_ID(HttpStatus.BAD_REQUEST, "C-002", "존재하지 않는 칭찬 아이디입니다.");
+
+
 
     private HttpStatus httpStatus;
     private String errorCode;
