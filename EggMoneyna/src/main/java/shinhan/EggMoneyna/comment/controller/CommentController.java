@@ -40,5 +40,4 @@ public class CommentController {
         return ResponseEntity.ok(commentService.deleteComment(usersInfo.getId(), inputOutputId, commentId));
     }
 
-
 }

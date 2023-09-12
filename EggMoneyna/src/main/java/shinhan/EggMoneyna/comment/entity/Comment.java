@@ -62,4 +62,8 @@ public class Comment extends BaseTimeEntity {
     public void removeParentComment() {
         this.parentComment = "";
     }
+
+    public void switchCompliment(boolean tf) {
+        this.compliment = tf;
+    }
 }
