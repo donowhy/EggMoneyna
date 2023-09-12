@@ -1,5 +1,7 @@
 package shinhan.EggMoneyna.users.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,9 +66,11 @@ public class Users extends BaseTimeEntity {
             joinColumns = @JoinColumn(name = "child_id"),
             inverseJoinColumns = @JoinColumn(name = "parent_id")
     )
+    @JsonManagedReference
     private List<Users> parents = new ArrayList<>();
 
     @ManyToMany(mappedBy = "parents")
+    @JsonBackReference
     private List<Users> children = new ArrayList<>();
 
     private String firebaseToken;
