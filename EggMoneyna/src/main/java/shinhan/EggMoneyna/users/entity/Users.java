@@ -95,9 +95,8 @@ public class Users extends BaseTimeEntity {
         this.firebaseToken = firebaseToken;
     }
 
-    public void update(String nickName, int limitMoney, int pocketMoney, int pocketMoneyDate) {
+    public void setAtParent(String nickName, int pocketMoney, int pocketMoneyDate) {
         this.nickName = nickName;
-        this.limitMoney = limitMoney;
         this.pocketMoney = pocketMoney;
         this.pocketMoneyDate = pocketMoneyDate;
     }
@@ -125,4 +124,7 @@ public class Users extends BaseTimeEntity {
         this.cntMonsters = i;
     }
 
+    public void setLimitMoney(int limitMoney) {
+        this.limitMoney = limitMoney;
+    }
 }
