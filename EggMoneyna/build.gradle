@@ -40,8 +40,11 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// mysql 의존성
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	
 	// h2 데이터베이스
-	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	//swagger 의존성
