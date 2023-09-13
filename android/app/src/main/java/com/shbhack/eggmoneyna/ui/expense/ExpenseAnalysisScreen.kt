@@ -65,6 +65,19 @@ fun ExpenseAnalysisScreen(navController: NavController) {
     val lineChartData1 = listOf<LineChartData>(
         LineChartData(
             points = listOf(
+                LineChartData.Point(10f, "월"),
+                LineChartData.Point(10f, "화"),
+                LineChartData.Point(10f, "수"),
+                LineChartData.Point(10f, "목"),
+                LineChartData.Point(10f, "금"),
+                LineChartData.Point(10f, "토"),
+                LineChartData.Point(10f, "일")
+            ),
+            startAtZero = true,
+            lineDrawer = SolidLineDrawer(color = Color(0xFFFFD8B6))
+        ),
+        LineChartData(
+            points = listOf(
                 LineChartData.Point(5f, "월"),
                 LineChartData.Point(8f, "화"),
                 LineChartData.Point(0f, "수"),
@@ -175,7 +188,6 @@ fun LineChartView(lineChartData: List<LineChartData>) {
         animation = simpleChartAnimation(),
         xAxisDrawer = SimpleXAxisDrawer(labelTextSize = 12.ssp, axisLineColor = Color.Gray),
         yAxisDrawer = SimpleYAxisDrawer(labelTextSize = 12.ssp, axisLineColor = Color.Gray,
-            labelRatio = 10,
             labelValueFormatter = { value -> formatter.format((value * 1000).toLong()) }),
         horizontalOffset = 10f
     )
