@@ -87,4 +87,12 @@ public class Child {
     public void setIsRelation(boolean isRelation) {
         this.isRelation = isRelation;
     }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public void setCntMonsters(int cntMonsters) {
+        this.cntMonsters = cntMonsters;
+    }
 }

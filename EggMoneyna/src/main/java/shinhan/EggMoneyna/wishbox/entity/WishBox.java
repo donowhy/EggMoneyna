@@ -40,8 +40,9 @@ public class WishBox extends BaseTimeEntity {
     @JoinColumn(name = "childs_id")
     private Child child;
 
+
     @Builder
-    public WishBox(Long id, String nickName, String wishName, int price, int balance, Long virtualNumber, BankCode bankCode, Account account) {
+    public WishBox(Long id, String nickName, String wishName, int price, int balance, Long virtualNumber, BankCode bankCode, Account account, Child child) {
         this.id = id;
         this.nickName = nickName;
         this.wishName = wishName;
@@ -50,5 +51,10 @@ public class WishBox extends BaseTimeEntity {
         this.virtualNumber = virtualNumber;
         this.bankCode = bankCode;
         this.account = account;
+        this.child = child;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickName = nickname;
     }
 }
