@@ -40,14 +40,6 @@ public class MonsterController {
         return new Response<>("성공", "신한몽 조회", byId);
     }
 
-    // UPDATE
-    @Operation(summary = "신한몽 닉네임 변경", description = "신한몽 닉네임 변경.", tags = { "Monster Controller" })
-    @PutMapping("/{id}")
-    public Response<MonsterUpdateResponseDto> updateMonster(@PathVariable Long id, @RequestBody String nickName) {
-        MonsterUpdateResponseDto updatedMonster = monsterService.update(id, nickName);
-        return new Response<>("성공", "닉네임 변경",updatedMonster);
-    }
-
     // DELETE
     @Operation(summary = "신한몽 삭제", description = "신한몽이 삭제.", tags = { "Monster Controller" })
     @DeleteMapping("/{id}")
