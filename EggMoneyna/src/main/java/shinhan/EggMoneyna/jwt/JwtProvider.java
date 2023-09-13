@@ -8,6 +8,8 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import shinhan.EggMoneyna.user.child.entity.Child;
+import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.users.entity.Users;
 
 import java.nio.charset.StandardCharsets;
@@ -26,13 +28,14 @@ public class JwtProvider {
     private static final long REFRESH_TOKEN_VALID_TIME = 30 * 24 * 60 * 60 * 1000L;
 
     //==토큰 생성 메소드==//
-    public String createToken(Users member) {
+    public String createChildToken(Child child) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + Duration.ofDays(1).toMillis()); // 만료기간 1일
+        // 해커톤을 위해 7일로 설정
+        Date expiration = new Date(now.getTime() + Duration.ofDays(7).toMillis()); // 만료기간 7일
 
         Claims claims = Jwts.claims();
-        claims.put("id", member.getId());
-        claims.put("username", member.getUserId());
+        claims.put("id", child.getId());
+        claims.put("username", child.getChildId());
 
 
         return Jwts.builder()
@@ -47,6 +50,28 @@ public class JwtProvider {
                         Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
                         SignatureAlgorithm.HS256
                         ) // 알고리즘, 시크릿 키
+                .compact();
+    }
+
+    public String createParentToken(Parent member) {
+        Date now = new Date();
+        // 해커톤을 위해 7일로 설정
+        Date expiration = new Date(now.getTime() + Duration.ofDays(7).toMillis()); // 만료기간 1일
+
+        Claims claims = Jwts.claims();
+        claims.put("id", member.getId());
+        claims.put("parentName", member.getParentId());
+
+
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
+                .setClaims(claims)
+                .setIssuedAt(now) // 발급시간(iat)
+                .setExpiration(expiration) // 만료시간(exp)
+                .signWith(
+                        Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
+                        SignatureAlgorithm.HS256
+                ) // 알고리즘, 시크릿 키
                 .compact();
     }
 
