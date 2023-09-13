@@ -28,12 +28,12 @@ public class AccountController {
 
     private final AccountService accountService;
 
-//    @GetMapping()
-//    public ResponseEntity<Account> getAccount(@UserInfo UsersInfo usersInfo) {
-//        log.info("userinfo={}", usersInfo.getId());
-//        return ResponseEntity.ok(accountService.getAccount(usersInfo.getId()));
-//
-//    }
+    @GetMapping()
+    public ResponseEntity<Account> getAccount(@UserInfo UsersInfo usersInfo) {
+        log.info("userinfo={}", usersInfo.getId());
+        return ResponseEntity.ok(accountService.getAccount(usersInfo.getId()));
+
+    }
 //    @PostMapping("/sendCheck1")
 //    public ResponseEntity<DetailAccountResponseDto> sendCheck1(@UserInfo UsersInfo usersInfo) {
 //        return ResponseEntity.ok(accountService.sendCheck1(usersInfo.getId()));
@@ -49,15 +49,15 @@ public class AccountController {
 //        return ResponseEntity.ok(accountService.getAccountDetail(usersInfo.getId()));
 //    }
 //
-//    @PutMapping("/updateNickName")
-//    public ResponseEntity<Account> updateNickName(@RequestBody String name, @UserInfo UsersInfo usersInfo) {
-//        return ResponseEntity.ok(accountService.updateNickName(name, usersInfo.getId()));
-//    }
+    @PutMapping("/updateNickName")
+    public ResponseEntity<Account> updateNickName(@RequestBody String name, @UserInfo UsersInfo usersInfo) {
+        return ResponseEntity.ok(accountService.updateNickName(name, usersInfo.getId()));
+    }
 //
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<String> delete(@UserInfo UsersInfo usersInfo) {
-//        return ResponseEntity.ok(accountService.delete(usersInfo.getId()));
-//    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@UserInfo UsersInfo usersInfo) {
+        return ResponseEntity.ok(accountService.delete(usersInfo.getId()));
+    }
 //
 //    @PostMapping("/payment")
 //    public ResponseEntity<InAccount> payment(@UserInfo UsersInfo usersInfo, InAccount inAccount){

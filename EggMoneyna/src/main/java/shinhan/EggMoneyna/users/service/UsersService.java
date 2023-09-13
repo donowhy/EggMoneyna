@@ -9,6 +9,7 @@ import shinhan.EggMoneyna.account.dto.AccountCreateDto;
 import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.users.dto.SignUpRequestDto;
+import shinhan.EggMoneyna.users.dto.UpdateLimitMoneyRequestDto;
 import shinhan.EggMoneyna.users.dto.UpdateRequestDto;
 import shinhan.EggMoneyna.users.dto.returnTokenDto;
 import shinhan.EggMoneyna.users.entity.Users;
@@ -101,7 +102,15 @@ public class UsersService {
         Users user = usersRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with ID " + id + " not found."));
 
-        user.update(updateRequestDto.getNickName(), updateRequestDto.getLimitMoney(), updateRequestDto.getMoney(), updateRequestDto.getDate());
+        user.setAtParent(updateRequestDto.getNickName(), updateRequestDto.getMoney(), updateRequestDto.getDate());
+        return user;
+    }
+
+    public Users updateLimitMoney(Long id, UpdateLimitMoneyRequestDto requestDto) throws Exception {
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new Exception("User with ID " + id + " not found."));
+
+        user.setLimitMoney(requestDto.getLimitMoney());
         return user;
     }
 
