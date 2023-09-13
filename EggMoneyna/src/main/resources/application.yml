@@ -10,11 +10,16 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/shinhan
-#    url : jdbc:h2:./shinhan
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://3.37.95.36:3306/eggmoneyna
+    username: root
+    password: 12341234
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/shinhan
+##    url : jdbc:h2:./shinhan
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   main:
     allow-circular-references: true
 
@@ -23,12 +28,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create #create update none
+      ddl-auto: update #create update none
     show-sql: true
     properties:
       hibernate:
         show_sql: false
         format_sql: true
+        default_batch_fetch_size: 1000
+        jdbc:
+          time_zone: Asia/Seoul
 
 springdoc:
   swagger-ui:
