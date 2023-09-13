@@ -47,3 +47,17 @@ springdoc:
 
 jwt:
   password: testPasswordtestPasswordtestPasswordtestPasswordtestPasswordtestPassword!testPassword
+
+
+cloud:
+  aws:
+    s3:
+      bucket: eggmoneynabucket
+    credentials:
+      access-key: AKIA6NLZ7AA63MGKRUQ3
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
