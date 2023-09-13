@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.comment.entity.Comment;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
 @Getter
@@ -26,7 +27,7 @@ public class AddInputOutRequestDto {
         this.output = output;
     }
 
-    public InputOutput of(Account account) {
+    public InputOutput of(Account account, Comment comment) {
         return InputOutput.builder()
                 .brandName(brandName)
                 .brandImg(brandImg)
@@ -34,6 +35,7 @@ public class AddInputOutRequestDto {
                 .smallCategory(smallCategory)
                 .input(input)
                 .output(output)
+                .comment(comment)
                 .account(account).build();
     }
 }

@@ -52,6 +52,7 @@ public class AccountService {
 				.build();
 		accountRepository.save(build);
 
+		users.setAccount(build);
 
 		return build.getId();
 	}

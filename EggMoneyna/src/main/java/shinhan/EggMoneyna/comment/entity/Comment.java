@@ -1,8 +1,10 @@
 package shinhan.EggMoneyna.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
@@ -17,9 +19,14 @@ public class Comment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Boolean compliment;
 
-    private String comment;
+    @Column(nullable = false)
+    private String parentComment;
+
+    @Column(nullable = false)
+    private String childComment;
 
     private Boolean isParent;
 
@@ -28,4 +35,35 @@ public class Comment extends BaseTimeEntity {
     @OneToOne(mappedBy = "comment")
     @JsonIgnore
     private InputOutput inputOutput;
+
+    @Builder
+    public Comment(Long id, Boolean compliment, String parentComment, String childComment, Boolean isParent, Boolean isChild, InputOutput inputOutput) {
+        this.id = id;
+        this.compliment = compliment;
+        this.parentComment = parentComment;
+        this.childComment = childComment;
+        this.isParent = isParent;
+        this.isChild = isChild;
+        this.inputOutput = inputOutput;
+    }
+
+    public void addChildComment(String childComment) {
+        this.childComment = childComment;
+    }
+
+    public void addParentComment(String parentComment) {
+        this.parentComment = parentComment;
+    }
+
+    public void removeChildComment() {
+        this.childComment = "";
+    }
+
+    public void removeParentComment() {
+        this.parentComment = "";
+    }
+
+    public void switchCompliment(boolean tf) {
+        this.compliment = tf;
+    }
 }

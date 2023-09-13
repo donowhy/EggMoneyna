@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UpdateRequestDto {
+public class UpdateLimitMoneyRequestDto {
 
-    private String nickName;
-    private int money;
-    private int date;
+
+    private int limitMoney;
+
 }

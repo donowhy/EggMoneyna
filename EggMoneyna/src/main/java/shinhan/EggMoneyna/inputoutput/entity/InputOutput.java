@@ -45,7 +45,7 @@ public class InputOutput extends BaseTimeEntity {
     private Comment comment;
 
     @Builder
-    public InputOutput(Long id, String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output, Account account) {
+    public InputOutput(Long id, String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output, Account account, Comment comment) {
         this.id = id;
         this.brandName = brandName;
         this.brandImg = brandImg;
@@ -54,5 +54,6 @@ public class InputOutput extends BaseTimeEntity {
         this.input = input;
         this.output = output;
         this.account = account;
+        this.comment = comment;
     }
 }
