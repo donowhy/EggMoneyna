@@ -35,7 +35,14 @@ public class InputOutputService {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
-        Comment comment = Comment.builder().build();
+        Comment comment = Comment.builder()
+                .childComment("")
+                .parentComment("")
+                .compliment(false)
+                .isChild(false)
+                .isParent(false)
+                .build();
+
         commentRepository.save(comment);
 
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment);
@@ -54,8 +61,13 @@ public class InputOutputService {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
-        Comment comment = Comment.builder().build();
-        commentRepository.save(comment);
+        Comment comment = Comment.builder()
+                .childComment("")
+                .parentComment("")
+                .compliment(false)
+                .isChild(false)
+                .isParent(false)
+                .build();
 
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment);
         inputOutputRepository.save(inputOutput);

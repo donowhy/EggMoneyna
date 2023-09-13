@@ -35,6 +35,7 @@ public enum ErrorCode {
     NOT_EXISTS_FOLLOWER(HttpStatus.BAD_REQUEST, "U-009", "존재하지 않는 팔로워입니다."),
     NOT_EXISTS_FOLLOWING(HttpStatus.BAD_REQUEST, "U-010", "존재하지 않는 팔로윙입니다."),
     INVALID_ADMIN(HttpStatus.BAD_REQUEST, "U-011", "Admin은 제외 시켜주세요."),
+    INVALID_PARENT(HttpStatus.BAD_REQUEST, "U-012", "잘못된 부모 정보입니다."),
 
     // 입출금
     NOT_EXISTS_INPUTOUTPUT_ID(HttpStatus.BAD_REQUEST, "I-001", "존재하지 않는 입출금 아이디입니다."),

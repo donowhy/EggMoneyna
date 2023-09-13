@@ -31,18 +31,6 @@ public class CommentService {
         Comment comment = commentRepository.findByInputOutput(inputOutput)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
 
-        if (comment.getChildComment() == null && comment.getParentComment() == null) {
-            return CommentResponseDto.builder().build();
-        } else if (comment.getIsChild() == null) {
-            return CommentResponseDto.builder()
-                    .parentComment(comment.getParentComment())
-                    .build();
-        } else if (comment.getIsParent() == null) {
-            return CommentResponseDto.builder()
-                    .childComment(comment.getChildComment())
-                    .build();
-        }
-
         return CommentResponseDto.builder()
                 .childComment(comment.getChildComment())
                 .parentComment(comment.getParentComment())
@@ -58,16 +46,16 @@ public class CommentService {
         Comment comment = commentRepository.findByInputOutput(inputOutput)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
 
-
         if (users.getIsParents()) {
             comment.addParentComment(commentRequestDto.getComment());
-            return CommentResponseDto.builder()
-                    .parentComment(commentRequestDto.getComment())
-                    .build();
+        } else {
+            comment.addChildComment(commentRequestDto.getComment());
         }
-        comment.addChildComment(commentRequestDto.getComment());
+
         return CommentResponseDto.builder()
                 .childComment(comment.getChildComment())
+                .parentComment(comment.getParentComment())
+                .compliment(comment.getCompliment())
                 .build();
     }
 
@@ -79,13 +67,14 @@ public class CommentService {
 
         if (users.getIsParents()) {
             comment.addParentComment(commentRequestDto.getComment());
-            return CommentResponseDto.builder()
-                    .parentComment(commentRequestDto.getComment())
-                    .build();
+        } else {
+            comment.addChildComment(commentRequestDto.getComment());
         }
-        comment.addChildComment(commentRequestDto.getComment());
+
         return CommentResponseDto.builder()
                 .childComment(comment.getChildComment())
+                .parentComment(comment.getParentComment())
+                .compliment(comment.getCompliment())
                 .build();
     }
 
@@ -101,6 +90,10 @@ public class CommentService {
             comment.removeChildComment();
         }
 
-        return CommentResponseDto.builder().build();
+        return CommentResponseDto.builder()
+                .childComment(comment.getChildComment())
+                .parentComment(comment.getParentComment())
+                .compliment(comment.getCompliment())
+                .build();
     }
 }
