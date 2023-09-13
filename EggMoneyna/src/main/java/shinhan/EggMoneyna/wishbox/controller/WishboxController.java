@@ -1,5 +1,6 @@
 package shinhan.EggMoneyna.wishbox.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ public class WishboxController {
 
     private final WishboxService wishboxService;
 
+    @Operation(summary = "위시박스 생성", description = "위시박스 생성 시 가상계좌 생성", tags = { "Wishbox Controller" })
     @PostMapping("/create")
     public String create(@UserInfo UsersInfo usersInfo, @RequestBody CreateWishBoxRequestDto requestDto){
         wishboxService.create(usersInfo.getId(), requestDto);
