@@ -31,3 +31,10 @@ val EggmoneynaPurple = Color(0xFF8084EA)
 val EggmoneynaOrange = Color(0xFFFFD6BA)
 
 val ExpenseAnalysisPink = Color(0xFFEA80C0)
+
+val PieChartColor1 = Color(0xB3FED0EE)
+val PieChartColor2 = Color(0xB3D0E8FF)
+val PieChartColor3 = Color(0xB3FBE38E)
+val PieChartColor4 = Color(0xB3A9F4D0)
+val PieChartColor5 = Color(0xB3DBAEFF)
+val PieChartColor6 = Color(0xB3FDD09F)
