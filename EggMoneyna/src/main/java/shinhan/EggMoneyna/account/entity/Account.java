@@ -33,9 +33,9 @@ public class Account extends BaseTimeEntity {
 
    private int balance;
 
-   @OneToOne(mappedBy = "account")
+   @OneToMany(mappedBy = "account")
    @JsonIgnore
-   private WishBox wishBox;
+   private List<WishBox> wishBox = new ArrayList<>();
 
    @OneToOne
    @JoinColumn(name = "users_id")
@@ -50,9 +50,8 @@ public class Account extends BaseTimeEntity {
    private List<InputOutput> inputOutputs = new ArrayList<>();
 
 
-
-   @Builder
-    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, WishBox wishBox, Users users, Boolean autoTermination) {
+    @Builder
+    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, List<WishBox> wishBox, Users users, Boolean autoTermination, List<InputOutput> inputOutputs) {
         this.id = id;
         this.nickName = nickName;
         this.bankCode = bankCode;
@@ -61,6 +60,7 @@ public class Account extends BaseTimeEntity {
         this.wishBox = wishBox;
         this.users = users;
         this.autoTermination = autoTermination;
+        this.inputOutputs = inputOutputs;
     }
 
     public void setNickName(String name) {
