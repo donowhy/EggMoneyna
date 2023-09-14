@@ -19,7 +19,7 @@ import java.util.List;
 public class Parent {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "parents_id")
     private Long id;
 

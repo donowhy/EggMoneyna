@@ -18,7 +18,7 @@ import java.util.List;
 public class Relation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "relation_id")
     private Long id;
 

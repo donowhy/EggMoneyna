@@ -17,7 +17,8 @@ import javax.persistence.*;
 public class WishBox extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "wishbox_id")
     private Long id;
 
     private String nickName;
