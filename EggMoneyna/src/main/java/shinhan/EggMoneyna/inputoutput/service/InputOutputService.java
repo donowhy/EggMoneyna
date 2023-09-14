@@ -1,8 +1,12 @@
 package shinhan.EggMoneyna.inputoutput.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shinhan.EggMoneyna.account.entity.Account;
@@ -16,6 +20,8 @@ import shinhan.EggMoneyna.inputoutput.dto.AddInputOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.dto.InputOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
+import shinhan.EggMoneyna.user.child.entity.Child;
+import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
@@ -32,20 +38,24 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class InputOutputService {
     private final InputOutputRepository inputOutputRepository;
     private final AccountRepository accountRepository;
     private final UsersRepository usersRepository;
     private final CommentRepository commentRepository;
+    private final ChildRepository childRepository;
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     final String S3URL = "https://eggmoneynabucket.s3.ap-northeast-2.amazonaws.com/brand/";
-    final String TYPE = "jpg";
-
-
+    final String EXTENSION = ".jpg";
 
     public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         Comment comment = Comment.builder()
                 .childComment("")
@@ -64,9 +74,11 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandName + EXTENSION).toString();
+                log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
-                brandImage = S3URL + brandName + TYPE;
+                brandImage = imageURL;
                 break;
             }
         }
@@ -103,9 +115,11 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandName + EXTENSION).toString();
+                log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
-                brandImage = S3URL + brandName + TYPE;
+                brandImage = imageURL;
                 break;
             }
         }
