@@ -49,7 +49,7 @@ public class Users extends BaseTimeEntity {
     @OneToOne
     private Account account;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "child")
     private List<Monster> monsters = new ArrayList<>();
 
     private int cntMonsters;

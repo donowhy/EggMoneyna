@@ -41,8 +41,9 @@ public class Child {
     @OneToOne(fetch = FetchType.LAZY)
     private Account account;
 
-    @OneToMany(mappedBy = "user")
-    private List<Monster> monsters = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "monster_id")
+    private Monster monster;
 
     private int cntMonsters;
 
@@ -62,7 +63,10 @@ public class Child {
     private Boolean eggMoney;
 
     @Builder
-    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, List<Monster> monsters, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney) {
+    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate,
+        Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia,
+        List<WishBox> wishBoxes,
+        String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney) {
         this.id = id;
         this.childId = childId;
         this.password = password;
@@ -70,7 +74,7 @@ public class Child {
         this.limitMoney = limitMoney;
         this.pocketMoneyDate = pocketMoneyDate;
         this.account = account;
-        this.monsters = monsters;
+        this.monster = monster;
         this.cntMonsters = cntMonsters;
         this.monsterEncyclopedia = monsterEncyclopedia;
         this.wishBoxes = wishBoxes;

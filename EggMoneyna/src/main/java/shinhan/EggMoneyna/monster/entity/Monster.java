@@ -20,6 +20,7 @@ public class Monster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "monster_id")
     private Long id;
 
     private ShinhanMong name;
@@ -37,7 +38,8 @@ public class Monster {
     @Enumerated(EnumType.STRING)
     private Benefit benefit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "child_id")
     private Child child;
 
     @Builder

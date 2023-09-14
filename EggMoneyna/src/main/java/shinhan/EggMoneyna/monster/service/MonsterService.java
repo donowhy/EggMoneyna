@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
-import shinhan.EggMoneyna.monster.dto.MonsterUpdateResponseDto;
 import shinhan.EggMoneyna.monster.entity.Monster;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.monster.entity.enumType.Feel;
@@ -15,9 +14,6 @@ import shinhan.EggMoneyna.monster.repository.MonsterEncyclopediaRepository;
 import shinhan.EggMoneyna.monster.repository.MonsterRepository;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
-import shinhan.EggMoneyna.users.dto.UpdateRequestDto;
-import shinhan.EggMoneyna.users.entity.Users;
-import shinhan.EggMoneyna.users.repository.UsersRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -25,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -60,41 +57,47 @@ public class MonsterService {
     }
 
     // READ
-    public List<MonsterResponseDto> findById(Long id) {
+    public MonsterResponseDto findById(Long id) {
         Child child = childRepository.findById(id).orElseThrow();
-        List<Monster> monsters = child.getMonsters();
+        Monster monster = child.getMonster();
 
-        List<MonsterResponseDto> monsterResponseDtos = new ArrayList<>();
-
-        for (Monster monster : monsters) {
-            monsterResponseDtos.add(
-                    MonsterResponseDto.of(monster)
-            );
-        }
-        return monsterResponseDtos;
+        return MonsterResponseDto.builder()
+            .name(String.valueOf(monster.getName()))
+            .status(String.valueOf(monster.getStatus()))
+            .benefit(String.valueOf(monster.getBenefit()))
+            .exp(monster.getExp())
+            .point(monster.getPoint())
+            .build();
     }
 
 
     // DELETE
-    public String deleteById(Long id) {
+    public void deleteById(Long id) {
         monsterRepository.deleteById(id);
-        return "삭제 성공";
     }
 
-    public String registration(Long id, Monster monster) {
+    public String registration(Long id, String name) {
         Child child = childRepository.findById(id).orElseThrow();
+
+        Monster monster = child.getMonsters().stream()
+            .filter(mon -> mon.getName().toString().equalsIgnoreCase(name))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Monster with the given name not found"));
+
+        return registerMonster(monster, child.getMonsterEncyclopedia());
+    }
+
+    private String registerMonster(Monster monster, MonsterEncyclopedia monsterEncyclopedia) {
         if (monster.getExp() <= 1000) {
-            throw new RuntimeException();
+            throw new RuntimeException("Insufficient experience");
         }
 
-        MonsterEncyclopedia monsterEncyclopedia = child.getMonsterEncyclopedia();
-
         try {
-            String monsterNameKey = monster.getName().getKey();
-            String methodName = "set" + monsterNameKey.substring(0, 1).toUpperCase() + monsterNameKey.substring(1).toLowerCase();
+            String monsterNameKey = monster.getName().toString().toUpperCase();
+            String methodName = "set" + monsterNameKey;
 
             Method method = MonsterEncyclopedia.class.getMethod(methodName, boolean.class);
-            Method getMethod = MonsterEncyclopedia.class.getMethod("get" + methodName.substring(3));
+            Method getMethod = MonsterEncyclopedia.class.getMethod("get" + monsterNameKey);
 
             Boolean currentStatus = (Boolean) getMethod.invoke(monsterEncyclopedia);
             if (currentStatus == null || !currentStatus) {
@@ -106,6 +109,5 @@ public class MonsterService {
 
         return "도감 등록 성공";
     }
-
 
 }

@@ -43,6 +43,11 @@ public class Account extends BaseTimeEntity {
     @JoinColumn(name = "childs_id")
     private Child child;
 
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "users_id")
+    private Users users;
+
    @Column(columnDefinition = "boolean default false")
    private Boolean autoTermination;
 
