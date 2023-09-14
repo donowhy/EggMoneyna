@@ -10,10 +10,7 @@ import shinhan.EggMoneyna.user.child.service.dto.ChildLoginRequest;
 import shinhan.EggMoneyna.user.child.service.dto.returnToken;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.user.parent.service.ParentService;
-import shinhan.EggMoneyna.user.parent.service.dto.ParentLoginRequest;
-import shinhan.EggMoneyna.user.parent.service.dto.ParentResponse;
-import shinhan.EggMoneyna.user.parent.service.dto.ParentSaveRequest;
-import shinhan.EggMoneyna.user.parent.service.dto.returnParentToken;
+import shinhan.EggMoneyna.user.parent.service.dto.*;
 
 @Slf4j
 @RestController
@@ -24,14 +21,14 @@ public class ParentController {
     private final ParentService parentService;
 
     @PostMapping("/save")
-    public String save(@RequestBody ParentSaveRequest request){
+    public ParentSaveResponse save(@RequestBody ParentSaveRequest request){
         return parentService.save(request);
     }
 
-    @PostMapping("/login")
-    public returnParentToken login(@RequestBody ParentLoginRequest request){
-        return parentService.login(request);
-    }
+//    @PostMapping("/login")
+//    public returnParentToken login(@RequestBody ParentLoginRequest request){
+//        return parentService.login(request);
+//    }
 
     @PutMapping("/update/nickname")
     public void updateNickname (@UserInfo UsersInfo usersInfo, @RequestBody String nickname){

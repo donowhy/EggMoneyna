@@ -4,16 +4,15 @@ package shinhan.EggMoneyna.user.parent.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.service.dto.ChildLoginRequest;
 import shinhan.EggMoneyna.user.child.service.dto.returnToken;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.user.parent.repository.ParentRepository;
-import shinhan.EggMoneyna.user.parent.service.dto.ParentLoginRequest;
-import shinhan.EggMoneyna.user.parent.service.dto.ParentResponse;
-import shinhan.EggMoneyna.user.parent.service.dto.ParentSaveRequest;
-import shinhan.EggMoneyna.user.parent.service.dto.returnParentToken;
+import shinhan.EggMoneyna.user.parent.service.dto.*;
 
 import javax.transaction.Transactional;
 
@@ -25,20 +24,32 @@ public class ParentService {
 
     private final ParentRepository parentRepository;
     private final JwtProvider jwtProvider;
+    private final AccountService accountService;
 
-    public String save(ParentSaveRequest request){
+    public ParentSaveResponse save(ParentSaveRequest request){
 
         Parent parent = Parent.builder()
                 .parentId(request.getParentId())
                 .password("123")
                 .build();
 
-        parentRepository.save(parent);
+        parentRepository.saveAndFlush(parent);
 
-        return request.getParentId();
+        accountService.create(parent.getId());
+
+        ParentLoginRequest parentLoginRequest = ParentLoginRequest.builder()
+                .parentId(parent.getParentId())
+                .build();
+
+        returnParentToken login = login(parentLoginRequest);
+
+        return ParentSaveResponse.builder()
+                .parentId(parent.getParentId())
+                .parentToken(login.getParentToken())
+                .build();
     }
 
-    public returnParentToken login(ParentLoginRequest request){
+    private returnParentToken login(ParentLoginRequest request){
 
         Parent parent = parentRepository.checkParentPw(request.getParentId(), "123").orElseThrow();
 
