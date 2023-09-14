@@ -49,7 +49,6 @@ fun SplashScreen(navController: NavController, activity: MainActivity) {
                     navController.navigate(EggMoneynaDestination.MAIN_CHILD)
                 }
             } else {
-                AppPreferences.checkFirstShowed()
                 navController.navigate(EggMoneynaDestination.ON_BOARDING)
             }
         }
