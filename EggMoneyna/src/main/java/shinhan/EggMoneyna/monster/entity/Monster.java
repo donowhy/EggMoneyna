@@ -19,7 +19,7 @@ import java.util.Random;
 public class Monster {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monster_id")
     private Long id;
 

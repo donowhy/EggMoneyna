@@ -68,7 +68,7 @@ fun OnBoarding5Screen(navController: NavController, activity: MainActivity) {
         ButtonRadius40(text = stringResource(id = R.string.start), color = Color.Black) {
             navController.popBackStack()
             navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-            activity.setStatusBarOrigin()
+//            activity.setStatusBarOrigin()
         }
     }
 }

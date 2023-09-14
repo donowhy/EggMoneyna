@@ -21,7 +21,7 @@ import java.util.*;
 public class Child {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "childs_id")
     private Long id;
 

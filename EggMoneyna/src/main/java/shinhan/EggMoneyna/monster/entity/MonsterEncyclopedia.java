@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class MonsterEncyclopedia {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monsterEncyclopedia_id")
     private Long id;
     private Boolean SOL;

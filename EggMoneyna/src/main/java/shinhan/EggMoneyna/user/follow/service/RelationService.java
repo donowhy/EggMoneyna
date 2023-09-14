@@ -39,11 +39,11 @@ public class RelationService {
                 .child(child)
                 .build();
         log.info("여기까진={}", relation.getParent());
-        parent.setIsRelation(true);
-        child.setIsRelation(true);
+//        parent.setIsRelation(true);
+//        child.setIsRelation(true);
 
-        parentRepository.save(parent);
-        childRepository.save(child);
+//        parentRepository.save(parent);
+//        childRepository.save(child);
 
         return relationRepository.save(relation);
     }
