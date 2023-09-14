@@ -7,6 +7,7 @@ object EggMoneynaDestination {
     const val AUTH_USER_MAIN = "auth_user_main"
     const val AUTH_USER_SEND_1WON = "auth_user_send_1won"
     const val AUTH_USER_CHECK = "auth_user_check"
+    const val SELECT_CHILD = "select_child"
     const val MAIN_PARENT = "main_parent"
     const val MAIN_CHILD = "main_child"
     const val ATTENDANCE = "attendance"

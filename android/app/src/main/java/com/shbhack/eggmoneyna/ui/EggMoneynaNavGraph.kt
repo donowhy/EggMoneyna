@@ -34,8 +34,8 @@ fun EggMoneynaNavGraph(
     activity: MainActivity,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-//    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.AUTH_USER_MAIN
+    startDestination: String = EggMoneynaDestination.SPLASH
+//    startDestination: String = EggMoneynaDestination.AUTH_USER_MAIN
 ) {
 
     NavHost(
@@ -99,6 +99,9 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_CHECK) {
             AuthUserCheckScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.SELECT_CHILD) {
+            SelectChildScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.MAIN_CHILD) {
             MainChildScreen(navController)
