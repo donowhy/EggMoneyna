@@ -16,6 +16,14 @@
     <string name="onboarding5Title">일정관리\n걱정 마세요</string>
     <string name="onboarding5Content">우리 아이 용돈 날짜\n잊지 않도록 도와드려요</string>
 
+    <!--  chooseWho  -->
+    <string name="chooseWhoBannerTitle">알록달록 계정 선택하기</string>
+    <string name="chooseWhoBannerContent">부모와 자녀에게\n꼭 맞는 서비스를 제공해드립니다.</string>
+    <string name="chooseWhoParent">나는\n자녀를 둔 부모입니다.</string>
+    <string name="chooseWhoParentExplain">자녀가 날마다 어떤 지출을 했는지,\n아이가 어떤 코멘트를 남겼는지 확인할 수 있어요.</string>
+    <string name="chooseWhoChild">나는\n자녀입니다.</string>
+    <string name="chooseWhoChildExplain">신한몽을 키우며 나의 용돈을 관리할 수 있어요.\n내가 원하는 물건 위시박스를 채우며 구매해볼까요?</string>
+
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>

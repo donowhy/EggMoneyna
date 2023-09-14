@@ -27,7 +27,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        setSystemBarTransparent()
     }
 
     fun setSystemBarTransparent() {

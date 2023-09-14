@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(navController: NavController, activity: MainActivity) {
+    activity.setSystemBarTransparent()
 
     LaunchedEffect(Unit) {
         delay(1500)
