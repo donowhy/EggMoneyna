@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import com.shbhack.eggmoneyna.ui.EggMoneynaApp
 import com.shbhack.eggmoneyna.ui.theme.EggMoneynaTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
