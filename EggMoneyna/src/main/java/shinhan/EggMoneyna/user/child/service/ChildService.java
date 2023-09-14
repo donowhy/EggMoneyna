@@ -58,7 +58,7 @@ public class ChildService {
                 .monsterEncyclopedia(child.getMonsterEncyclopedia())
                 .limitMoney(child.getLimitMoney())
                 .firebaseToken(child.getFirebaseToken())
-                .monsters(child.getMonsters())
+                .monster(child.getMonster())
                 .build();
     }
 

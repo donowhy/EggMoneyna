@@ -1,5 +1,6 @@
 package shinhan.EggMoneyna.user.child.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.ArrayList;
@@ -32,8 +34,9 @@ public class ChildResponse {
     @OneToOne(fetch = FetchType.LAZY)
     private Account account;
 
-    @OneToMany(mappedBy = "user")
-    private List<Monster> monsters = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Monster monster;
 
     private int cntMonsters;
 

@@ -76,22 +76,16 @@ public class MonsterService {
         monsterRepository.deleteById(id);
     }
 
-    public String registration(Long id, String name) {
+    private void registration(Long id, String name) {
         Child child = childRepository.findById(id).orElseThrow();
 
-        Monster monster = child.getMonsters().stream()
-            .filter(mon -> mon.getName().toString().equalsIgnoreCase(name))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Monster with the given name not found"));
-
-        return registerMonster(monster, child.getMonsterEncyclopedia());
+        Monster monster = child.getMonster();
+        if(monster.getExp() == 1000) {
+            registerMonster(monster, child.getMonsterEncyclopedia());
+        }
     }
 
     private String registerMonster(Monster monster, MonsterEncyclopedia monsterEncyclopedia) {
-        if (monster.getExp() <= 1000) {
-            throw new RuntimeException("Insufficient experience");
-        }
-
         try {
             String monsterNameKey = monster.getName().toString().toUpperCase();
             String methodName = "set" + monsterNameKey;
