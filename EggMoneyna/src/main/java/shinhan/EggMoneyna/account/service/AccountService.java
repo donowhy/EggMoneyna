@@ -12,6 +12,10 @@ import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
 import shinhan.EggMoneyna.account.repository.AccountRepository;
+import shinhan.EggMoneyna.user.child.entity.Child;
+import shinhan.EggMoneyna.user.child.repository.ChildRepository;
+import shinhan.EggMoneyna.user.parent.entity.Parent;
+import shinhan.EggMoneyna.user.parent.repository.ParentRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
@@ -24,10 +28,11 @@ import java.util.stream.Collectors;
 public class AccountService {
 
 	private final AccountRepository accountRepository;
-	private final UsersRepository usersRepository;
+	private final ChildRepository childRepository;
+	private final ParentRepository parentRepository;
 
 	// 생성
-	public Long create(AccountCreateDto accountCreateDto, Long id) {
+	public Long create(Long id) {
 		log.info("account create");
 		Random random = new Random();
 
@@ -40,26 +45,44 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-		Users users = usersRepository.findById(id).orElseThrow();
+		Account account = null;
 
-		Account build = Account.builder()
-				.nickName("에그머니나, " + accountCreateDto.getNickName())
-				.bankCode(BankCode.Shinhan)
-				.accountNumber(accountNumber)
-				.balance(0)
-				.nickName(accountCreateDto.getNickName())
-				.users(users)
-				.build();
-		accountRepository.save(build);
+		if(childRepository.findById(id).isPresent()){
+
+			Child child = childRepository.findById(id).orElseThrow();
+			account = Account.builder()
+					.nickName("에그머니나")
+					.bankCode(BankCode.Shinhan)
+					.accountNumber(accountNumber)
+					.balance(0)
+					.child(child)
+					.build();
+			child.setAccount(account);
+		}
+		else {
+			Parent parent = parentRepository.findById(id).orElseThrow();
+
+			account = Account.builder()
+					.nickName("에그머니나")
+					.bankCode(BankCode.Shinhan)
+					.accountNumber(accountNumber)
+					.balance(5000000)
+					.parent(parent)
+					.build();
+
+			parent.setAccount(account);
+		}
+
+		accountRepository.save(account);
 
 
-		return build.getId();
+
+		return account.getId();
 	}
-
 	// 계좌 조회
 	public Account getAccount(Long id) {
-		Users users = usersRepository.findById(id).orElseThrow();
-		Account account = users.getAccount();
+		Child child = childRepository.findById(id).orElseThrow();
+		Account account = child.getAccount();
 		log.info("account = {}", account);
 		return account;
 
@@ -106,9 +129,10 @@ public class AccountService {
 //		return detailAccountResponseDtos;
 //	}
 
+	// 계좌 별명 변경
 	public Account updateNickName(String name, Long id) {
-		Users users = usersRepository.findById(id).orElseThrow();
-		Account account = users.getAccount();
+		Child child = childRepository.findById(id).orElseThrow();
+		Account account = child.getAccount();
 		account.setNickName(name);
 
 		return account;
@@ -116,8 +140,8 @@ public class AccountService {
 
 	// 계좌 삭제
 	public String delete(Long id) {
-		Users users = usersRepository.findById(id).orElseThrow();
-		Account account = users.getAccount();
+		Child child = childRepository.findById(id).orElseThrow();
+		Account account = child.getAccount();
 		accountRepository.delete(account);
 		return "성공";
 	}

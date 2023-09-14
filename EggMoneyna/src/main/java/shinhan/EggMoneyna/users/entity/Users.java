@@ -1,5 +1,7 @@
 package shinhan.EggMoneyna.users.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,7 +49,7 @@ public class Users extends BaseTimeEntity {
     @OneToOne
     private Account account;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "child")
     private List<Monster> monsters = new ArrayList<>();
 
     private int cntMonsters;
@@ -55,8 +57,8 @@ public class Users extends BaseTimeEntity {
     @OneToOne
     private MonsterEncyclopedia monsterEncyclopedia;
 
-    @OneToMany(mappedBy = "users")
-    private List<WishBox> wishBoxes;
+//    @OneToMany(mappedBy = "users")
+//    private List<WishBox> wishBoxes;
 
     @ManyToMany
     @JoinTable(
@@ -64,16 +66,18 @@ public class Users extends BaseTimeEntity {
             joinColumns = @JoinColumn(name = "child_id"),
             inverseJoinColumns = @JoinColumn(name = "parent_id")
     )
+    @JsonManagedReference
     private List<Users> parents = new ArrayList<>();
 
     @ManyToMany(mappedBy = "parents")
+    @JsonBackReference
     private List<Users> children = new ArrayList<>();
 
     private String firebaseToken;
 
 
     @Builder
-    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken) {
+    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, String firebaseToken) {
         this.id = id;
         this.isParents = isParents;
         this.userId = userId;
@@ -87,13 +91,11 @@ public class Users extends BaseTimeEntity {
         this.monsters = monsters;
         this.cntMonsters = cntMonsters;
         this.monsterEncyclopedia = monsterEncyclopedia;
-        this.wishBoxes = wishBoxes;
         this.firebaseToken = firebaseToken;
     }
 
-    public void update(String nickName, int limitMoney, int pocketMoney, int pocketMoneyDate) {
+    public void setAtParent(String nickName, int pocketMoney, int pocketMoneyDate) {
         this.nickName = nickName;
-        this.limitMoney = limitMoney;
         this.pocketMoney = pocketMoney;
         this.pocketMoneyDate = pocketMoneyDate;
     }
@@ -121,4 +123,7 @@ public class Users extends BaseTimeEntity {
         this.cntMonsters = i;
     }
 
+    public void setLimitMoney(int limitMoney) {
+        this.limitMoney = limitMoney;
+    }
 }

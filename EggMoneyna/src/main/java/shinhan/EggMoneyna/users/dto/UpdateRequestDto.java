@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class UpdateRequestDto {
 
     private String nickName;
-    private int limitMoney;
     private int money;
     private int date;
 }

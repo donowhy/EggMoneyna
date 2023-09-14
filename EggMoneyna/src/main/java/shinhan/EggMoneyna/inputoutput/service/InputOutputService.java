@@ -1,10 +1,14 @@
 package shinhan.EggMoneyna.inputoutput.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
+import shinhan.EggMoneyna.comment.entity.Comment;
+import shinhan.EggMoneyna.comment.repository.CommentRepository;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.dto.AddInputOutRequestDto;
@@ -15,6 +19,11 @@ import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,34 +36,77 @@ public class InputOutputService {
     private final InputOutputRepository inputOutputRepository;
     private final AccountRepository accountRepository;
     private final UsersRepository usersRepository;
+    private final CommentRepository commentRepository;
 
-    public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) {
+    public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
-        InputOutput inputOutput = addInputOutRequestDto.of(account);
+        Comment comment = Comment.builder()
+                .childComment("")
+                .parentComment("")
+                .compliment(false)
+                .isChild(false)
+                .isParent(false)
+                .build();
+
+        commentRepository.save(comment);
+
+        JsonNode itemsNode = getApi();
+        String bigCategory = "";
+        String smallCategory = "";
+        for (JsonNode item : itemsNode) {
+            String brandName = item.get("brandNm").asText();
+            if (brandName.equals(addInputOutRequestDto.getBrandName())) {
+                bigCategory = item.get("indutyLclasNm").asText();
+                smallCategory = item.get("indutyMlsfcNm").asText();
+                break;
+            }
+        }
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory);
         inputOutputRepository.save(inputOutput);
         account.inBalance(addInputOutRequestDto.getInput());
 
         return AddInputOutputResponseDto.builder()
-                .bigCategory(addInputOutRequestDto.getBigCategory())
-                .smallCategory(addInputOutRequestDto.getSmallCategory())
+                .bigCategory(bigCategory)
+                .smallCategory(smallCategory)
                 .input(addInputOutRequestDto.getInput())
                 .output(addInputOutRequestDto.getOutput())
                 .build();
     }
 
-    public AddInputOutputResponseDto addOutput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) {
+    public AddInputOutputResponseDto addOutput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
-        InputOutput inputOutput = addInputOutRequestDto.of(account);
+        Comment comment = Comment.builder()
+                .childComment("")
+                .parentComment("")
+                .compliment(false)
+                .isChild(false)
+                .isParent(false)
+                .build();
+
+        commentRepository.save(comment);
+
+        JsonNode itemsNode = getApi();
+        String bigCategory = "";
+        String smallCategory = "";
+        for (JsonNode item : itemsNode) {
+            String brandName = item.get("brandNm").asText();
+            if (brandName.equals(addInputOutRequestDto.getBrandName())) {
+                bigCategory = item.get("indutyLclasNm").asText();
+                smallCategory = item.get("indutyMlsfcNm").asText();
+                break;
+            }
+        }
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory);
         inputOutputRepository.save(inputOutput);
-        account.outBalance(addInputOutRequestDto.getOutput());
+        account.inBalance(addInputOutRequestDto.getInput());
 
         return AddInputOutputResponseDto.builder()
-                .bigCategory(addInputOutRequestDto.getBigCategory())
-                .smallCategory(addInputOutRequestDto.getSmallCategory())
+                .bigCategory(bigCategory)
+                .smallCategory(smallCategory)
                 .input(addInputOutRequestDto.getInput())
                 .output(addInputOutRequestDto.getOutput())
                 .build();
@@ -109,5 +161,42 @@ public class InputOutputService {
         return InputOutputResponseDto.builder()
                 .inputOutputs(inputs)
                 .build();
+    }
+
+    public JsonNode getApi() throws IOException {
+        URL url = new URL("https://apis.data.go.kr/1130000/FftcBrandRlsInfoService/getBrandRlsInfo?serviceKey=VeIyQYlemcin0TUHlsQrWib5AWUE%2FUvpjhihs9Gkk%2BKuwBMDmqjoK3HnD9Dl1qxfXs6GIXPX13Ftdyi2RqkzGw%3D%3D&pageNo=1&numOfRows=10000&resultType=json&yr=2022");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json; charset=UTF-8");
+
+        BufferedReader rd;
+        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        } else {
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            sb.append(line);
+        }
+
+        rd.close();
+        conn.disconnect();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode itemsNode = null;
+        try {
+            // JSON 문자열을 JsonNode로 파싱
+            JsonNode rootNode = objectMapper.readTree(sb.toString());
+
+            // "items" 배열 추출
+            itemsNode = rootNode.get("items");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return itemsNode;
     }
 }

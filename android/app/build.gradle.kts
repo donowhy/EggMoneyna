@@ -114,6 +114,9 @@ dependencies {
 
     // sdp-compose
     implementation ("com.github.Kaaveh:sdp-compose:1.1.0")
+
+    // compose-charts
+    implementation ("com.github.tehras:charts:0.2.4-alpha")
 }
 
 kapt {
