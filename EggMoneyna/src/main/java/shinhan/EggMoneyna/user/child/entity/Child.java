@@ -1,21 +1,18 @@
 package shinhan.EggMoneyna.user.child.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.monster.entity.Monster;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.user.follow.entity.Relation;
-import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Getter
@@ -56,17 +53,26 @@ public class Child {
     private String firebaseToken;
 
     @OneToMany(mappedBy = "child")
+    @JsonIgnore
     private List<Relation> relations;
 
-    private Boolean isRelation;
+    private Boolean isRelation = false;
 
-    private Boolean eggMoney;
+    private Boolean eggMoney = false;
 
+    private Boolean todayCheck = false;
+
+    @ElementCollection
+    private List<Boolean> sevendays = new ArrayList<>();
+
+    @ElementCollection
+    private List<Boolean> month = new ArrayList<>();
+
+    private int compliment;
+
+    private int consecutiveAttempt;
     @Builder
-    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate,
-        Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia,
-        List<WishBox> wishBoxes,
-        String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney) {
+    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> month,  int compliment, int consecutiveAttempt) {
         this.id = id;
         this.childId = childId;
         this.password = password;
@@ -82,6 +88,11 @@ public class Child {
         this.relations = relations;
         this.isRelation = isRelation;
         this.eggMoney = eggMoney;
+        this.todayCheck = todayCheck;
+        this.sevendays = sevendays;
+        this.month = month;
+        this.compliment = compliment;
+        this.consecutiveAttempt = consecutiveAttempt;
     }
 
     public void setLimitMoney(int limitMoney) {
@@ -98,5 +109,27 @@ public class Child {
 
     public void setCntMonsters(int cntMonsters) {
         this.cntMonsters = cntMonsters;
+    }
+
+    public void setTodayLogin(Boolean todayCheck) {
+        this.todayCheck = todayCheck;
+    }
+
+    public void setSevenDays(List<Boolean> sevendays) {
+        this.sevendays = sevendays;
+    }
+
+    public void setMonth(List<Boolean> month) {
+        this.month = month;
+    }
+
+
+    public void setConsecutiveceAttemptAndTodayCheck(int consecutiveAttempt) {
+        this.consecutiveAttempt = consecutiveAttempt;
+        this.todayCheck = false;
+    }
+
+    public void setConsecutiveceAttempt(int consecutiveAttempt) {
+        this.consecutiveAttempt = consecutiveAttempt;
     }
 }

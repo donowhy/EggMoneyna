@@ -26,7 +26,10 @@ public class MonsterController {
 
     // 몬스터 생성
     @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "신한몽 생성", description = "신한몽이 생성됩니다.", tags = { "Monster Controller" })
+    @Operation(summary = "신한몽 생성",
+            description = "신한몽이 하나도 없을 때 생성, 하나라도 있을 때는 오류 발생." +
+                    "신한몽이 도감에 등록 될때도 -1로 하여 생성하도록 한다.",
+            tags = { "Monster Controller" })
     @PostMapping("")
     public Response<?> createMonster(@RequestBody MonsterSaveRequestDto requestDto, @UserInfo UsersInfo usersInfo) {
         MonsterSaveResponseDto responseDto = monsterService.save(requestDto, usersInfo.getId());
@@ -35,7 +38,7 @@ public class MonsterController {
 
     // READ
     @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "신한몽 조회", description = "신한몽 조회.", tags = { "Monster Controller" })
+    @Operation(summary = "신한몽 조회", description = "신한몽 조회시 출석체크 후 최근 일주일 출석에 따른 기분이 변하도록 함.", tags = { "Monster Controller" })
     @GetMapping("")
     public Response<?> getMonster(@UserInfo UsersInfo usersInfo) {
         MonsterResponseDto byId = monsterService.findById(usersInfo.getId());
@@ -44,7 +47,7 @@ public class MonsterController {
 
     // DELETE
     @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "신한몽 삭제", description = "신한몽이 삭제.", tags = { "Monster Controller" })
+    @Operation(summary = "신한몽 삭제", description = "신한몽이 삭제시 신한몽 카운트 -1 로 0이 된다.", tags = { "Monster Controller" })
     @DeleteMapping("/{id}")
     public Response<String> deleteMonster(@UserInfo UsersInfo usersInfo) {
         monsterService.deleteById(usersInfo.getId());
