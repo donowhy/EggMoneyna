@@ -12,22 +12,18 @@ import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 public class AddInputOutRequestDto {
     private String brandName;
     private String brandImg;
-    private String bigCategory;
-    private String smallCategory;
     private int input;
     private int output;
 
     @Builder
-    public AddInputOutRequestDto(String brandName, String brandImg, String bigCategory, String smallCategory, int input, int output) {
+    public AddInputOutRequestDto(String brandName, String brandImg, int input, int output) {
         this.brandName = brandName;
         this.brandImg = brandImg;
-        this.bigCategory = bigCategory;
-        this.smallCategory = smallCategory;
         this.input = input;
         this.output = output;
     }
 
-    public InputOutput of(Account account, Comment comment) {
+    public InputOutput of(Account account, Comment comment, String bigCategory, String smallCategory) {
         return InputOutput.builder()
                 .brandName(brandName)
                 .brandImg(brandImg)
