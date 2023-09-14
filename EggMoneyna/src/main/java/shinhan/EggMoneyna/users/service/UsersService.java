@@ -72,10 +72,10 @@ public class UsersService {
             .nickName(child.getNickName())
             .build();
 
-        accountService.create(accountCreateDto, child.getId());
+        accountService.create( child.getId());
         return returnTokenDto.builder()
-                .parentToken(jwtProvider.createToken(parent))
-                .childToken(jwtProvider.createToken(child))
+                .parentToken("jz")
+                .childToken("jz")
                 .build();
     }
 
@@ -152,7 +152,7 @@ public class UsersService {
                 .nickName(child.getNickName())
                 .build();
 
-        accountService.create(accountCreateDto, child.getId());
+        accountService.create(child.getId());
 
         // 새로 생성된 아이 객체 반환
         return child;

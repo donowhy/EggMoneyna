@@ -16,4 +16,5 @@ object EggMoneynaDestination {
     const val SHINHAN_MON_COLLECTION = "shinhan_mon_collection"
     const val SHINHAN_MON_COLLECTION_DETAIL = "shinhan_mon_collection_detail"
     const val WISH_BOX = "wish_box"
+    const val EXPENSE_ANALYSIS = "expense_analysis"
 }

@@ -2,13 +2,14 @@ package shinhan.EggMoneyna.monster.dto;
 
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.monster.entity.Monster;
 
-
+@Getter
+@NoArgsConstructor
 public class MonsterResponseDto {
     private String name;
-
-    private String nickName;
 
     private String status;
 
@@ -21,9 +22,8 @@ public class MonsterResponseDto {
     private String benefit;
 
     @Builder
-    public MonsterResponseDto(String name, String nickName, String status, int point, String feel, int exp, String benefit) {
+    public MonsterResponseDto(String name, String status, int point, String feel, int exp, String benefit) {
         this.name = name;
-        this.nickName = nickName;
         this.status = status;
         this.point = point;
         this.feel = feel;
@@ -34,7 +34,6 @@ public class MonsterResponseDto {
     public static MonsterResponseDto of(Monster monster) {
         return MonsterResponseDto.builder()
                 .name(monster.getName().getTitle()) // Assuming the name in Monster is of type ShinhanMong and has a getTitle method.
-                .nickName(monster.getNickName())
                 .status(monster.getStatus().toString()) // Assuming status is an Enum
                 .point(monster.getPoint())
                 .feel(monster.getFeel().toString()) // Assuming feel is an Enum

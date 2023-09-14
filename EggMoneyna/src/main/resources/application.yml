@@ -38,6 +38,14 @@ spring:
         jdbc:
           time_zone: Asia/Seoul
 
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -55,3 +63,17 @@ springdoc:
 
 jwt:
   password: testPasswordtestPasswordtestPasswordtestPasswordtestPasswordtestPassword!testPassword
+
+
+cloud:
+  aws:
+    s3:
+      bucket: eggmoneynabucket
+    credentials:
+      access-key: AKIA6NLZ7AA63MGKRUQ3
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

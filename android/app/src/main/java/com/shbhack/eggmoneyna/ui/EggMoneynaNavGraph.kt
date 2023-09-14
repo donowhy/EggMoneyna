@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
+import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
 import com.shbhack.eggmoneyna.ui.mainparent.MainParentScreen
 import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
@@ -31,7 +32,7 @@ fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = EggMoneynaDestination.SPLASH
-//    startDestination: String = EggMoneynaDestination.SHINHAN_MON
+//    startDestination: String = EggMoneynaDestination.EXPENSE_ANALYSIS
 ) {
 
     NavHost(
@@ -102,6 +103,8 @@ fun EggMoneynaNavGraph(
         defaultSlideTransitions(EggMoneynaDestination.SHINHAN_MON_COLLECTION_DETAIL) {
             ShinhanMongCollectionDetailScreen(navController)
         }
-
+        defaultSlideTransitions(EggMoneynaDestination.EXPENSE_ANALYSIS) {
+            ExpenseAnalysisScreen(navController)
+        }
     }
 }

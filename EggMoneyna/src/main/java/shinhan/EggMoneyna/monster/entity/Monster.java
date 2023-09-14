@@ -8,7 +8,7 @@ import shinhan.EggMoneyna.monster.entity.enumType.Benefit;
 import shinhan.EggMoneyna.monster.entity.enumType.Feel;
 import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
 import shinhan.EggMoneyna.monster.entity.enumType.ShinhanMong;
-import shinhan.EggMoneyna.users.entity.Users;
+import shinhan.EggMoneyna.user.child.entity.Child;
 
 import javax.persistence.*;
 import java.util.Random;
@@ -20,11 +20,10 @@ public class Monster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "monster_id")
     private Long id;
 
     private ShinhanMong name;
-
-    private String nickName;
 
     @Enumerated(EnumType.STRING)
     private MonsterStatus status;
@@ -39,20 +38,20 @@ public class Monster {
     @Enumerated(EnumType.STRING)
     private Benefit benefit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Users user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "child_id")
+    private Child child;
 
     @Builder
-    public Monster(Long id, ShinhanMong name, String nickName, MonsterStatus status, int point, Feel feel, int exp, Benefit benefit, Users user) {
+    public Monster(Long id, ShinhanMong name, MonsterStatus status, int point, Feel feel, int exp, Benefit benefit, Child child) {
         this.id = id;
         this.name = name;
-        this.nickName = nickName;
         this.status = status;
         this.point = point;
         this.feel = feel;
         this.exp = exp;
         this.benefit = benefit;
-        this.user = user;
+        this.child = child;
     }
 
     public static ShinhanMong getRandomMong() {
@@ -65,7 +64,4 @@ public class Monster {
         return MonsterStatus.Egg;
     }
 
-    public void setNickName(String name) {
-        this.nickName = name;
-    }
 }

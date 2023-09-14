@@ -11,21 +11,23 @@ import shinhan.EggMoneyna.inputoutput.service.InputOutputService;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/v1/inputoutput")
 @RequiredArgsConstructor
-public class InputOutputController {
+public class InputOutputController{
     private final InputOutputService inputOutputService;
 
     @Operation(summary = "입금 추가", description = "사용자 계좌에 입금이 추가됩니다.", tags = { "InputOutput Controller" })
     @PostMapping("/in")
-    public ResponseEntity<AddInputOutputResponseDto> addInput(@UserInfo UsersInfo usersInfo, @RequestBody AddInputOutRequestDto addInputOutRequestDto) {
+    public ResponseEntity<AddInputOutputResponseDto> addInput(@UserInfo UsersInfo usersInfo, @RequestBody AddInputOutRequestDto addInputOutRequestDto) throws IOException{
         return ResponseEntity.ok(inputOutputService.addInput(usersInfo.getId(), addInputOutRequestDto));
     }
 
     @Operation(summary = "출금 추가", description = "사용자 계좌에 출금이 추가됩니다.", tags = { "InputOutput Controller" })
     @PostMapping("/out")
-    public ResponseEntity<AddInputOutputResponseDto> addOutput(@UserInfo UsersInfo usersInfo, @RequestBody AddInputOutRequestDto addInputOutRequestDto) {
+    public ResponseEntity<AddInputOutputResponseDto> addOutput(@UserInfo UsersInfo usersInfo, @RequestBody AddInputOutRequestDto addInputOutRequestDto) throws IOException{
         return ResponseEntity.ok(inputOutputService.addOutput(usersInfo.getId(), addInputOutRequestDto));
     }
 
@@ -46,5 +48,10 @@ public class InputOutputController {
     public ResponseEntity<InputOutputResponseDto> getInputOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
         return ResponseEntity.ok(inputOutputService.getInputOutput(usersInfo.getId(), inputOuputDate));
     }
+
+//    @GetMapping("/test")
+//    public ResponseEntity<String> getTest() throws IOException, ParseException {
+//        return ResponseEntity.ok(inputOutputService.getApi());
+//    }
 
 }
