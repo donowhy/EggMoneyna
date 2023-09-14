@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,42 +22,47 @@ import ir.kaaveh.sdpcompose.sdp
 
 @Composable
 fun ChooseWhoScreen(navController: NavController) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(keyColorLight1)
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
     ) {
-        ExplainBanner(
-            color = bannerBlue,
-            title = stringResource(id = R.string.chooseWhoBannerTitle),
-            content = stringResource(id = R.string.chooseWhoBannerContent),
-            imgId = R.drawable.banner_image_blue,
-            description = "신한은행 아이콘"
-        )
-
-        Spacer(modifier = Modifier.height(30.sdp))
-
-        ChooseWhoCard(
-            imgId = R.drawable.icon_parent,
-            description = "부모 아이콘",
-            whoText = stringResource(id = R.string.chooseWhoParent),
-            explainText = stringResource(id = R.string.chooseWhoParentExplain)
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+                .background(keyColorLight1)
         ) {
-            AppPreferences.checkSelectParent(true)
-            navController.navigate(EggMoneynaDestination.AUTH_USER)
-        }
+            ExplainBanner(
+                color = bannerBlue,
+                title = stringResource(id = R.string.chooseWhoBannerTitle),
+                content = stringResource(id = R.string.chooseWhoBannerContent),
+                imgId = R.drawable.banner_image_blue,
+                description = "신한은행 아이콘"
+            )
 
-        Spacer(modifier = Modifier.height(15.sdp))
+            Spacer(modifier = Modifier.height(30.sdp))
 
-        ChooseWhoCard(
-            imgId = R.drawable.icon_children,
-            description = "자녀 아이콘",
-            whoText = stringResource(id = R.string.chooseWhoChild),
-            explainText = stringResource(id = R.string.chooseWhoChildExplain)
-        ) {
-            AppPreferences.checkSelectParent(false)
-            navController.navigate(EggMoneynaDestination.AUTH_USER)
+            ChooseWhoCard(
+                imgId = R.drawable.icon_parent,
+                description = "부모 아이콘",
+                whoText = stringResource(id = R.string.chooseWhoParent),
+                explainText = stringResource(id = R.string.chooseWhoParentExplain)
+            ) {
+                AppPreferences.checkSelectParent(true)
+                navController.navigate(EggMoneynaDestination.AUTH_USER_MAIN)
+            }
+
+            Spacer(modifier = Modifier.height(15.sdp))
+
+            ChooseWhoCard(
+                imgId = R.drawable.icon_children,
+                description = "자녀 아이콘",
+                whoText = stringResource(id = R.string.chooseWhoChild),
+                explainText = stringResource(id = R.string.chooseWhoChildExplain)
+            ) {
+                AppPreferences.checkSelectParent(false)
+                navController.navigate(EggMoneynaDestination.AUTH_USER_MAIN)
+            }
         }
     }
+
 }
