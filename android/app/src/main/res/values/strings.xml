@@ -24,6 +24,12 @@
     <string name="chooseWhoChild">나는\n자녀입니다.</string>
     <string name="chooseWhoChildExplain">신한몽을 키우며 나의 용돈을 관리할 수 있어요.\n내가 원하는 물건 위시박스를 채우며 구매해볼까요?</string>
 
+    <!--  authUser  -->
+    <string name="authUserAccountExplain">계좌를\n입력해주세요</string>
+    <string name="authUserAccountEditText">계좌번호 입력</string>
+    <string name="authUserSend1WonExplain">계좌인증을 위해\n1원을 보내볼게요</string>
+    <string name="authUserCheckExplain">입금내역을 확인하고\n\'신한\' 뒤 4자리 영어를 알려주세요</string>
+
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
