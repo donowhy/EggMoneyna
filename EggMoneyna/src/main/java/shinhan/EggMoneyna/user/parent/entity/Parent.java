@@ -2,6 +2,8 @@ package shinhan.EggMoneyna.user.parent.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +40,7 @@ public class Parent {
     private String firebaseToken;
 
     @OneToMany(mappedBy = "parent")
+    @JsonIgnore
     private List<Relation> relations;
 
     private Boolean isRelation;

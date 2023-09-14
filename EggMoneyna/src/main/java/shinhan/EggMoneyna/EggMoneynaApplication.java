@@ -3,11 +3,13 @@ package shinhan.EggMoneyna;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableFeignClients
-@EnableJpaAuditing
 @SpringBootApplication
+@EnableScheduling
 public class EggMoneynaApplication {
 
 	/**
@@ -21,4 +23,8 @@ public class EggMoneynaApplication {
 		SpringApplication.run(EggMoneynaApplication.class, args);
 	}
 
+	@Configuration
+	@EnableJpaAuditing // JPA Auditing 활성화
+	public class JpaConfig {
+	}
 }

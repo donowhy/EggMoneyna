@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MonsterStatus {
 
-    Egg(0, "아기"),
-    Child(10, "아이"),
-    Adult(300,"어른");
+    Egg(0, "알"),
+    Adult(500, "어른"),
+    register(1000,"등록");
 
     private final int key;
     private final String title;
