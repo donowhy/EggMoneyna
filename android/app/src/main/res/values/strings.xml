@@ -29,6 +29,7 @@
     <string name="authUserAccountEditText">계좌번호 입력</string>
     <string name="authUserSend1WonExplain">계좌인증을 위해\n1원을 보내볼게요</string>
     <string name="authUserCheckExplain">입금내역을 확인하고\n\'신한\' 뒤 4자리 영어를 알려주세요</string>
+    <string name="authUserCheckEditText">4자리 영어</string>
 
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
