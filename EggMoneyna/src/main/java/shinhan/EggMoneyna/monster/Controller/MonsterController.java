@@ -38,7 +38,7 @@ public class MonsterController {
     @Operation(summary = "신한몽 조회", description = "신한몽 조회.", tags = { "Monster Controller" })
     @GetMapping("")
     public Response<?> getMonster(@UserInfo UsersInfo usersInfo) {
-        List<MonsterResponseDto> byId = monsterService.findById(usersInfo.getId());
+        MonsterResponseDto byId = monsterService.findById(usersInfo.getId());
         return new Response<>("성공", "신한몽 조회", byId);
     }
 

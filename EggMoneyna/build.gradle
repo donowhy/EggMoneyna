@@ -61,7 +61,8 @@ dependencies {
 	// firebase
 	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.1'
 
-
+	// jasypt
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
 }
 
