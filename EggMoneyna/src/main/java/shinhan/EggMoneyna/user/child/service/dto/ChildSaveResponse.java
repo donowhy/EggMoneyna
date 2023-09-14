@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChildSaveResponse {
     private String childId;
+    private String childToken;
 
 }

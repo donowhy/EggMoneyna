@@ -14,6 +14,8 @@ import shinhan.EggMoneyna.account.entity.BankCode;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
+import shinhan.EggMoneyna.user.parent.entity.Parent;
+import shinhan.EggMoneyna.user.parent.repository.ParentRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
@@ -27,9 +29,10 @@ public class AccountService {
 
 	private final AccountRepository accountRepository;
 	private final ChildRepository childRepository;
+	private final ParentRepository parentRepository;
 
 	// 생성
-	public Long create(AccountCreateDto accountCreateDto, Long id) {
+	public Long create(Long id) {
 		log.info("account create");
 		Random random = new Random();
 
@@ -42,24 +45,40 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-		Child child = childRepository.findById(id).orElseThrow();
+		Account account = null;
 
-		Account account = Account.builder()
-				.nickName("에그머니나, " + accountCreateDto.getNickName())
-				.bankCode(BankCode.Shinhan)
-				.accountNumber(accountNumber)
-				.balance(0)
-				.nickName(accountCreateDto.getNickName())
-				.child(child)
-				.build();
+		if(childRepository.findById(id).isPresent()){
+
+			Child child = childRepository.findById(id).orElseThrow();
+			account = Account.builder()
+					.nickName("에그머니나")
+					.bankCode(BankCode.Shinhan)
+					.accountNumber(accountNumber)
+					.balance(0)
+					.child(child)
+					.build();
+			child.setAccount(account);
+		}
+		else {
+			Parent parent = parentRepository.findById(id).orElseThrow();
+
+			account = Account.builder()
+					.nickName("에그머니나")
+					.bankCode(BankCode.Shinhan)
+					.accountNumber(accountNumber)
+					.balance(5000000)
+					.parent(parent)
+					.build();
+
+			parent.setAccount(account);
+		}
 
 		accountRepository.save(account);
 
-		child.setAccount(account);
+
 
 		return account.getId();
 	}
-
 	// 계좌 조회
 	public Account getAccount(Long id) {
 		Child child = childRepository.findById(id).orElseThrow();

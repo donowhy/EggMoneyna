@@ -21,10 +21,10 @@ public class ChildController {
         return childService.save(request);
     }
 
-    @PostMapping("/login")
-    public returnToken login(@RequestBody ChildLoginRequest request){
-        return childService.login(request);
-    }
+//    @PostMapping("/login")
+//    public returnToken login(@RequestBody ChildLoginRequest request){
+//        return childService.login(request);
+//    }
 
     @GetMapping("/getMyInfo")
     public ChildResponse getMyInfo(@UserInfo UsersInfo usersInfo){
