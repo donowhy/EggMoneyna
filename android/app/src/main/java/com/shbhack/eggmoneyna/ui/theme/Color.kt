@@ -25,6 +25,7 @@ val onboardingColor4 = Color(0xFFFFFFFF)
 val onboardingColor5 = Color(0xFFFABF7B)
 
 val contextTextColor = Color(0xFF808080)
+val divideColor = Color(0xFFE2E6EB)
 val underlineColor = Color(0x7FCBDCF3)
 
 val EggmoneynaPurple = Color(0xFF8084EA)
