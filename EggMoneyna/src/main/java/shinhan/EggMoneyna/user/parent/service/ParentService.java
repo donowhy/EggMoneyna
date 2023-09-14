@@ -15,6 +15,8 @@ import shinhan.EggMoneyna.user.parent.repository.ParentRepository;
 import shinhan.EggMoneyna.user.parent.service.dto.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -44,6 +46,7 @@ public class ParentService {
         returnParentToken login = login(parentLoginRequest);
 
         return ParentSaveResponse.builder()
+                .id(parent.getId())
                 .parentId(parent.getParentId())
                 .parentToken(login.getParentToken())
                 .build();
@@ -81,9 +84,24 @@ public class ParentService {
 
     public ParentResponse getMyInfo(Long id){
         Parent parent = parentRepository.findById(id).orElseThrow();
+
+        List<Child> childrenByParentId = parentRepository.findChildrenByParentId(id);
+
+        List<String> childNames = childrenByParentId.stream()
+                .map(Child::getChildId)
+                .collect(Collectors.toList());
+
+        List<Child> childrenEggMoneyNa = parentRepository.findChildrenEggMoneyNa(id);
+
+        List<String> eggMoneyNa = childrenEggMoneyNa.stream()
+                .map(Child::getChildId)
+                .collect(Collectors.toList());
+
+
         return ParentResponse.builder()
                 .parentId(parent.getParentId())
-                .childNickname(parent.getChildNickname())
+                .childNicknames(childNames)
+                .eggMoneynaChild(eggMoneyNa)
                 .pocketMoneyDate(parent.getPocketMoneyDate())
                 .pocketMoney(parent.getPocketMoney())
                 .build();

@@ -27,14 +27,18 @@ public class RelationService {
 
     // 연관 관계 생성
     public Relation createRelation(Long parentId, Long childId) {
-        Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
-        Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
+        Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
+                new RuntimeException("Parent not found")
+        );
+        Child child = childRepository.findById(childId).orElseThrow(() ->
+                new RuntimeException("Child not found")
+        );
 
         Relation relation = Relation.builder()
                 .parent(parent)
                 .child(child)
                 .build();
-
+        log.info("여기까진={}", relation.getParent());
         parent.setIsRelation(true);
         child.setIsRelation(true);
 
@@ -44,8 +48,8 @@ public class RelationService {
         return relationRepository.save(relation);
     }
 
-    // 연관 관계 생성
-    public Relation createFollowRelation(Long parentId, Long childId) {
+    // 에그머니나 생성
+    public Relation createEggMoneyRelation(Long parentId, Long childId) {
         Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
         Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
 
@@ -54,8 +58,8 @@ public class RelationService {
                 .child(child)
                 .build();
 
-        parent.setIsRelation(true);
-        child.setIsRelation(true);
+        parent.setEggMoney(true);
+        child.setEggMoney(true);
 
         parentRepository.save(parent);
         childRepository.save(child);

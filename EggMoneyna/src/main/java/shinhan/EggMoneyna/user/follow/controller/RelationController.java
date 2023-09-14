@@ -19,14 +19,17 @@ public class RelationController {
     private final RelationService relationService;
 
     // 연관 관계 생성
-    @PostMapping("/create")
-    public ResponseEntity<Relation> createRelation(@UserInfo UsersInfo usersInfo, @RequestParam Long childId) {
-        try {
-            Relation relation = relationService.createRelation(usersInfo.getId(), childId);
-            return ResponseEntity.ok(relation);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    @PostMapping("/createRelation/{childId}")
+    public ResponseEntity<Relation> createRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+        log.info("여기까진.");
+        Relation relation = relationService.createRelation(usersInfo.getId(), childId);
+        return ResponseEntity.ok(relation);
+    }
+
+    @PostMapping("/createEggMoney/{childId}")
+    public ResponseEntity<Relation> createEggMoneyRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+        Relation relation = relationService.createRelation(usersInfo.getId(), childId);
+        return ResponseEntity.ok(relation);
     }
 
     // 연관 관계 읽기

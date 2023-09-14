@@ -1,6 +1,8 @@
 package shinhan.EggMoneyna.user.follow.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +23,11 @@ public class Relation {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Parent parent;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Child child;
 
     @Builder
