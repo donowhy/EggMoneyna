@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ChildSaveResponse {
+    private Long id;
     private String childId;
     private String childToken;
 

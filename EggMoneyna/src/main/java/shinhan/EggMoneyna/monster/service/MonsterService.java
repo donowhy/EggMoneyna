@@ -69,12 +69,18 @@ public class MonsterService {
 
         List<Boolean> sevendays = child.getSevendays();
 
+        boolean checkOne = child.getTodayCheck();
+        List<Boolean> aMonth = child.getAMonth();
         if (!child.getTodayCheck()) {
             child.setTodayLogin(true);
-            if (sevendays.size() == 7) {
+            if (sevendays.size() < 7) {
+                sevendays.add(true);
+            } else {
                 sevendays.remove(0);
                 sevendays.add(true);
             }
+
+            aMonth.add(true);
         }
 
         int trueCount = (int) sevendays.stream()
@@ -90,7 +96,11 @@ public class MonsterService {
         }
 
         child.setSevenDays(sevendays);
-        child.setConsecutiveceAttempt(child.getConsecutiveAttempt() + 1);
+        child.setAMonth(aMonth);
+
+        if(checkOne != child.getTodayCheck()) {
+            child.setConsecutiveceAttempt(child.getConsecutiveAttempt() + 1);
+        }
 
         return MonsterResponseDto.builder()
                 .name(String.valueOf(monster.getName()))
