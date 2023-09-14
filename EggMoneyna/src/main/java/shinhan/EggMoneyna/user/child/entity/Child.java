@@ -48,31 +48,31 @@ public class Child {
     private MonsterEncyclopedia monsterEncyclopedia;
 
     @OneToMany(mappedBy = "child")
-    private List<WishBox> wishBoxes;
+    private List<WishBox> wishBoxes = new ArrayList<>();
 
     private String firebaseToken;
 
     @OneToMany(mappedBy = "child")
     @JsonIgnore
-    private List<Relation> relations;
+    private List<Relation> relations = new ArrayList<>();
 
-    private Boolean isRelation = false;
+    private Boolean isRelation;
 
-    private Boolean eggMoney = false;
+    private Boolean eggMoney;
 
-    private Boolean todayCheck = false;
+    private Boolean todayCheck;
 
     @ElementCollection
     private List<Boolean> sevendays = new ArrayList<>();
 
     @ElementCollection
-    private List<Boolean> month = new ArrayList<>();
+    private List<Boolean> aMonth = new ArrayList<>();
 
     private int compliment;
 
     private int consecutiveAttempt;
     @Builder
-    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> month,  int compliment, int consecutiveAttempt) {
+    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int compliment, int consecutiveAttempt) {
         this.id = id;
         this.childId = childId;
         this.password = password;
@@ -86,11 +86,11 @@ public class Child {
         this.wishBoxes = wishBoxes;
         this.firebaseToken = firebaseToken;
         this.relations = relations;
-        this.isRelation = isRelation;
-        this.eggMoney = eggMoney;
-        this.todayCheck = todayCheck;
+        this.isRelation = false;
+        this.eggMoney = false;
+        this.todayCheck = false;
         this.sevendays = sevendays;
-        this.month = month;
+        this.aMonth = aMonth;
         this.compliment = compliment;
         this.consecutiveAttempt = consecutiveAttempt;
     }
@@ -119,8 +119,8 @@ public class Child {
         this.sevendays = sevendays;
     }
 
-    public void setMonth(List<Boolean> month) {
-        this.month = month;
+    public void setAMonth(List<Boolean> month) {
+        this.aMonth = month;
     }
 
 
@@ -131,5 +131,9 @@ public class Child {
 
     public void setConsecutiveceAttempt(int consecutiveAttempt) {
         this.consecutiveAttempt = consecutiveAttempt;
+    }
+
+    public void setMonster(Monster monster) {
+        this.monster = monster;
     }
 }
