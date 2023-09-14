@@ -9,14 +9,12 @@ import shinhan.EggMoneyna.monster.entity.Monster;
 public class MonsterSaveResponseDto {
 
     private String name;
-    private String nickName;
     private String feel;
     private String benefit;
 
     public static MonsterSaveResponseDto of(Monster monster) {
         return new MonsterSaveResponseDto(
                 monster.getName().toString(),
-                monster.getNickName(),
                 monster.getFeel().toString(),
                 monster.getBenefit().toString());
     }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
+import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.users.entity.Users;
 
 import javax.persistence.*;
@@ -36,11 +37,12 @@ public class WishBox extends BaseTimeEntity {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users users;
+    @JoinColumn(name = "childs_id")
+    private Child child;
+
 
     @Builder
-    public WishBox(Long id, String nickName, String wishName, int price, int balance, Long virtualNumber, BankCode bankCode, Account account, Users users) {
+    public WishBox(Long id, String nickName, String wishName, int price, int balance, Long virtualNumber, BankCode bankCode, Account account, Child child) {
         this.id = id;
         this.nickName = nickName;
         this.wishName = wishName;
@@ -49,6 +51,10 @@ public class WishBox extends BaseTimeEntity {
         this.virtualNumber = virtualNumber;
         this.bankCode = bankCode;
         this.account = account;
-        this.users = users;
+        this.child = child;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickName = nickname;
     }
 }

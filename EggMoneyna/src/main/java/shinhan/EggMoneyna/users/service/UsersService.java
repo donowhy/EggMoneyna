@@ -74,8 +74,8 @@ public class UsersService {
 
         accountService.create(accountCreateDto, child.getId());
         return returnTokenDto.builder()
-                .parentToken(jwtProvider.createToken(parent))
-                .childToken(jwtProvider.createToken(child))
+                .parentToken("jz")
+                .childToken("jz")
                 .build();
     }
 
