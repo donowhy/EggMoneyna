@@ -13,6 +13,9 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
     @Query("SELECT c from Child c WHERE c.childId = :childId and c.password = :password")
     Optional<Child> checkChildPw(@Param("childId") String childId, @Param("password") String password);
 
+    @Query("SELECT c FROM Child c JOIN FETCH c.account WHERE c.id = :id")
+    Optional<Child> findByIdWithAccount(@Param("id") Long id);
+
 }
 
 
