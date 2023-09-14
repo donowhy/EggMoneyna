@@ -85,4 +85,8 @@ public class Parent {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    public void setEggMoney(boolean eggMoney) {
+        this.eggMoney = eggMoney;
+    }
 }

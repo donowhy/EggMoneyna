@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.jwt.JwtProvider;
+import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
+import shinhan.EggMoneyna.monster.service.MonsterEncyclopediaService;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.user.child.service.dto.*;
@@ -21,6 +23,7 @@ public class ChildService {
     private final ChildRepository childRepository;
     private final JwtProvider jwtProvider;
     private final AccountService accountService;
+    private final MonsterEncyclopediaService monsterEncyclopediaService;
 
     public ChildSaveResponse save(ChildSaveRequest request){
         Child child = Child.builder()
@@ -37,7 +40,10 @@ public class ChildService {
 
         returnToken login = login(childLoginRequest);
 
+        monsterEncyclopediaService.setMonsterEncyclopedia(child.getId());
+
         return ChildSaveResponse.builder()
+                .id(child.getId())
                 .childId(request.getChildId())
                 .childToken(login.getChildToken())
                 .build();
@@ -55,7 +61,7 @@ public class ChildService {
 
     public ChildResponse getMyInfo(Long id){
 
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findByIdWithAccount(id).orElseThrow();
 
         return ChildResponse.builder()
                 .childId(child.getChildId())

@@ -35,7 +35,7 @@ public class Child {
 
     private int pocketMoneyDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Account account;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -135,5 +135,13 @@ public class Child {
 
     public void setMonster(Monster monster) {
         this.monster = monster;
+    }
+
+    public void setMonsterEcyclopedia(MonsterEncyclopedia monsterEncyclopedia) {
+        this.monsterEncyclopedia = monsterEncyclopedia;
+    }
+
+    public void setEggMoney(boolean eggMoney) {
+        this.eggMoney = eggMoney;
     }
 }

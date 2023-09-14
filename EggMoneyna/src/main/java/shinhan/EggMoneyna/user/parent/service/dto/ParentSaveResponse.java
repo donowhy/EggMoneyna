@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ParentSaveResponse {
+    private Long id;
     private String parentId;
     private String parentToken;
 
