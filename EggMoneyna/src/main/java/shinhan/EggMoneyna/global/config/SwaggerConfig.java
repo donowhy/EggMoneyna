@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(title = "에그머니나 API 명세서",
                 description = "게이미피케이션과 케어를 통한 아이의 소비습관을 책임질 에그머니나!",
-                version = "v1"))
-
+                version = "v1")
+)
 @SecurityScheme(
         name = "Bearer Authentication",
         type = SecuritySchemeType.HTTP,
