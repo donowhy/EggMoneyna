@@ -74,7 +74,7 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
-                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandName + EXTENSION).toString();
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/two" + EXTENSION).toString();
                 log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
