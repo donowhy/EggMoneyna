@@ -20,6 +20,7 @@ import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
 import com.shbhack.eggmoneyna.ui.mainparent.MainParentScreen
 import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
+import com.shbhack.eggmoneyna.ui.setting.SettingScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.ShinhanMongMainScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.ShinhanMongCollectionScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.detail.ShinhanMongCollectionDetailScreen
@@ -105,6 +106,9 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.EXPENSE_ANALYSIS) {
             ExpenseAnalysisScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.SETTING) {
+            SettingScreen(navController)
         }
     }
 }
