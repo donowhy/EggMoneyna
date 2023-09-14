@@ -38,6 +38,11 @@ public class InputOutputService {
     private final UsersRepository usersRepository;
     private final CommentRepository commentRepository;
 
+    final String S3URL = "https://eggmoneynabucket.s3.ap-northeast-2.amazonaws.com/brand/";
+    final String TYPE = "jpg";
+
+
+
     public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
         Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
@@ -55,15 +60,17 @@ public class InputOutputService {
         JsonNode itemsNode = getApi();
         String bigCategory = "";
         String smallCategory = "";
+        String brandImage = "";
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
+                brandImage = S3URL + brandName + TYPE;
                 break;
             }
         }
-        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory);
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
         account.inBalance(addInputOutRequestDto.getInput());
 
@@ -92,15 +99,17 @@ public class InputOutputService {
         JsonNode itemsNode = getApi();
         String bigCategory = "";
         String smallCategory = "";
+        String brandImage = "";
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
+                brandImage = S3URL + brandName + TYPE;
                 break;
             }
         }
-        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory);
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
         account.inBalance(addInputOutRequestDto.getInput());
 

@@ -23,10 +23,10 @@ public class AddInputOutRequestDto {
         this.output = output;
     }
 
-    public InputOutput of(Account account, Comment comment, String bigCategory, String smallCategory) {
+    public InputOutput of(Account account, Comment comment, String bigCategory, String smallCategory, String brandImage) {
         return InputOutput.builder()
                 .brandName(brandName)
-                .brandImg(brandImg)
+                .brandImg(brandImage)
                 .bigCategory(bigCategory)
                 .smallCategory(smallCategory)
                 .input(input)
