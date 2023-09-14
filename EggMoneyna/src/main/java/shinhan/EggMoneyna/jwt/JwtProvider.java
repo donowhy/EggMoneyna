@@ -41,12 +41,9 @@ public class JwtProvider {
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
                 .setClaims(claims)
-//                .setIssuer("test") // 토큰발급자(iss)
                 .setIssuedAt(now) // 발급시간(iat)
                 .setExpiration(expiration) // 만료시간(exp)
-//                .setSubject(subject) //  토큰 제목(subject)
                 .signWith(
-//                        SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes())
                         Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
                         SignatureAlgorithm.HS256
                         ) // 알고리즘, 시크릿 키
@@ -74,16 +71,6 @@ public class JwtProvider {
                 ) // 알고리즘, 시크릿 키
                 .compact();
     }
-
-    //==Jwt 토큰의 유효성 체크 메소드==//
-//    public Claims parseJwtToken(String token) {
-//        token = BearerRemove(token); // Bearer 제거
-//        return Jwts.parser()
-////                .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
-//                .setSigningKey(secretKey)
-//                .parseClaimsJws(token)
-//                .getBody();
-//    }
 
     //==토큰 앞 부분('Bearer') 제거 메소드==//
     private String BearerRemove(String token) {

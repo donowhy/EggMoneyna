@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.user.child.entity.Child;
+import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
@@ -45,6 +46,11 @@ public class Account extends BaseTimeEntity {
 
     @OneToOne
     @JsonIgnore
+    @JoinColumn(name = "parents_id")
+    private Parent parent;
+
+    @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "users_id")
     private Users users;
 
@@ -57,13 +63,14 @@ public class Account extends BaseTimeEntity {
 
 
     @Builder
-    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, List<WishBox> wishBox, Child child, Boolean autoTermination, List<InputOutput> inputOutputs) {
+    public Account(Long id, String nickName, BankCode bankCode, Long accountNumber, int balance, List<WishBox> wishBox, Parent parent, Child child, Boolean autoTermination, List<InputOutput> inputOutputs) {
         this.id = id;
         this.nickName = nickName;
         this.bankCode = bankCode;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.wishBox = wishBox;
+        this.parent = parent;
         this.child = child;
         this.autoTermination = autoTermination;
         this.inputOutputs = inputOutputs;

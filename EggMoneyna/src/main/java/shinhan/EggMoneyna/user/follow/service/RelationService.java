@@ -44,6 +44,25 @@ public class RelationService {
         return relationRepository.save(relation);
     }
 
+    // 연관 관계 생성
+    public Relation createFollowRelation(Long parentId, Long childId) {
+        Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
+        Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
+
+        Relation relation = Relation.builder()
+                .parent(parent)
+                .child(child)
+                .build();
+
+        parent.setIsRelation(true);
+        child.setIsRelation(true);
+
+        parentRepository.save(parent);
+        childRepository.save(child);
+
+        return relationRepository.save(relation);
+    }
+
     // 연관 관계 읽기
     public Relation getRelation(Long relationId) {
         return relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));

@@ -27,15 +27,24 @@ public class ChildService {
                 .childId(request.getChildId())
                 .password("123")
                 .build();
-        childRepository.save(child);
+        childRepository.saveAndFlush(child);
+
+        accountService.create(child.getId());
+
+        ChildLoginRequest childLoginRequest = ChildLoginRequest.builder()
+                .childId(child.getChildId())
+                .build();
+
+        returnToken login = login(childLoginRequest);
 
         return ChildSaveResponse.builder()
                 .childId(request.getChildId())
+                .childToken(login.getChildToken())
                 .build();
     }
 
 
-    public returnToken login(ChildLoginRequest request){
+    private returnToken login(ChildLoginRequest request){
 
         Child child = childRepository.checkChildPw(request.getChildId(), "123").orElseThrow();
 

@@ -5,6 +5,7 @@ package shinhan.EggMoneyna.user.parent.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.user.follow.entity.Relation;
 
 import javax.persistence.*;
@@ -43,8 +44,12 @@ public class Parent {
 
     private Boolean eggMoney;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Account account;
+
+
     @Builder
-    public Parent(Long id, String parentId, String password, String childNickname, int pocketMoney, int pocketMoneyDate, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney) {
+    public Parent(Long id, String parentId, String password, String childNickname, int pocketMoney, int pocketMoneyDate, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Account account) {
         this.id = id;
         this.parentId = parentId;
         this.password = password;
@@ -55,6 +60,7 @@ public class Parent {
         this.relations = relations;
         this.isRelation = isRelation;
         this.eggMoney = eggMoney;
+        this.account = account;
     }
 
     public void setNickname(String nickname) {
@@ -71,5 +77,9 @@ public class Parent {
 
     public void setIsRelation(boolean isRelation) {
         this.isRelation = isRelation;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
