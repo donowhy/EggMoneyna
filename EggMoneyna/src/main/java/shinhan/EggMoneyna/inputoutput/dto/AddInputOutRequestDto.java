@@ -11,14 +11,12 @@ import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 @NoArgsConstructor
 public class AddInputOutRequestDto {
     private String brandName;
-    private String brandImg;
     private int input;
     private int output;
 
     @Builder
-    public AddInputOutRequestDto(String brandName, String brandImg, int input, int output) {
+    public AddInputOutRequestDto(String brandName, int input, int output) {
         this.brandName = brandName;
-        this.brandImg = brandImg;
         this.input = input;
         this.output = output;
     }
