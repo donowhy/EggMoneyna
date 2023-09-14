@@ -56,6 +56,7 @@ public class MonsterService {
 
         Monster savedMonster = monsterRepository.save(monster);
 
+        child.setMonster(monster);
         child.setCntMonsters(child.getCntMonsters() + 1);
 
         return MonsterSaveResponseDto.of(savedMonster);
@@ -90,6 +91,7 @@ public class MonsterService {
 
         child.setSevenDays(sevendays);
         child.setConsecutiveceAttempt(child.getConsecutiveAttempt() + 1);
+
         return MonsterResponseDto.builder()
                 .name(String.valueOf(monster.getName()))
                 .status(String.valueOf(monster.getStatus()))
@@ -120,7 +122,7 @@ public class MonsterService {
 
         for (Child child : children) {
 
-            List<Boolean> month = child.getMonth();
+            List<Boolean> month = child.getAMonth();
             LocalDate date = LocalDate.now();
             int days = allMonth(date.getYear(), date.getMonthValue());
 
@@ -134,8 +136,9 @@ public class MonsterService {
             }
 
             // Month 리스트를 초기화합니다.
-            month.clear();
-            child.setMonth(month);
+            month = new ArrayList<>();
+
+            child.setAMonth(month);
 
             // 변경 사항을 저장합니다.
             childRepository.save(child);
