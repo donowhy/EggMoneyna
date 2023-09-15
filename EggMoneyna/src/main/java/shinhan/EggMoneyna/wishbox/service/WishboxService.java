@@ -53,7 +53,7 @@ public class WishboxService {
                 .wishName(requestDto.getWishName())
                 .account(account)
                 .virtualNumber(virtualNum)
-                .bankCode(BankCode.Shinhan)
+                .bankCode(BankCode.SHINHAN)
                 .build();
 
         wishboxRepository.save(wishbox);

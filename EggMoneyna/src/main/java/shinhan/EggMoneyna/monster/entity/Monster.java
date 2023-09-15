@@ -4,6 +4,7 @@ package shinhan.EggMoneyna.monster.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.monster.entity.enumType.Benefit;
 import shinhan.EggMoneyna.monster.entity.enumType.Feel;
 import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
@@ -16,7 +17,7 @@ import java.util.Random;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Monster {
+public class Monster extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -52,7 +52,7 @@ public class MonsterService {
                 .status(MonsterStatus.Egg)
                 .benefit(monsterSaveRequestDto.getBenefitEnum())
                 .child(child)
-                .feel(Feel.NOTHING)
+                .feel(Feel.NOMAL)
                 .build();
 
         Monster savedMonster = monsterRepository.save(monster);
@@ -92,7 +92,7 @@ public class MonsterService {
             if (trueCount >= 5) {
                 monster.setFeel(Feel.HAPPY);
             } else if (trueCount >= 3) {
-                monster.setFeel(Feel.NOTHING);
+                monster.setFeel(Feel.NOMAL);
             } else {
                 monster.setFeel(Feel.SAD);
             }
@@ -152,11 +152,6 @@ public class MonsterService {
             month = new ArrayList<>();
 
             child.setAMonth(month);
-
-            List<InputOutput> inputOutputs = child.getAccount().getInputOutputs();
-            for (InputOutput inputOutput : inputOutputs) {
-                if(inputOutput.getComment().getCompliment() && inputOutput)
-            }
 
             // 변경 사항을 저장합니다.
             childRepository.save(child);

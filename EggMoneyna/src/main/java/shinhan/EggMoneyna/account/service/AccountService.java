@@ -52,7 +52,7 @@ public class AccountService {
 			Child child = childRepository.findById(id).orElseThrow();
 			account = Account.builder()
 					.nickName("에그머니나")
-					.bankCode(BankCode.Shinhan)
+					.bankCode(BankCode.SHINHAN)
 					.accountNumber(accountNumber)
 					.balance(0)
 					.child(child)
@@ -64,7 +64,7 @@ public class AccountService {
 
 			account = Account.builder()
 					.nickName("에그머니나")
-					.bankCode(BankCode.Shinhan)
+					.bankCode(BankCode.SHINHAN)
 					.accountNumber(accountNumber)
 					.balance(5000000)
 					.parent(parent)

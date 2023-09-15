@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum BankCode {
 
     // 은행 코드
-    Shinhan("Shinhan", "088");
+    SHINHAN("Shinhan", "088");
+
 
     private final String key;
     private final String bankCode;
