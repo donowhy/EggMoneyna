@@ -37,7 +37,7 @@ public class Monster {
     private Benefit benefit;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "child_id")
+    @JoinColumn(name = "childs_default_id")
     private Child child;
 
     @Builder

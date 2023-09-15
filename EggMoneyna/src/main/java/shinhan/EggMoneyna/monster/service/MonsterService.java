@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
@@ -149,6 +150,11 @@ public class MonsterService {
             month = new ArrayList<>();
 
             child.setAMonth(month);
+
+            List<InputOutput> inputOutputs = child.getAccount().getInputOutputs();
+            for (InputOutput inputOutput : inputOutputs) {
+                if(inputOutput.getComment().getCompliment() && inputOutput)
+            }
 
             // 변경 사항을 저장합니다.
             childRepository.save(child);
