@@ -1,24 +1,29 @@
 package shinhan.EggMoneyna.inputoutput.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.dto.CategoryGraphDto;
+import shinhan.EggMoneyna.inputoutput.dto.WeekGraphDto;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InputOutputGraphService {
     private final ChildRepository childRepository;
     private final AccountRepository accountRepository;
@@ -95,5 +100,39 @@ public class InputOutputGraphService {
                 .etc(etcPercentage)
                 .build();
 
+    }
+
+    public List<WeekGraphDto> getWeekGraph(Long usersId) {
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        LocalDate currentDate = LocalDate.now();
+        LocalDate oneWeekAgo = currentDate.minusWeeks(1);
+        List<WeekGraphDto> WeekList = new ArrayList<>();
+
+        for (int i = 1; i < 8; i++) {
+            LocalDate startDate = oneWeekAgo.plusDays(i);
+            log.info(startDate.toString());
+            LocalDateTime endDate = oneWeekAgo.plusDays(i).atTime(23, 59, 59);
+            log.info(endDate.toString());
+            List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startDate.atStartOfDay(), endDate);
+
+            int totalOutputs = inputOutputs.stream()
+                    .mapToInt(InputOutput::getOutput)
+                    .sum();
+
+            int totalInputs = inputOutputs.stream()
+                    .mapToInt(InputOutput::getInput)
+                    .sum();
+
+            WeekGraphDto weekGraphDto = WeekGraphDto.builder()
+                    .date(startDate)
+                    .totalOutput(totalOutputs)
+                    .totalInput(totalInputs)
+                    .build();
+
+            WeekList.add(weekGraphDto);
+        }
+        return WeekList;
     }
 }
