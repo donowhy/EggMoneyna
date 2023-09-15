@@ -25,11 +25,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaOrange
+import ir.kaaveh.sdpcompose.sdp
+import ir.kaaveh.sdpcompose.ssp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -38,7 +38,7 @@ import kotlinx.datetime.todayIn
 
 @Composable
 fun DayClickContent(selectedDay: LocalDate) {
-    LazyColumn(modifier = Modifier.padding(12.dp)) {
+    LazyColumn(modifier = Modifier.padding(12.sdp)) {
         val selectedDay = Clock.System.todayIn(TimeZone.currentSystemDefault())
         items(5) {
             SpendingListItem(selectedDay)
@@ -52,7 +52,8 @@ fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(start = 16.sdp, end = 16.sdp, top = 10.sdp, bottom = 10.sdp)
+            .padding(start = 4.sdp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -60,37 +61,43 @@ fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate) {
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(68.dp)
+                .size(58.sdp)
                 .clip(CircleShape)
                 .background(Color.Gray)
         )
-        Spacer(modifier = Modifier.size(12.dp))
+        Spacer(modifier = Modifier.size(12.sdp))
         Column(modifier = Modifier.weight(2f)) {
-            Text(text = "-4,900원", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = "-4,900원", fontSize = 12.ssp, fontWeight = FontWeight.SemiBold)
             Text(
                 text = "투썸플레이스 진평점",
-                fontSize = 12.sp,
+                fontSize = 10.ssp,
                 fontWeight = FontWeight.Medium,
                 color = Color.DarkGray,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
-        Spacer(modifier = Modifier.size(12.dp))
+        Spacer(modifier = Modifier.size(12.sdp))
         Surface(
             color = EggmoneynaOrange,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(16.sdp),
         ) {
             Text(
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 4.dp, bottom = 4.dp),
+                modifier = Modifier.padding(
+                    start = 10.sdp,
+                    end = 10.sdp,
+                    top = 4.sdp,
+                    bottom = 4.sdp
+                ),
                 text = "카페",
-                fontSize = 12.sp,
+                fontSize = 10.ssp,
                 fontWeight = FontWeight.Medium
             )
         }
+        Spacer(modifier = Modifier.size(8.sdp))
         Icon(
             painter = painterResource(id = R.drawable.icon_forward), contentDescription = "forward",
-            modifier = Modifier.padding(8.dp), tint = Color.Gray
+            modifier = Modifier.size(16.sdp), tint = Color.Gray
         )
 
     }

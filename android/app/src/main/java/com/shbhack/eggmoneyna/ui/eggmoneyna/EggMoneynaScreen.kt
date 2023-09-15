@@ -16,11 +16,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.himanshoe.kalendar.KalendarEvent
+import com.himanshoe.kalendar.KalendarEvents
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 
@@ -41,10 +44,34 @@ fun EggMoneynaScreen(
         Column(modifier = Modifier.padding(it)) {
             LazyColumn {
                 item {
-                    ColorBackgroundWithText(EggmoneynaPurple, stringResource(id = R.string.eggmoneyna_rest_money_title), "500,000원")
+                    ColorBackgroundWithText(
+                        EggmoneynaPurple,
+                        stringResource(id = R.string.eggmoneyna_rest_money_title),
+                        "500,000원"
+                    )
                 }
                 item {
-                    CustomCalendar() { localDate ->
+                    CustomCalendar(
+                        KalendarEvents(
+                            listOf(
+                                KalendarEvent(
+                                    LocalDate(2023, 9, 11),
+                                    "",
+                                    ""
+                                ),
+                                KalendarEvent(
+                                    LocalDate(2023, 9, 14),
+                                    "dd",
+                                    "dd"
+                                ),
+                                KalendarEvent(
+                                    LocalDate(2023, 9, 17),
+                                    "dd",
+                                    "dd"
+                                )
+                            )
+                        )
+                    ) { localDate ->
                         selectedDay = localDate
                     }
                 }

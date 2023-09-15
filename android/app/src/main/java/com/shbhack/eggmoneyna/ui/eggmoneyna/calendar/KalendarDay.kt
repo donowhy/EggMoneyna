@@ -1,7 +1,5 @@
 package com.shbhack.eggmoneyna.ui.eggmoneyna.calendar
 
-import com.himanshoe.kalendar.ui.component.day.KalendarDayKonfig
-
 /*
  * Copyright 2023 Kalendar Contributors (https://www.himanshoe.com). All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +14,11 @@ import com.himanshoe.kalendar.ui.component.day.KalendarDayKonfig
  *
  */
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -39,17 +35,14 @@ import androidx.compose.ui.unit.dp
 import com.himanshoe.kalendar.KalendarEvent
 import com.himanshoe.kalendar.KalendarEvents
 import com.himanshoe.kalendar.color.KalendarColor
+import com.himanshoe.kalendar.ui.component.day.KalendarDayKonfig
 import com.himanshoe.kalendar.ui.component.day.modifier.circleLayout
 import com.himanshoe.kalendar.ui.component.day.modifier.dayBackgroundColor
-import com.himanshoe.kalendar.ui.component.indicator.KalendarIndicator
 import com.himanshoe.kalendar.ui.firey.KalendarSelectedDayRange
-import com.himanshoe.kalendar.util.MultiplePreviews
+import ir.kaaveh.sdpcompose.sdp
 import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
 
 /**
@@ -64,6 +57,9 @@ import kotlinx.datetime.todayIn
  * @param kalendarEvents The events associated with the Kalendar.
  * @param kalendarDayKonfig The configuration for the Kalendar day.
  */
+
+private const val TAG = "KalendarDay_진영"
+
 @Composable
 fun KalendarDay(
     date: LocalDate,
@@ -75,10 +71,10 @@ fun KalendarDay(
     kalendarEvents: KalendarEvents = KalendarEvents(),
     kalendarDayKonfig: KalendarDayKonfig = KalendarDayKonfig.default(),
 ) {
+    Log.d(TAG, "KalendarDay: $kalendarEvents")
     val selected = selectedDate == date
     val currentDay = Clock.System.todayIn(TimeZone.currentSystemDefault()) == date
-
-    Column(
+    Box(
         modifier = modifier
             .padding(4.dp)
             .border(
@@ -96,8 +92,9 @@ fun KalendarDay(
             .circleLayout()
             .wrapContentSize()
             .defaultMinSize(kalendarDayKonfig.size),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        contentAlignment = Alignment.Center
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = date.dayOfMonth.toString(),
@@ -107,21 +104,22 @@ fun KalendarDay(
             color = if (selected) kalendarDayKonfig.selectedTextColor else kalendarDayKonfig.textColor,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold
         )
-        Row {
-            kalendarEvents.events
-                .filter { it.date == date }
-                .take(3)
-                .forEachIndexed{ index, _ ->
-                    Row {
-                        KalendarIndicator(
-                            modifier = Modifier,
-                            index = index,
-                            size = kalendarDayKonfig.size,
-                            color = kalendarColors.headerTextColor
-                        )
-                    }
+
+        kalendarEvents.events
+            .filter { it.date == date }
+            .forEachIndexed { index, _ ->
+
+                // indicator 커스텀
+                Box(modifier = Modifier.padding(top = 24.sdp)) {
+                    KalendarIndicator(
+                        modifier = Modifier,
+                        index = index,
+                        size = 4.sdp,
+                        color = Color.Gray
+                    )
                 }
-        }
+            }
+
     }
 }
 
