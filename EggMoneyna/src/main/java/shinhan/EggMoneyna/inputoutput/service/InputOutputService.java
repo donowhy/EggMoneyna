@@ -168,9 +168,6 @@ public class InputOutputService {
 
         List<InputOutput> inputs = inputOutputRepository.findByAccountAndOutputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
 
-//        if (inputs.isEmpty()) {
-//            return InputOutputResponseDto.builder().build();
-//        }
         return InputOutputResponseDto.builder()
                 .inputOutputs(inputs)
                 .build();
@@ -188,9 +185,6 @@ public class InputOutputService {
 
         List<InputOutput> outputs = inputOutputRepository.findByAccountAndInputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
 
-//        if (outputs.isEmpty()) {
-//            return InputOutputResponseDto.builder().build();
-//        }
         return InputOutputResponseDto.builder()
                 .inputOutputs(outputs)
                 .build();
@@ -207,10 +201,7 @@ public class InputOutputService {
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
         List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfDay, endOfDay);
-
-//        if (inputOutputs.isEmpty()) {
-//            return InputOutputResponseDto.builder().build();
-//        }
+        
         return InputOutputResponseDto.builder()
                 .inputOutputs(inputOutputs)
                 .build();
