@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 
 @Composable
 fun RoundedCornerButton(
@@ -22,10 +23,9 @@ fun RoundedCornerButton(
     onClick: () -> Unit = {}
 ) {
     Surface(
-        modifier = Modifier
-            .clickable {
-                onClick()
-            },
+        modifier = Modifier.noRippleClickable {
+            onClick()
+        },
         color = color,
         shape = RoundedCornerShape(roundedSize.dp),
     ) {

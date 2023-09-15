@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
 import com.shbhack.eggmoneyna.ui.theme.divideColor
 import ir.kaaveh.sdpcompose.sdp
@@ -42,7 +43,7 @@ fun ChooseWhoCard(
             .padding(horizontal = 15.sdp)
             .coloredShadow(color = Color.Black.copy(0.2f), 10.sdp, 3.sdp, 0.sdp, 0.sdp, 0.5f)
             .background(color = Color.White, shape = RoundedCornerShape(10.sdp))
-            .clickable {
+            .noRippleClickable {
                 onClick()
             }
     ) {
