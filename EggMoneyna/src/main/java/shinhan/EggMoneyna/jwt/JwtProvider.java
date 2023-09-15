@@ -102,7 +102,7 @@ public class JwtProvider {
 
         return UsersInfo.builder()
                 .id(Long.valueOf((Integer) claimsBody.getOrDefault("id", 0L)))
-                .username(claimsBody.getOrDefault("username", "").toString())
+//                .username(claimsBody.getOrDefault("username", "").toString())
                 .build();
     }
 

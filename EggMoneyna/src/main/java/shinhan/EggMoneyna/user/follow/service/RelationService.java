@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import shinhan.EggMoneyna.jwt.JwtProvider;
+import shinhan.EggMoneyna.user.follow.service.dto.RelationEggMoney;
 import shinhan.EggMoneyna.user.follow.service.dto.RelationParentChild;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.user.child.entity.Child;
@@ -22,80 +24,88 @@ import javax.transaction.Transactional;
 @Transactional
 public class RelationService {
 
-	private final RelationRepository relationRepository;
+    private final RelationRepository relationRepository;
 
-	private final ParentRepository parentRepository;
+    private final ParentRepository parentRepository;
 
-	private final ChildRepository childRepository;
+    private final ChildRepository childRepository;
 
-	// 연관 관계 생성
-	public RelationParentChild createRelation(Long parentId, Long childId) {
-		Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
-			new RuntimeException("Parent not found")
-		);
-		Child child = childRepository.findById(childId).orElseThrow(() ->
-			new RuntimeException("Child not found")
-		);
+    private final JwtProvider jwtProvider;
 
-		Relation relation = Relation.builder()
-			.parent(parent)
-			.child(child)
-			.build();
-		log.info("여기까진={}", relation.getParent());
-		parent.setIsRelation(true);
-		child.setIsRelation(true);
+    // 연관 관계 생성
+    public RelationParentChild createRelation(Long parentId, Long childId) {
+        Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
+                new RuntimeException("Parent not found")
+        );
+        Child child = childRepository.findById(childId).orElseThrow(() ->
+                new RuntimeException("Child not found")
+        );
 
-		parentRepository.save(parent);
-		childRepository.save(child);
-		relationRepository.save(relation);
+        Relation relation = Relation.builder()
+                .parent(parent)
+                .child(child)
+                .build();
+        log.info("여기까진={}", relation.getParent());
+        parent.setIsRelation(true);
+        child.setIsRelation(true);
 
-		return RelationParentChild.builder()
-			.pId(parent.getId())
-			.parentId(parent.getParentId())
-			.cId(child.getId())
-			.childId(child.getChildId())
-			.build();
-	}
+        String parentToken = jwtProvider.createParentToken(parent);
 
-	// 에그머니나 생성
-	public RelationParentChild createEggMoneyRelation(Long parentId, Long childId) {
-		Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
-		Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
+        parentRepository.save(parent);
+        childRepository.save(child);
+        relationRepository.save(relation);
 
-		parent.setEggMoney(true);
-		child.setEggMoney(true);
+        return RelationParentChild.builder()
+                .ParentToken(parentToken)
+                .pId(parent.getId())
+                .parentId(parent.getParentId())
+                .cId(child.getId())
+                .childId(child.getChildId())
+                .build();
+    }
 
-		parentRepository.save(parent);
-		childRepository.save(child);
+    // 에그머니나 생성
+    public RelationEggMoney createEggMoneyRelation(Long parentId, Long childId) {
+        Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
+        Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
 
-		return RelationParentChild.builder()
-			.pId(parent.getId())
-			.parentId(parent.getParentId())
-			.cId(child.getId())
-			.childId(child.getChildId())
-			.build();
-	}
+        String childToken = jwtProvider.createChildToken(child);
 
-	// 연관 관계 읽기
-	public Relation getRelation(Long relationId) {
-		return relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));
-	}
+        parent.setEggMoney(true);
+        child.setEggMoney(true);
 
-	// 연관 관계 삭제
-	public void deleteRelation(Long parentid, Long childId) {
+        parentRepository.save(parent);
+        childRepository.save(child);
 
-		Relation relation = relationRepository.findRelationByParentIdAndChildId(childId, parentid)
-			.orElseThrow(() -> new RuntimeException("Relation not found"));
+        return RelationEggMoney.builder()
+                .pId(parent.getId())
+                .parentId(parent.getParentId())
+                .childToken(childToken)
+                .cId(child.getId())
+                .childId(child.getChildId())
+                .build();
+    }
 
-		Parent parent = relation.getParent();
-		Child child = relation.getChild();
+    // 연관 관계 읽기
+    public Relation getRelation(Long relationId) {
+        return relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));
+    }
 
-		parent.setIsRelation(false);
-		child.setIsRelation(false);
+    // 연관 관계 삭제
+    public void deleteRelation(Long parentid, Long childId) {
 
-		parentRepository.save(parent);
-		childRepository.save(child);
+        Relation relation = relationRepository.findRelationByParentIdAndChildId(childId, parentid)
+                .orElseThrow(() -> new RuntimeException("Relation not found"));
 
-		relationRepository.delete(relation);
-	}
+        Parent parent = relation.getParent();
+        Child child = relation.getChild();
+
+        parent.setIsRelation(false);
+        child.setIsRelation(false);
+
+        parentRepository.save(parent);
+        childRepository.save(child);
+
+        relationRepository.delete(relation);
+    }
 }

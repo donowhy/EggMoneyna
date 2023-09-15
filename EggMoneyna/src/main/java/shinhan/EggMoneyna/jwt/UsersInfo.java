@@ -5,11 +5,9 @@ import lombok.*;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
 public class UsersInfo {
 
     private Long id;
-    private String username;
 }
