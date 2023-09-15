@@ -24,6 +24,7 @@ import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
 import com.shbhack.eggmoneyna.ui.mainparent.MainParentScreen
 import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
+import com.shbhack.eggmoneyna.ui.setting.SettingScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.ShinhanMongMainScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.ShinhanMongCollectionScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.detail.ShinhanMongCollectionDetailScreen
@@ -55,25 +56,25 @@ fun EggMoneynaNavGraph(
                 enterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 popEnterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 popExitTransition = {
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 content = content
@@ -121,6 +122,9 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.EXPENSE_ANALYSIS) {
             ExpenseAnalysisScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.SETTING) {
+            SettingScreen(navController)
         }
     }
 }

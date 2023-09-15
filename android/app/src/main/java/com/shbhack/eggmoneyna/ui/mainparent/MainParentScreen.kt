@@ -2,6 +2,7 @@ package com.shbhack.eggmoneyna.ui.mainparent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -89,7 +90,10 @@ fun MainParentScreen(navController: NavController) {
                         Image(
                             modifier = Modifier
                                 .fillMaxWidth(0.08f)
-                                .aspectRatio(1f),
+                                .aspectRatio(1f)
+                                .clickable {
+                                    navController.navigate(EggMoneynaDestination.SETTING)
+                                },
                             painter = painterResource(id = R.drawable.icon_setting),
                             contentDescription = "세팅 아이콘"
                         )
