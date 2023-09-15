@@ -14,6 +14,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.MainActivity
+import com.shbhack.eggmoneyna.ui.selectchild.SelectChildScreen
+import com.shbhack.eggmoneyna.ui.authuser.AuthUserCheckScreen
+import com.shbhack.eggmoneyna.ui.authuser.AuthUserMainScreen
+import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
@@ -32,8 +36,8 @@ fun EggMoneynaNavGraph(
     activity: MainActivity,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = EggMoneynaDestination.SPLASH
-//    startDestination: String = EggMoneynaDestination.EXPENSE_ANALYSIS
+//    startDestination: String = EggMoneynaDestination.SPLASH
+    startDestination: String = EggMoneynaDestination.MAIN_PARENT
 ) {
 
     NavHost(
@@ -88,6 +92,18 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.CHOOSE_WHO) {
             ChooseWhoScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_MAIN) {
+            AuthUserMainScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_SEND_1WON) {
+            AuthUserSend1WonScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_CHECK) {
+            AuthUserCheckScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.SELECT_CHILD) {
+            SelectChildScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.MAIN_CHILD) {
             MainChildScreen(navController)

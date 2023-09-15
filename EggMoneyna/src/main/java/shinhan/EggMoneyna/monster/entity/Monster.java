@@ -19,7 +19,7 @@ import java.util.Random;
 public class Monster {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monster_id")
     private Long id;
 
@@ -27,8 +27,6 @@ public class Monster {
 
     @Enumerated(EnumType.STRING)
     private MonsterStatus status;
-
-    private int point;
 
     @Enumerated(EnumType.STRING)
     private Feel feel;
@@ -43,11 +41,10 @@ public class Monster {
     private Child child;
 
     @Builder
-    public Monster(Long id, ShinhanMong name, MonsterStatus status, int point, Feel feel, int exp, Benefit benefit, Child child) {
+    public Monster(Long id, ShinhanMong name, MonsterStatus status, Feel feel, int exp, Benefit benefit, Child child) {
         this.id = id;
         this.name = name;
         this.status = status;
-        this.point = point;
         this.feel = feel;
         this.exp = exp;
         this.benefit = benefit;
@@ -64,4 +61,11 @@ public class Monster {
         return MonsterStatus.Egg;
     }
 
+    public void setMonsterExp(int exp) {
+        this.exp = exp;
+    }
+
+    public void setFeel(Feel feel) {
+        this.feel = feel;
+    }
 }

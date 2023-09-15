@@ -27,7 +27,7 @@ fun ButtonSkip(navController: NavController, activity: MainActivity) {
         onClick = {
             navController.popBackStack()
             navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-            activity.setStatusBarOrigin()
+//            activity.setStatusBarOrigin()
         },
     )
 }

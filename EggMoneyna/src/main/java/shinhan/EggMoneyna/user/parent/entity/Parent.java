@@ -2,6 +2,8 @@ package shinhan.EggMoneyna.user.parent.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,7 @@ import java.util.List;
 public class Parent {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "parents_id")
     private Long id;
 
@@ -38,6 +40,7 @@ public class Parent {
     private String firebaseToken;
 
     @OneToMany(mappedBy = "parent")
+    @JsonIgnore
     private List<Relation> relations;
 
     private Boolean isRelation;
@@ -81,5 +84,9 @@ public class Parent {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void setEggMoney(boolean eggMoney) {
+        this.eggMoney = eggMoney;
     }
 }

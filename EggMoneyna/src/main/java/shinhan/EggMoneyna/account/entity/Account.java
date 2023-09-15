@@ -2,6 +2,7 @@ package shinhan.EggMoneyna.account.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,24 +21,26 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account extends BaseTimeEntity {
 
-   @Id
-   @GeneratedValue
-   private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Long id;
 
-   private String nickName;
+    private String nickName;
 
-   @Enumerated(EnumType.STRING)
-   private BankCode bankCode;
+    @Enumerated(EnumType.STRING)
+    private BankCode bankCode;
 
-   private Long accountNumber;
+    private Long accountNumber;
 
-   private int balance;
+    private int balance;
 
-   @OneToMany(mappedBy = "account")
-   @JsonIgnore
-   private List<WishBox> wishBox = new ArrayList<>();
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    private List<WishBox> wishBox = new ArrayList<>();
 
     @OneToOne
     @JsonIgnore
@@ -54,12 +57,11 @@ public class Account extends BaseTimeEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
-   @Column(columnDefinition = "boolean default false")
-   private Boolean autoTermination;
+    private Boolean autoTermination;
 
 
-   @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-   private List<InputOutput> inputOutputs = new ArrayList<>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InputOutput> inputOutputs = new ArrayList<>();
 
 
     @Builder
@@ -72,13 +74,13 @@ public class Account extends BaseTimeEntity {
         this.wishBox = wishBox;
         this.parent = parent;
         this.child = child;
-        this.autoTermination = autoTermination;
+        this.autoTermination = false;
         this.inputOutputs = inputOutputs;
     }
 
     public void setNickName(String name) {
-       this.nickName = name;
-   }
+        this.nickName = name;
+    }
 
     public void setBalance(int i) {
         this.balance = i;

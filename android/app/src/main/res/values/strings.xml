@@ -16,6 +16,42 @@
     <string name="onboarding5Title">일정관리\n걱정 마세요</string>
     <string name="onboarding5Content">우리 아이 용돈 날짜\n잊지 않도록 도와드려요</string>
 
+    <!--  chooseWho  -->
+    <string name="chooseWhoBannerTitle">알록달록 계정 선택하기</string>
+    <string name="chooseWhoBannerContent">부모와 자녀에게\n꼭 맞는 서비스를 제공해드립니다.</string>
+    <string name="chooseWhoParent">나는\n자녀를 둔 부모입니다.</string>
+    <string name="chooseWhoParentExplain">자녀가 날마다 어떤 지출을 했는지,\n아이가 어떤 코멘트를 남겼는지 확인할 수 있어요.</string>
+    <string name="chooseWhoChild">나는\n자녀입니다.</string>
+    <string name="chooseWhoChildExplain">신한몽을 키우며 나의 용돈을 관리할 수 있어요.\n내가 원하는 물건 위시박스를 채우며 구매해볼까요?</string>
+
+    <!--  authUser  -->
+    <string name="authUserAccountExplain">계좌를\n입력해주세요</string>
+    <string name="authUserAccountEditText">계좌번호 입력</string>
+    <string name="authUserSend1WonExplain">계좌인증을 위해\n1원을 보내볼게요</string>
+    <string name="authUserCheckExplain">입금내역을 확인하고\n\'신한\' 뒤 4자리 영어를 알려주세요</string>
+    <string name="authUserCheckEditText">4자리 영어</string>
+
+    <!--  selectChild  -->
+    <string name="selectChildBannerTitle">나의 자녀 찾기</string>
+    <string name="selectChildBannerContent">우리 아이의 용돈 관리부터\n꼭 맞는 상품까지 추천 받을 수 있습니다.</string>
+    <string name="selectChildListTitle">나의 자녀 리스트</string>
+    <string name="selectChildListContnet">자녀를 선택하면 해당 자녀로 알록달록을 바로 시작합니다</string>
+
+    <!--  mainParent  -->
+    <string name="mainParentTitle">홈</string>
+    <string name="mainParentButtonAnalysis">자녀 지출 분석</string>
+    <string name="mainParentButtonAdd">자녀 추가하기</string>
+    <string name="mainParentListTitle">우리 아이에게 꼭 맞는 상품</string>
+    <string name="mainParentItemAccountTitle">신한 MY 주니어통장</string>
+    <string name="mainParentItemAccountContent">우리 아이 첫 통장은</string>
+    <string name="mainParentItemStockTitle">신한 투자증권 증권거래예금</string>
+    <string name="mainParentItemStockContent">우리 아이 주식거래를 시작하려면</string>
+    <string name="mainParentItemWishboxTitle">신한 안녕, 반가워 적금</string>
+    <string name="mainParentItemWishboxContent">우리 아이를 주니어 저축왕으로</string>
+    <string name="mainParentWarningTitle">알아두세요.</string>
+    <string name="mainParentWarningContent1">이 광고는 법령 및 내부통제기준에 따른 관련 절차를 거쳐 제공됩니다.</string>
+    <string name="mainParentWarningContent2">기타 자세한 사항은 신한은행 고객센터(1599-8000)에 문의 바랍니다.</string>
+
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>

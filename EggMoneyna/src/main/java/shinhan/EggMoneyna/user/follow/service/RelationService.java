@@ -27,25 +27,29 @@ public class RelationService {
 
     // 연관 관계 생성
     public Relation createRelation(Long parentId, Long childId) {
-        Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
-        Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
+        Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
+                new RuntimeException("Parent not found")
+        );
+        Child child = childRepository.findById(childId).orElseThrow(() ->
+                new RuntimeException("Child not found")
+        );
 
         Relation relation = Relation.builder()
                 .parent(parent)
                 .child(child)
                 .build();
+        log.info("여기까진={}", relation.getParent());
+//        parent.setIsRelation(true);
+//        child.setIsRelation(true);
 
-        parent.setIsRelation(true);
-        child.setIsRelation(true);
-
-        parentRepository.save(parent);
-        childRepository.save(child);
+//        parentRepository.save(parent);
+//        childRepository.save(child);
 
         return relationRepository.save(relation);
     }
 
-    // 연관 관계 생성
-    public Relation createFollowRelation(Long parentId, Long childId) {
+    // 에그머니나 생성
+    public Relation createEggMoneyRelation(Long parentId, Long childId) {
         Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
         Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
 
@@ -54,8 +58,8 @@ public class RelationService {
                 .child(child)
                 .build();
 
-        parent.setIsRelation(true);
-        child.setIsRelation(true);
+        parent.setEggMoney(true);
+        child.setEggMoney(true);
 
         parentRepository.save(parent);
         childRepository.save(child);
@@ -68,18 +72,12 @@ public class RelationService {
         return relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));
     }
 
-    // 연관 관계 업데이트 - 예시로 Parent의 아이 닉네임을 변경하는 메서드를 작성했습니다
-    public Relation updateRelation(Long relationId, String newChildNickname) {
-        Relation relation = relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));
-        Parent parent = relation.getParent();
-        parent.setNickname(newChildNickname);
-        parentRepository.save(parent);
-        return relation;
-    }
 
     // 연관 관계 삭제
-    public void deleteRelation(Long relationId) {
-        Relation relation = relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));
+    public void deleteRelation(Long parentid, Long childId) {
+
+        Relation relation = relationRepository.findRelationByParentIdAndChildId(childId, parentid).orElseThrow(() -> new RuntimeException("Relation not found"));
+
         Parent parent = relation.getParent();
         Child child = relation.getChild();
 
@@ -89,6 +87,6 @@ public class RelationService {
         parentRepository.save(parent);
         childRepository.save(child);
 
-        relationRepository.deleteById(relationId);
+        relationRepository.delete(relation);
     }
 }

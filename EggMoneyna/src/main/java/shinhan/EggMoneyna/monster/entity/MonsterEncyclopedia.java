@@ -1,21 +1,25 @@
 package shinhan.EggMoneyna.monster.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.users.entity.Users;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MonsterEncyclopedia {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "monsterEncyclopedia_id")
     private Long id;
     private Boolean SOL;
     private Boolean MOLI;
@@ -27,9 +31,24 @@ public class MonsterEncyclopedia {
     private Boolean LAY;
 
     @OneToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "childs_id")
     @JsonIgnore
-    private Users users;
+    private Child child;
+
+
+    @Builder
+    public MonsterEncyclopedia(Long id, Boolean SOL, Boolean MOLI, Boolean RINO, Boolean SHOO, Boolean DOREMI, Boolean LULULALA, Boolean PLI, Boolean LAY, Child child) {
+        this.id = id;
+        this.SOL = SOL;
+        this.MOLI = MOLI;
+        this.RINO = RINO;
+        this.SHOO = SHOO;
+        this.DOREMI = DOREMI;
+        this.LULULALA = LULULALA;
+        this.PLI = PLI;
+        this.LAY = LAY;
+        this.child = child;
+    }
 
     public void setSol(Boolean SOL) {
         this.SOL = SOL;
@@ -42,16 +61,23 @@ public class MonsterEncyclopedia {
     public void setRino(boolean RINO) {
         this.RINO = RINO;
     }
+
     public void setShoo(boolean SHOO) {
         this.SHOO = SHOO;
     }
+
     public void setDoremi(boolean DOREMI) {
         this.DOREMI = DOREMI;
-    }public void setLululala(boolean LULULALA) {
+    }
+    public void setLululala(boolean LULULALA) {
         this.LULULALA = LULULALA;
-    }public void setPli(boolean PLI) {
+    }
+    public void setPli(boolean PLI) {
         this.PLI = PLI;
-    }public void setLay(boolean LAY) {
+    }
+    public void setLay(boolean LAY) {
         this.LAY = LAY;
     }
+
+
 }

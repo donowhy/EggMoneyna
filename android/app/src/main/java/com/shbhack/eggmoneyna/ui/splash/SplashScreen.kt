@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(navController: NavController, activity: MainActivity) {
+    activity.setSystemBarTransparent()
 
     LaunchedEffect(Unit) {
         delay(1500)
@@ -48,7 +49,6 @@ fun SplashScreen(navController: NavController, activity: MainActivity) {
                     navController.navigate(EggMoneynaDestination.MAIN_CHILD)
                 }
             } else {
-                AppPreferences.checkFirstShowed()
                 navController.navigate(EggMoneynaDestination.ON_BOARDING)
             }
         }

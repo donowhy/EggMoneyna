@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +17,9 @@ public class ParentResponse {
     private String parentId;
 
     // 아이 닉네임
-    private String childNickname;
+    private List<String> childNicknames;
+
+    private List<String> eggMoneynaChild;
 
     // 용돈
     private int pocketMoney;
