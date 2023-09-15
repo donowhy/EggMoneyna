@@ -15,7 +15,6 @@ package com.shbhack.eggmoneyna.ui.eggmoneyna.calendar
  */
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
@@ -31,7 +30,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,7 +43,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -74,8 +71,8 @@ import com.himanshoe.kalendar.ui.firey.DaySelectionMode
 import com.himanshoe.kalendar.ui.firey.KalendarSelectedDayRange
 import com.himanshoe.kalendar.ui.firey.RangeSelectionError
 import com.himanshoe.kalendar.ui.oceanic.util.isLeapYear
-import com.shbhack.eggmoneyna.ui.eggmoneyna.calendar.KalendarDay
 import ir.kaaveh.sdpcompose.sdp
+import ir.kaaveh.sdpcompose.ssp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -83,7 +80,6 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDate
 import kotlinx.datetime.todayIn
-import java.lang.Math.ceil
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -107,6 +103,7 @@ private val WeekDays = listOf("월", "화", "수", "목", "금", "토", "일")
  * @param onErrorRangeSelected Callback invoked when an error occurs during range selection.
  */
 private const val TAG = "KalendarFirey_진영"
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 internal fun KalendarFirey(
@@ -133,9 +130,6 @@ internal fun KalendarFirey(
     val currentYear = displayedYear.value
     val currentMonthIndex = currentMonth.value.minus(1)
 
-//    val defaultHeaderColor = KalendarTextKonfig.default(
-//        color = kalendarColors.color[currentMonthIndex].headerTextColor,
-//    )
     val defaultHeaderColor =
         KalendarTextKonfig(kalendarTextSize = 12.sp, kalendarTextColor = Color.DarkGray)
     val newHeaderTextKonfig = kalendarHeaderTextKonfig ?: defaultHeaderColor
@@ -147,9 +141,6 @@ internal fun KalendarFirey(
 
     Column(
         modifier = modifier
-//            .background(
-//                color = kalendarColors.color[currentMonthIndex].backgroundColor
-//            )
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(all = 8.dp)
@@ -183,27 +174,27 @@ internal fun KalendarFirey(
                 },
             )
         }
-//        Divider(thickness = 0.5.dp, color = Color.LightGray)
+        // Divider(thickness = 0.5.dp, color = Color.LightGray)
         Spacer(modifier = Modifier.padding(vertical = 4.sdp))
         val dayItemHeight = 32.sdp
         val labelHeight = if (showLabel) 38.sdp else 0.sdp
 
-// 첫 주의 시작 요일을 고려하여 첫 주의 첫 날짜
+        // 첫 주의 시작 요일을 고려하여 첫 주의 첫 날짜
         val firstDayOffset = getFirstDayOfMonth(firstDayOfMonth)
 
-// 전체 날짜 수에 시작 요일을 빼서 나머지 날짜들의 수를 계산
+        // 전체 날짜 수에 시작 요일을 빼서 나머지 날짜들의 수를 계산
         val daysAfterOffset = daysInMonth - firstDayOffset + 1
 
-// 첫 주를 제외한 나머지 주의 수 계산
+        // 첫 주를 제외한 나머지 주의 수 계산
         val fullWeeksAfterFirst = daysAfterOffset / 7
 
-// 마지막 주에 표시되는 날짜의 수를 계산하여 마지막 주가 필요한지 확인
+        // 마지막 주에 표시되는 날짜의 수를 계산하여 마지막 주가 필요한지 확인
         val additionalWeek = if (daysAfterOffset % 7 > 0) 1 else 0
 
-// 총 주의 수
+        // 총 주의 수
         val totalWeeks = 1 + fullWeeksAfterFirst + additionalWeek
 
-// 그리드의 총 높이 = (총 주의 수 * 각 항목의 높이) + 요일 레이블의 높이 (조건적으로)
+        // 그리드의 총 높이 = (총 주의 수 * 각 항목의 높이) + 요일 레이블의 높이 (조건적으로)
         val gridHeight: Dp = (dayItemHeight * totalWeeks) + if (showLabel) labelHeight else 0.sdp
 
 
@@ -294,7 +285,6 @@ private fun calculateDay(day: Int, currentMonth: Month, currentYear: Int): Local
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun KalendarHeader2(
     month: Month,
