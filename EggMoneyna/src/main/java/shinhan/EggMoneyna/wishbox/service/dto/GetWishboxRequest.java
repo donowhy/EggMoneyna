@@ -5,5 +5,4 @@ import lombok.Getter;
 @Getter
 public class GetWishboxRequest {
     private Long virtualNumber;
-
 }
