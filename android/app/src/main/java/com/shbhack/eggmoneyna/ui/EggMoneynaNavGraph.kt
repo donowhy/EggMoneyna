@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.MainActivity
+import com.shbhack.eggmoneyna.ui.selectchild.SelectChildScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserCheckScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserMainScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
@@ -34,8 +35,8 @@ fun EggMoneynaNavGraph(
     activity: MainActivity,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = EggMoneynaDestination.SPLASH
-//    startDestination: String = EggMoneynaDestination.AUTH_USER_MAIN
+//    startDestination: String = EggMoneynaDestination.SPLASH
+    startDestination: String = EggMoneynaDestination.MAIN_PARENT
 ) {
 
     NavHost(

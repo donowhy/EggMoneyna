@@ -45,7 +45,7 @@ public class ChildService {
         return ChildSaveResponse.builder()
                 .id(child.getId())
                 .childId(request.getChildId())
-                .childToken(login.getChildToken())
+                .childToken("Bearer " + login.getChildToken())
                 .build();
     }
 

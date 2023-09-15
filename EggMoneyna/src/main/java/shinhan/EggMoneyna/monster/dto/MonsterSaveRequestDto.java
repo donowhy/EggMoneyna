@@ -6,12 +6,10 @@ import shinhan.EggMoneyna.monster.entity.enumType.Benefit;
 
 @Getter
 public class MonsterSaveRequestDto {
-    private String nickName;
     private String benefit;
 
     @Builder
-    public MonsterSaveRequestDto( String nickName, String benefit) {
-        this.nickName = nickName;
+    public MonsterSaveRequestDto(String benefit) {
         this.benefit = benefit;
     }
 

@@ -22,7 +22,7 @@ public class Child {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "childs_id")
+    @Column(name = "childs_default_id")
     private Long id;
 
     private String childId;
