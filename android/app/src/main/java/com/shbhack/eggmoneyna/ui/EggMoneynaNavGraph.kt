@@ -52,25 +52,25 @@ fun EggMoneynaNavGraph(
                 enterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 popEnterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 popExitTransition = {
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                        animationSpec = tween(100)
+                        animationSpec = tween(200)
                     )
                 },
                 content = content
