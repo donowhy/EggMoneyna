@@ -59,8 +59,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.himanshoe.kalendar.KalendarEvent
 import com.himanshoe.kalendar.KalendarEvents
 import com.himanshoe.kalendar.color.KalendarColors
@@ -131,7 +129,7 @@ internal fun KalendarFirey(
     val currentMonthIndex = currentMonth.value.minus(1)
 
     val defaultHeaderColor =
-        KalendarTextKonfig(kalendarTextSize = 12.sp, kalendarTextColor = Color.DarkGray)
+        KalendarTextKonfig(kalendarTextSize = 12.ssp, kalendarTextColor = Color.DarkGray)
     val newHeaderTextKonfig = kalendarHeaderTextKonfig ?: defaultHeaderColor
 
     val daysInMonth = currentMonth.length(currentYear.isLeapYear())
@@ -143,7 +141,7 @@ internal fun KalendarFirey(
         modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(all = 8.dp)
+            .padding(all = 8.sdp)
     ) {
         if (headerContent != null) {
             KalendarHeader2(
@@ -300,7 +298,7 @@ fun KalendarHeader2(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(all = 4.dp),
+            .padding(all = 4.sdp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -328,7 +326,7 @@ fun KalendarHeader2(
                     .wrapContentWidth()
                     .align(Alignment.CenterVertically),
                 color = kalendarTextKonfig.kalendarTextColor,
-                fontSize = 18.sp,
+                fontSize = 14.ssp,
                 text = targetText,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Start

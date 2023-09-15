@@ -31,6 +31,7 @@ import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius10
 import com.shbhack.eggmoneyna.ui.common.card.ChildMoneyInfoCard
 import com.shbhack.eggmoneyna.ui.common.card.GoodsItemCard
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import com.shbhack.eggmoneyna.ui.theme.logoColor
 import com.shbhack.eggmoneyna.util.MoneyUtils
@@ -91,7 +92,7 @@ fun MainParentScreen(navController: NavController) {
                             modifier = Modifier
                                 .fillMaxWidth(0.08f)
                                 .aspectRatio(1f)
-                                .clickable {
+                                .noRippleClickable {
                                     navController.navigate(EggMoneynaDestination.SETTING)
                                 },
                             painter = painterResource(id = R.drawable.icon_setting),
