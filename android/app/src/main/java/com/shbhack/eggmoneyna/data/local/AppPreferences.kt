@@ -12,6 +12,8 @@ object AppPreferences {
     private const val SHOWED_FIRST = "showedFirst"
     private const val IS_PARENT = "isParent"
 
+    private const val TOKEN = "token"
+
     fun openSharedPreferences(context: Context) {
         preferences = context.getSharedPreferences(LOGIN_SESSION, Context.MODE_PRIVATE)
     }
@@ -27,4 +29,15 @@ object AppPreferences {
     }
 
     fun isParent() = preferences.getBoolean(IS_PARENT, false)
+
+    fun initToken(token: String) {
+        preferences.edit().putString(TOKEN, token)
+            .apply()
+    }
+
+    // sharedPreferences에 저장된 정보 반환
+    fun getToken(): String? {
+        return preferences.getString(TOKEN, "")
+    }
+
 }
