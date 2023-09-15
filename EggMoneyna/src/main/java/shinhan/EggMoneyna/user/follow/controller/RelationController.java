@@ -30,14 +30,15 @@ public class RelationController {
         Relation relation = relationService.createRelation(usersInfo.getId(), childId);
         return ResponseEntity.ok(relation);
     }
+
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "아이 중 한명에게 EggMoney나",
         description = "부모 Authorize, 아이의 pk값",
         tags = { "Relation Controller" })
     @PostMapping("/createEggMoney/{childId}")
-    public ResponseEntity<Relation> createEggMoneyRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
-        Relation relation = relationService.createRelation(usersInfo.getId(), childId);
-        return ResponseEntity.ok(relation);
+    public Relation createEggMoneyRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+        return relationService.createEggMoneyRelation(usersInfo.getId(), childId);
+
     }
 
     // 연관 관계 읽기

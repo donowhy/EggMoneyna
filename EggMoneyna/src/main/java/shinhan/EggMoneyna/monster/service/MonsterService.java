@@ -83,16 +83,18 @@ public class MonsterService {
             aMonth.add(true);
         }
 
-        int trueCount = (int) sevendays.stream()
+        if (sevendays.size() > 5) {
+            int trueCount = (int) sevendays.stream()
                 .filter(b -> b)
                 .count();
 
-        if (trueCount >= 5) {
-            monster.setFeel(Feel.HAPPY);
-        } else if (trueCount >= 3) {
-            monster.setFeel(Feel.NOTHING);
-        } else {
-            monster.setFeel(Feel.SAD);
+            if (trueCount >= 5) {
+                monster.setFeel(Feel.HAPPY);
+            } else if (trueCount >= 3) {
+                monster.setFeel(Feel.NOTHING);
+            } else {
+                monster.setFeel(Feel.SAD);
+            }
         }
 
         child.setSevenDays(sevendays);
