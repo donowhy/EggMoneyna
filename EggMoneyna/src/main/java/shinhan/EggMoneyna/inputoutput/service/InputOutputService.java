@@ -1,6 +1,6 @@
 package shinhan.EggMoneyna.inputoutput.service;
 
-import com.amazonaws.services.s3.AmazonS3;
+
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +33,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -50,8 +51,24 @@ public class InputOutputService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    final String S3URL = "https://eggmoneynabucket.s3.ap-northeast-2.amazonaws.com/brand/";
     final String EXTENSION = ".jpg";
+    public HashMap<String, String> brandMap = new HashMap<String, String>() {
+        {
+            put("배스킨라빈스", "BaskinRobbins");
+            put("버거킹", "BurgerKing");
+            put("설빙", "Sulbing");
+            put("세븐일레븐", "SevenEleven");
+            put("씨유(CU)", "CU");
+            put("아트박스", "ARTBOX");
+            put("죠스떡볶이", "JawsTopokki");
+            put("지에스25(GS25)", "GS25");
+            put("투썸플레이스", "ATwosomePlace");
+            put("파리바게뜨", "ParisBaguette");
+            put("한솥", "Hansot");
+            put("롯데리아", "Lotteria");
+            put("Olive Young(올리브영)", "OliveYoung");
+        }
+    };
 
     public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
         Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
@@ -74,7 +91,9 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
-                String imageURL = amazonS3Client.getUrl(bucket, "brand/two" + EXTENSION).toString();
+                log.info(brandName);
+                log.info(brandMap.get(brandName));
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandMap.get(addInputOutRequestDto.getBrandName()) + EXTENSION).toString();
                 log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
@@ -95,8 +114,8 @@ public class InputOutputService {
     }
 
     public AddInputOutputResponseDto addOutput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         Comment comment = Comment.builder()
                 .childComment("")
@@ -115,7 +134,9 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
-                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandName + EXTENSION).toString();
+                log.info(brandName);
+                log.info(brandMap.get(brandName));
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandMap.get(addInputOutRequestDto.getBrandName()) + EXTENSION).toString();
                 log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
@@ -136,8 +157,8 @@ public class InputOutputService {
     }
 
     public InputOutputResponseDto getInput(Long usersId, String inputDate) {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(inputDate, formatter);
@@ -147,14 +168,17 @@ public class InputOutputService {
 
         List<InputOutput> inputs = inputOutputRepository.findByAccountAndOutputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
 
+//        if (inputs.isEmpty()) {
+//            return InputOutputResponseDto.builder().build();
+//        }
         return InputOutputResponseDto.builder()
                 .inputOutputs(inputs)
                 .build();
     }
 
     public InputOutputResponseDto getOutput(Long usersId, String outputDate) {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(outputDate, formatter);
@@ -162,16 +186,19 @@ public class InputOutputService {
         LocalDateTime startOfDay = localDate.atStartOfDay();
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
-        List<InputOutput> inputs = inputOutputRepository.findByAccountAndInputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
+        List<InputOutput> outputs = inputOutputRepository.findByAccountAndInputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
 
+//        if (outputs.isEmpty()) {
+//            return InputOutputResponseDto.builder().build();
+//        }
         return InputOutputResponseDto.builder()
-                .inputOutputs(inputs)
+                .inputOutputs(outputs)
                 .build();
     }
 
     public InputOutputResponseDto getInputOutput(Long usersId, String inputOutputDate) {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(inputOutputDate, formatter);
@@ -179,10 +206,13 @@ public class InputOutputService {
         LocalDateTime startOfDay = localDate.atStartOfDay();
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
-        List<InputOutput> inputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfDay, endOfDay);
+        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfDay, endOfDay);
 
+//        if (inputOutputs.isEmpty()) {
+//            return InputOutputResponseDto.builder().build();
+//        }
         return InputOutputResponseDto.builder()
-                .inputOutputs(inputs)
+                .inputOutputs(inputOutputs)
                 .build();
     }
 
