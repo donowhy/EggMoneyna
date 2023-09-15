@@ -3,6 +3,7 @@ package shinhan.EggMoneyna.account.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,11 @@ public class AccountController {
 
     private final AccountService accountService;
 
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "내 계좌 조회",
+        description = "Authorize만 되면 계좌 조회",
+        tags = { "Account Controller" })
     @GetMapping()
     public ResponseEntity<Account> getAccount(@UserInfo UsersInfo usersInfo) {
         log.info("userinfo={}", usersInfo.getId());
@@ -49,11 +55,21 @@ public class AccountController {
 //        return ResponseEntity.ok(accountService.getAccountDetail(usersInfo.getId()));
 //    }
 //
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "내 계좌 별명 부여",
+        description = "Authorize 후 String 값",
+        tags = { "Account Controller" })
     @PutMapping("/updateNickName")
     public ResponseEntity<Account> updateNickName(@RequestBody String name, @UserInfo UsersInfo usersInfo) {
         return ResponseEntity.ok(accountService.updateNickName(name, usersInfo.getId()));
     }
-//
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "내 계좌 삭제",
+        description = "Authorize만 되면 계좌 삭제, 해커톤에서는 안쓰고 추후 대상이 되는 나이가 늘어나면 사용예정",
+        tags = { "Account Controller" })
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@UserInfo UsersInfo usersInfo) {
         return ResponseEntity.ok(accountService.delete(usersInfo.getId()));
