@@ -44,7 +44,7 @@ public class Account extends BaseTimeEntity {
 
     @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "childs_id")
+    @JoinColumn(name = "childs_default_id")
     private Child child;
 
     @OneToOne

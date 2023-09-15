@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shinhan.EggMoneyna.global.common.BaseTimeEntity;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.users.entity.Users;
 
@@ -15,7 +16,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class MonsterEncyclopedia {
+// 생성 시간, 각 몬스터가 등록될 때의 시간, 몬스터 정보
+public class MonsterEncyclopedia extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
