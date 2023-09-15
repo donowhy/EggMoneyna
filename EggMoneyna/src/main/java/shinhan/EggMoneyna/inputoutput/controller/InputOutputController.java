@@ -32,19 +32,19 @@ public class InputOutputController{
         return ResponseEntity.ok(inputOutputService.addOutput(usersInfo.getId(), addInputOutRequestDto));
     }
 
-    @Operation(summary = "당일 입금 조회", description = "사용자 계좌에 해당하는 날짜의 입금내역을 조회합니다.", tags = { "InputOutput Controller" })
+    @Operation(summary = "당일 입금 조회", description = "/yyyy-MM-dd로 조회한 사용자 계좌에 해당하는 날짜의 입금내역을 조회합니다.", tags = { "InputOutput Controller" })
     @PostMapping("/in/{inputDate}")
     public ResponseEntity<InputOutputResponseDto> getInput(@UserInfo UsersInfo usersInfo, @PathVariable String inputDate) {
         return ResponseEntity.ok(inputOutputService.getInput(usersInfo.getId(), inputDate));
     }
 
-    @Operation(summary = "당일 출금 조회", description = "사용자 계좌에 해당하는 날짜의 출금내역을 조회합니다.", tags = { "InputOutput Controller" })
+    @Operation(summary = "당일 출금 조회", description = "/yyyy-MM-dd로 조회한 사용자 계좌에 해당하는 날짜의 출금내역을 조회합니다.", tags = { "InputOutput Controller" })
     @PostMapping("/out/{outputDate}")
     public ResponseEntity<InputOutputResponseDto> getOutput(@UserInfo UsersInfo usersInfo, @PathVariable String outputDate) {
         return ResponseEntity.ok(inputOutputService.getOutput(usersInfo.getId(), outputDate));
     }
 
-    @Operation(summary = "당일 입출금 조회", description = "사용자 계좌에 해당하는 날짜의 출금내역을 조회합니다.", tags = { "InputOutput Controller" })
+    @Operation(summary = "당일 입출금 조회", description = "/yyyy-MM-dd로 조회한 사용자 계좌에 해당하는 날짜의 출금내역을 조회합니다.", tags = { "InputOutput Controller" })
     @PostMapping("/all/{inputOuputDate}")
     public ResponseEntity<InputOutputResponseDto> getInputOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
         return ResponseEntity.ok(inputOutputService.getInputOutput(usersInfo.getId(), inputOuputDate));
