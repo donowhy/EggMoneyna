@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
@@ -51,7 +52,7 @@ public class MonsterService {
                 .status(MonsterStatus.Egg)
                 .benefit(monsterSaveRequestDto.getBenefitEnum())
                 .child(child)
-                .feel(Feel.NOTHING)
+                .feel(Feel.NOMAL)
                 .build();
 
         Monster savedMonster = monsterRepository.save(monster);
@@ -83,16 +84,18 @@ public class MonsterService {
             aMonth.add(true);
         }
 
-        int trueCount = (int) sevendays.stream()
+        if (sevendays.size() > 5) {
+            int trueCount = (int) sevendays.stream()
                 .filter(b -> b)
                 .count();
 
-        if (trueCount >= 5) {
-            monster.setFeel(Feel.HAPPY);
-        } else if (trueCount >= 3) {
-            monster.setFeel(Feel.NOTHING);
-        } else {
-            monster.setFeel(Feel.SAD);
+            if (trueCount >= 5) {
+                monster.setFeel(Feel.HAPPY);
+            } else if (trueCount >= 3) {
+                monster.setFeel(Feel.NOMAL);
+            } else {
+                monster.setFeel(Feel.SAD);
+            }
         }
 
         child.setSevenDays(sevendays);

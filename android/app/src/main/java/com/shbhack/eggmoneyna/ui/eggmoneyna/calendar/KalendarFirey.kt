@@ -15,6 +15,7 @@ package com.shbhack.eggmoneyna.ui.eggmoneyna.calendar
  */
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
@@ -74,6 +75,7 @@ import com.himanshoe.kalendar.ui.firey.KalendarSelectedDayRange
 import com.himanshoe.kalendar.ui.firey.RangeSelectionError
 import com.himanshoe.kalendar.ui.oceanic.util.isLeapYear
 import com.shbhack.eggmoneyna.ui.eggmoneyna.calendar.KalendarDay
+import ir.kaaveh.sdpcompose.sdp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -104,6 +106,7 @@ private val WeekDays = listOf("월", "화", "수", "목", "금", "토", "일")
  * @param onRangeSelected Callback invoked when a range of days is selected.
  * @param onErrorRangeSelected Callback invoked when an error occurs during range selection.
  */
+private const val TAG = "KalendarFirey_진영"
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 internal fun KalendarFirey(
@@ -181,30 +184,33 @@ internal fun KalendarFirey(
             )
         }
 //        Divider(thickness = 0.5.dp, color = Color.LightGray)
-        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        val dayItemHeight = 40.dp
-        val labelHeight = if (showLabel) 40.dp else 0.dp
+        Spacer(modifier = Modifier.padding(vertical = 4.sdp))
+        val dayItemHeight = 32.sdp
+        val labelHeight = if (showLabel) 38.sdp else 0.sdp
 
-// 첫 주의 시작 요일을 고려하여 그 주에 표시될 날짜의 수 계산
-        val daysInFirstWeek = 7 - getFirstDayOfMonth(firstDayOfMonth)
-        val daysRemainingAfterFirstWeek = daysInMonth - daysInFirstWeek
+// 첫 주의 시작 요일을 고려하여 첫 주의 첫 날짜
+        val firstDayOffset = getFirstDayOfMonth(firstDayOfMonth)
 
-// 첫 주를 제외한 총 필요한 주의 수 계산
-        val weeksAfterFirst = daysRemainingAfterFirstWeek / 7
-// 마지막 주가 필요한 경우 행 수 추가
-        val additionalWeek = if (daysRemainingAfterFirstWeek % 7 > 0) 1 else 0
+// 전체 날짜 수에 시작 요일을 빼서 나머지 날짜들의 수를 계산
+        val daysAfterOffset = daysInMonth - firstDayOffset + 1
+
+// 첫 주를 제외한 나머지 주의 수 계산
+        val fullWeeksAfterFirst = daysAfterOffset / 7
+
+// 마지막 주에 표시되는 날짜의 수를 계산하여 마지막 주가 필요한지 확인
+        val additionalWeek = if (daysAfterOffset % 7 > 0) 1 else 0
 
 // 총 주의 수
-        val totalWeeks = 1 + weeksAfterFirst + additionalWeek
+        val totalWeeks = 1 + fullWeeksAfterFirst + additionalWeek
 
-// 그리드의 총 높이 = (총 주의 수 * 각 항목의 높이) + 요일 레이블의 높이
-        val gridHeight: Dp = (dayItemHeight * totalWeeks) + labelHeight
+// 그리드의 총 높이 = (총 주의 수 * 각 항목의 높이) + 요일 레이블의 높이 (조건적으로)
+        val gridHeight: Dp = (dayItemHeight * totalWeeks) + if (showLabel) labelHeight else 0.sdp
 
 
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(340.dp),
+                .height(gridHeight),
             userScrollEnabled = false,
             columns = GridCells.Fixed(7),
             content = {
@@ -248,6 +254,7 @@ internal fun KalendarFirey(
                                         },
                                         onDayClick = { newDate, clickedDateEvent ->
                                             selectedDate.value = newDate
+                                            // 클릭한 날짜 이벤트 안 넣기
                                             onDayClick(newDate, clickedDateEvent)
                                         }
                                     )

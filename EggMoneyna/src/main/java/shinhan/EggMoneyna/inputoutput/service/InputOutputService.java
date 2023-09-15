@@ -1,8 +1,12 @@
 package shinhan.EggMoneyna.inputoutput.service;
 
+
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shinhan.EggMoneyna.account.entity.Account;
@@ -14,8 +18,11 @@ import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.dto.AddInputOutRequestDto;
 import shinhan.EggMoneyna.inputoutput.dto.AddInputOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.dto.InputOutputResponseDto;
+import shinhan.EggMoneyna.inputoutput.dto.MonthOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
+import shinhan.EggMoneyna.user.child.entity.Child;
+import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.users.entity.Users;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 
@@ -27,25 +34,46 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class InputOutputService {
     private final InputOutputRepository inputOutputRepository;
     private final AccountRepository accountRepository;
     private final UsersRepository usersRepository;
     private final CommentRepository commentRepository;
+    private final ChildRepository childRepository;
+    private final AmazonS3Client amazonS3Client;
 
-    final String S3URL = "https://eggmoneynabucket.s3.ap-northeast-2.amazonaws.com/brand/";
-    final String TYPE = "jpg";
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
-
+    final String EXTENSION = ".jpg";
+    public HashMap<String, String> brandMap = new HashMap<String, String>() {
+        {
+            put("배스킨라빈스", "BaskinRobbins");
+            put("버거킹", "BurgerKing");
+            put("설빙", "Sulbing");
+            put("세븐일레븐", "SevenEleven");
+            put("씨유(CU)", "CU");
+            put("아트박스", "ARTBOX");
+            put("죠스떡볶이", "JawsTopokki");
+            put("지에스25(GS25)", "GS25");
+            put("투썸플레이스", "ATwosomePlace");
+            put("파리바게뜨", "ParisBaguette");
+            put("한솥", "Hansot");
+            put("롯데리아", "Lotteria");
+            put("Olive Young(올리브영)", "OliveYoung");
+        }
+    };
 
     public AddInputOutputResponseDto addInput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         Comment comment = Comment.builder()
                 .childComment("")
@@ -64,9 +92,13 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
+                log.info(brandName);
+                log.info(brandMap.get(brandName));
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandMap.get(addInputOutRequestDto.getBrandName()) + EXTENSION).toString();
+                log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
-                brandImage = S3URL + brandName + TYPE;
+                brandImage = imageURL;
                 break;
             }
         }
@@ -83,8 +115,8 @@ public class InputOutputService {
     }
 
     public AddInputOutputResponseDto addOutput(Long usersId, AddInputOutRequestDto addInputOutRequestDto) throws IOException {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         Comment comment = Comment.builder()
                 .childComment("")
@@ -103,9 +135,13 @@ public class InputOutputService {
         for (JsonNode item : itemsNode) {
             String brandName = item.get("brandNm").asText();
             if (brandName.equals(addInputOutRequestDto.getBrandName())) {
+                log.info(brandName);
+                log.info(brandMap.get(brandName));
+                String imageURL = amazonS3Client.getUrl(bucket, "brand/" + brandMap.get(addInputOutRequestDto.getBrandName()) + EXTENSION).toString();
+                log.info(imageURL);
                 bigCategory = item.get("indutyLclasNm").asText();
                 smallCategory = item.get("indutyMlsfcNm").asText();
-                brandImage = S3URL + brandName + TYPE;
+                brandImage = imageURL;
                 break;
             }
         }
@@ -122,8 +158,8 @@ public class InputOutputService {
     }
 
     public InputOutputResponseDto getInput(Long usersId, String inputDate) {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(inputDate, formatter);
@@ -139,8 +175,8 @@ public class InputOutputService {
     }
 
     public InputOutputResponseDto getOutput(Long usersId, String outputDate) {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(outputDate, formatter);
@@ -148,16 +184,16 @@ public class InputOutputService {
         LocalDateTime startOfDay = localDate.atStartOfDay();
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
-        List<InputOutput> inputs = inputOutputRepository.findByAccountAndInputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
+        List<InputOutput> outputs = inputOutputRepository.findByAccountAndInputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
 
         return InputOutputResponseDto.builder()
-                .inputOutputs(inputs)
+                .inputOutputs(outputs)
                 .build();
     }
 
     public InputOutputResponseDto getInputOutput(Long usersId, String inputOutputDate) {
-        Users users = usersRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-        Account account = accountRepository.findByUsers(users).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(inputOutputDate, formatter);
@@ -165,10 +201,52 @@ public class InputOutputService {
         LocalDateTime startOfDay = localDate.atStartOfDay();
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
-        List<InputOutput> inputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfDay, endOfDay);
+        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfDay, endOfDay);
 
         return InputOutputResponseDto.builder()
-                .inputOutputs(inputs)
+                .inputOutputs(inputOutputs)
+                .build();
+    }
+
+    public MonthOutputResponseDto getTotalMonthOutput(Long usersId, String inputOutputDate) {
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter); // 월의 첫 날로 설정
+
+        LocalDate startOfMonth = localDate.withDayOfMonth(1);
+        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfMonth.atStartOfDay(), endOfMonth.atTime(23, 59, 59));
+
+        int totalOutputs = inputOutputs.stream()
+                .mapToInt(InputOutput::getOutput)
+                .sum();
+
+        return MonthOutputResponseDto.builder()
+                .totalMonthOutput(totalOutputs)
+                .build();
+    }
+
+    public MonthOutputResponseDto getTotalMonthInput(Long usersId, String inputOutputDate) {
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter); // 월의 첫 날로 설정
+
+        LocalDate startOfMonth = localDate.withDayOfMonth(1);
+        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfMonth.atStartOfDay(), endOfMonth.atTime(23, 59, 59));
+
+        int totalInputs = inputOutputs.stream()
+                .mapToInt(InputOutput::getInput)
+                .sum();
+
+        return MonthOutputResponseDto.builder()
+                .totalMonthOutput(totalInputs)
                 .build();
     }
 

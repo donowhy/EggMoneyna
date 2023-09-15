@@ -7,14 +7,12 @@ import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.account.service.AccountService;
+import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 import shinhan.EggMoneyna.wishbox.repository.WishboxRepository;
-import shinhan.EggMoneyna.wishbox.service.dto.CreateWishBoxRequestDto;
-import shinhan.EggMoneyna.wishbox.service.dto.GetWishboxRequest;
-import shinhan.EggMoneyna.wishbox.service.dto.GetWishboxResponse;
-import shinhan.EggMoneyna.wishbox.service.dto.UpdateNicknameRequest;
+import shinhan.EggMoneyna.wishbox.service.dto.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class WishboxService {
                 .wishName(requestDto.getWishName())
                 .account(account)
                 .virtualNumber(virtualNum)
-                .bankCode(BankCode.Shinhan)
+                .bankCode(BankCode.SHINHAN)
                 .build();
 
         wishboxRepository.save(wishbox);
@@ -106,4 +104,12 @@ public class WishboxService {
         WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
         wishboxRepository.delete(wishBox);
     }
+
+//    public SendMoneyMyAccountResponse sendMoneyMyAccount(Long id, SendMoneyMyAccountRequest request){
+//        Child child = childRepository.findById(id).orElseThrow();
+//        Long myRealAccountNumber = child.getAccount().getAccountNumber();
+//
+//        return S
+//
+//    }
 }

@@ -47,6 +47,7 @@ import kotlinx.datetime.todayIn
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CustomCalendar(
+    events: KalendarEvents = KalendarEvents(),
     onDayClick: (
         kotlinx.datetime.LocalDate
     ) -> Unit
@@ -60,7 +61,7 @@ fun CustomCalendar(
         kalendarType = KalendarType.Firey,
         modifier = Modifier.padding(start = 12.dp, end = 12.dp),
         showLabel = true,
-        events = KalendarEvents(),
+        events = events,
         kalendarHeaderTextKonfig = null,
         kalendarColors = KalendarColors(color = List(12) {
             KalendarColor(
