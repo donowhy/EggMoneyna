@@ -77,7 +77,7 @@ public class Users extends BaseTimeEntity {
 
 
     @Builder
-    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, Account account, List<Monster> monsters, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, String firebaseToken) {
+    public Users(Long id, Boolean isParents, String userId, String password, String nickName, int pocketMoney, int limitMoney, int pocketMoneyDate, String token, List<Monster> monsters, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, String firebaseToken) {
         this.id = id;
         this.isParents = isParents;
         this.userId = userId;
@@ -87,7 +87,6 @@ public class Users extends BaseTimeEntity {
         this.limitMoney = limitMoney;
         this.pocketMoneyDate = pocketMoneyDate;
         this.token = token;
-        this.account = account;
         this.monsters = monsters;
         this.cntMonsters = cntMonsters;
         this.monsterEncyclopedia = monsterEncyclopedia;
@@ -115,9 +114,9 @@ public class Users extends BaseTimeEntity {
         child.getParents().add(this);
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+//    public void setAccount(Account account) {
+//        this.account = account;
+//    }
 
     public void setCntMonsters(int i) {
         this.cntMonsters = i;

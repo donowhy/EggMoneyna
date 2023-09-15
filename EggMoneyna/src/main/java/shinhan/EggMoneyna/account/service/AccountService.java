@@ -48,7 +48,7 @@ public class AccountService {
 		Account account = null;
 
 		if(childRepository.findById(id).isPresent()){
-
+			log.info("child");
 			Child child = childRepository.findById(id).orElseThrow();
 			account = Account.builder()
 					.nickName("에그머니나")
@@ -60,6 +60,7 @@ public class AccountService {
 			child.setAccount(account);
 		}
 		else {
+			log.info("parent");
 			Parent parent = parentRepository.findById(id).orElseThrow();
 
 			account = Account.builder()
