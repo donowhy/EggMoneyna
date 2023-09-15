@@ -60,8 +60,8 @@ cloud:
     s3:
       bucket: eggmoneynabucket
     credentials:
-      access-key: AKIA6NLZ7AA63MGKRUQ3
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: ap-northeast-2
       auto: false
