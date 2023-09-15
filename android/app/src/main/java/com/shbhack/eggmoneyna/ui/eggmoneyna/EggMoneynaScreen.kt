@@ -2,12 +2,9 @@ package com.shbhack.eggmoneyna.ui.eggmoneyna
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
+import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
@@ -30,7 +29,7 @@ import kotlinx.datetime.todayIn
 fun EggMoneynaScreen(
     navController: NavController
 ) {
-    var selectedDay by remember { mutableStateOf( Clock.System.todayIn(TimeZone.currentSystemDefault())) }
+    var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
     Scaffold(
         topBar = {
             TopWithBack(
@@ -42,10 +41,10 @@ fun EggMoneynaScreen(
         Column(modifier = Modifier.padding(it)) {
             LazyColumn {
                 item {
-                    ColorBackgroundWithText()
+                    ColorBackgroundWithText(EggmoneynaPurple, stringResource(id = R.string.eggmoneyna_rest_money_title), "500,000원")
                 }
                 item {
-                    CustomCalendar(){ localDate ->
+                    CustomCalendar() { localDate ->
                         selectedDay = localDate
                     }
                 }
@@ -55,11 +54,9 @@ fun EggMoneynaScreen(
             }
 
 
-
         }
     }
 }
-
 
 
 @RequiresApi(Build.VERSION_CODES.O)
