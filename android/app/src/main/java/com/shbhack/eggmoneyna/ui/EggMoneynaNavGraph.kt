@@ -19,6 +19,7 @@ import com.shbhack.eggmoneyna.ui.authuser.AuthUserCheckScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserMainScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
+import com.shbhack.eggmoneyna.ui.comment.CommentScreen
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
@@ -37,7 +38,7 @@ fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 //    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.MAIN_PARENT
+    startDestination: String = EggMoneynaDestination.EXPENSE_COMMENT
 ) {
 
     NavHost(
@@ -125,6 +126,9 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.SETTING) {
             SettingScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.EXPENSE_COMMENT) {
+            CommentScreen(navController)
         }
     }
 }

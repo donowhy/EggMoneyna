@@ -69,7 +69,9 @@
     <string name="expense_analysis_month_expense">이 달의 총 지출액</string>
 
     <!-- setting -->
-    <!-- expense Analysis -->
     <string name="setting_appbar_title">환경 설정</string>
+
+    <!-- comment -->
+    <string name="comment_appbar_title">지출 코멘트</string>
 
 </resources>
