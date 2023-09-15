@@ -18,6 +18,7 @@ import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.dto.AddInputOutRequestDto;
 import shinhan.EggMoneyna.inputoutput.dto.AddInputOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.dto.InputOutputResponseDto;
+import shinhan.EggMoneyna.inputoutput.dto.MonthOutputResponseDto;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.user.child.entity.Child;
@@ -201,9 +202,30 @@ public class InputOutputService {
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
         List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfDay, endOfDay);
-        
+
         return InputOutputResponseDto.builder()
                 .inputOutputs(inputOutputs)
+                .build();
+    }
+
+    public MonthOutputResponseDto getTotalMonthOutput(Long usersId, String inputOutputDate) {
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter); // 월의 첫 날로 설정
+
+        LocalDate startOfMonth = localDate.withDayOfMonth(1);
+        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfMonth.atStartOfDay(), endOfMonth.atTime(23, 59, 59));
+
+        int totalOutputs = inputOutputs.stream()
+                .mapToInt(InputOutput::getOutput)
+                .sum();
+
+        return MonthOutputResponseDto.builder()
+                .totalMonthOutput(totalOutputs)
                 .build();
     }
 
