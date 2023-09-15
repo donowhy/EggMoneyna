@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import shinhan.EggMoneyna.user.follow.service.dto.RelationParentChild;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.follow.entity.Relation;
@@ -28,7 +29,7 @@ public class RelationService {
 	private final ChildRepository childRepository;
 
 	// 연관 관계 생성
-	public Relation createRelation(Long parentId, Long childId) {
+	public RelationParentChild createRelation(Long parentId, Long childId) {
 		Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
 			new RuntimeException("Parent not found")
 		);
@@ -46,19 +47,20 @@ public class RelationService {
 
 		parentRepository.save(parent);
 		childRepository.save(child);
+		relationRepository.save(relation);
 
-		return relationRepository.save(relation);
+		return RelationParentChild.builder()
+			.pId(parent.getId())
+			.parentId(parent.getParentId())
+			.cId(child.getId())
+			.childId(child.getChildId())
+			.build();
 	}
 
 	// 에그머니나 생성
-	public Relation createEggMoneyRelation(Long parentId, Long childId) {
+	public RelationParentChild createEggMoneyRelation(Long parentId, Long childId) {
 		Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
 		Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
-
-		Relation relation = Relation.builder()
-			.parent(parent)
-			.child(child)
-			.build();
 
 		parent.setEggMoney(true);
 		child.setEggMoney(true);
@@ -66,7 +68,12 @@ public class RelationService {
 		parentRepository.save(parent);
 		childRepository.save(child);
 
-		return relationRepository.save(relation);
+		return RelationParentChild.builder()
+			.pId(parent.getId())
+			.parentId(parent.getParentId())
+			.cId(child.getId())
+			.childId(child.getChildId())
+			.build();
 	}
 
 	// 연관 관계 읽기

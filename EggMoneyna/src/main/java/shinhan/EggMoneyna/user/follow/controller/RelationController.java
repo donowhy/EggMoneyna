@@ -11,6 +11,7 @@ import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
 import shinhan.EggMoneyna.user.follow.entity.Relation;
 import shinhan.EggMoneyna.user.follow.service.RelationService;
+import shinhan.EggMoneyna.user.follow.service.dto.RelationParentChild;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,9 +27,8 @@ public class RelationController {
         description = "부모 Authorize, 아이의 pk값",
         tags = { "Relation Controller" })
     @PostMapping("/createRelation/{childId}")
-    public ResponseEntity<Relation> createRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
-        Relation relation = relationService.createRelation(usersInfo.getId(), childId);
-        return ResponseEntity.ok(relation);
+    public RelationParentChild createRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+        return relationService.createRelation(usersInfo.getId(), childId);
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -36,7 +36,7 @@ public class RelationController {
         description = "부모 Authorize, 아이의 pk값",
         tags = { "Relation Controller" })
     @PostMapping("/createEggMoney/{childId}")
-    public Relation createEggMoneyRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+    public RelationParentChild createEggMoneyRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
         return relationService.createEggMoneyRelation(usersInfo.getId(), childId);
 
     }
