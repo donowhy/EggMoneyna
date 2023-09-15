@@ -229,6 +229,27 @@ public class InputOutputService {
                 .build();
     }
 
+    public MonthOutputResponseDto getTotalMonthInput(Long usersId, String inputOutputDate) {
+        Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter); // 월의 첫 날로 설정
+
+        LocalDate startOfMonth = localDate.withDayOfMonth(1);
+        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfMonth.atStartOfDay(), endOfMonth.atTime(23, 59, 59));
+
+        int totalInputs = inputOutputs.stream()
+                .mapToInt(InputOutput::getInput)
+                .sum();
+
+        return MonthOutputResponseDto.builder()
+                .totalMonthOutput(totalInputs)
+                .build();
+    }
+
     public JsonNode getApi() throws IOException {
         URL url = new URL("https://apis.data.go.kr/1130000/FftcBrandRlsInfoService/getBrandRlsInfo?serviceKey=VeIyQYlemcin0TUHlsQrWib5AWUE%2FUvpjhihs9Gkk%2BKuwBMDmqjoK3HnD9Dl1qxfXs6GIXPX13Ftdyi2RqkzGw%3D%3D&pageNo=1&numOfRows=10000&resultType=json&yr=2022");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

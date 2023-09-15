@@ -50,10 +50,16 @@ public class InputOutputController{
         return ResponseEntity.ok(inputOutputService.getInputOutput(usersInfo.getId(), inputOuputDate));
     }
 
-    @Operation(summary = "해당월 총 출금 금액 조회", description = "yyyy-dd 형식으로 입력하게 되면 입력 달에 해당하는 지출금액 조회합니다.", tags = { "InputOutput Controller" })
+    @Operation(summary = "해당월 총 출금 금액 조회", description = "/yyyy-MM 형식으로 입력하게 되면 입력 달에 해당하는 총 출금금액을 조회합니다.", tags = { "InputOutput Controller" })
     @PostMapping("/total/out/{inputOuputDate}")
     public ResponseEntity<MonthOutputResponseDto> getTotalMonthOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
         return ResponseEntity.ok(inputOutputService.getTotalMonthOutput(usersInfo.getId(), inputOuputDate));
+    }
+
+    @Operation(summary = "해당월 총 입금 금액 조회", description = "/yyyy-MM 형식으로 입력하게 되면 입력 달에 해당하는 총 입금금액을 조회합니다.", tags = { "InputOutput Controller" })
+    @PostMapping("/total/in/{inputOuputDate}")
+    public ResponseEntity<MonthOutputResponseDto> getTotalMonthInput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
+        return ResponseEntity.ok(inputOutputService.getTotalMonthInput(usersInfo.getId(), inputOuputDate));
     }
 
 //    @GetMapping("/test")
