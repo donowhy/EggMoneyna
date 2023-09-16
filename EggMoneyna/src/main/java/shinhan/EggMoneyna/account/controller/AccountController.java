@@ -60,7 +60,7 @@ public class AccountController {
     @Operation(summary = "1원 이체",
             description = "값 3개 반환",
             tags = { "Account Controller" })
-    @PostMapping("/send1CertParent")
+    @PostMapping("/send1Cert")
     public Send1CertResponse send1Cert (@RequestBody Send1CertRequest request){
         return accountService.send1Cert(request);
     }

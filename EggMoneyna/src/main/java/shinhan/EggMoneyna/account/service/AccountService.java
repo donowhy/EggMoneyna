@@ -111,8 +111,10 @@ public class AccountService {
 
 		Random rand = new Random();
 		String randomNum = String.valueOf(rand.nextInt((999 - 101) + 1) + 101);
-
+		log.info("request={}", request.getAccountNumber());
 		Account account = accountRepository.findByAccountNumber(request.getAccountNumber()).orElseThrow();
+
+		log.info("account={}",account.getAccountNumber());
 
 		InputOutput inputOutput = InputOutput.builder()
 				.brandName("신한은행")
