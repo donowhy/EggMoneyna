@@ -6,13 +6,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
-import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
-import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
+import shinhan.EggMoneyna.monster.dto.*;
+import shinhan.EggMoneyna.monster.entity.EncyclopediaDetail;
+import shinhan.EggMoneyna.monster.entity.History;
 import shinhan.EggMoneyna.monster.entity.Monster;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.monster.entity.enumType.Feel;
 import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
+import shinhan.EggMoneyna.monster.repository.EncyclopediaDetailRepository;
 import shinhan.EggMoneyna.monster.repository.MonsterEncyclopediaRepository;
 import shinhan.EggMoneyna.monster.repository.MonsterRepository;
 import shinhan.EggMoneyna.user.child.entity.Child;
@@ -23,6 +24,8 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.*;
 
+import static shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus.getMonsterStatus;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -32,12 +35,18 @@ public class MonsterService {
     private final ChildRepository childRepository;
     private final MonsterRepository monsterRepository;
     private final MonsterEncyclopediaRepository monsterEncyclopediaRepository;
+    private final HistoryService historyService;
+    private final MonsterEncyclopediaService monsterEncyclopediaService;
+    private final EncyclopediaDetailRepository encyclopediaDetailRepository;
 
     // CREATE
     public MonsterSaveResponseDto save(MonsterSaveRequestDto monsterSaveRequestDto, Long id) {
 
         Child child = childRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+
+        monsterEncyclopediaService.save(child.getId());
 
         log.info("name={}", Monster.getRandomMong());
 
@@ -47,12 +56,13 @@ public class MonsterService {
         Monster monster = Monster.builder()
                 .name(Monster.getRandomMong())
                 .status(MonsterStatus.Egg)
+                .exp(0)
                 .benefit(monsterSaveRequestDto.getBenefit())
                 .child(child)
                 .feel(Feel.NOMAL)
                 .build();
 
-        Monster savedMonster = monsterRepository.save(monster);
+        Monster savedMonster = monsterRepository.saveAndFlush(monster);
 
         child.setMonster(monster);
         child.setCntMonsters(child.getCntMonsters() + 1);
@@ -63,6 +73,7 @@ public class MonsterService {
     // READ
     public MonsterResponseDto findById(Long id) {
         Child child = childRepository.findById(id).orElseThrow();
+        MonsterEncyclopedia monsterEncyclopedia = child.getMonsterEncyclopedia();
         Monster monster = child.getMonster();
 
         List<Boolean> sevendays = child.getSevendays();
@@ -72,6 +83,21 @@ public class MonsterService {
         List<Boolean> aMonth = child.getAMonth();
         if (!child.getTodayCheck()) {
             child.setTodayLogin(true);
+            child.setConsecutiveceAttemptAndTodayCheck(child.getConsecutiveAttempt() + 1);
+            HistoryRequest request = HistoryRequest.builder()
+                    .number(0)
+                    .build();
+
+            HistoryResponse save = historyService.save(id, request);
+
+            monster.setExp(monster.getExp() + save.getExp());
+
+            if (monster.getExp() >= 300 && monster.getStatus() != MonsterStatus.register) {
+                monster.setStatus(MonsterStatus.register);
+            } else if (monster.getExp() >= 10 && monster.getStatus() == MonsterStatus.Egg) {
+                monster.setStatus(MonsterStatus.Adult);
+            }
+
             if (sevendays.size() < 7) {
                 sevendays.add(true);
             } else {
@@ -103,6 +129,10 @@ public class MonsterService {
             child.setConsecutiveceAttempt(child.getConsecutiveAttempt() + 1);
         }
 
+        if(child.getMonster().getExp() > 300) {
+            registerMonster(child);
+        }
+
         return MonsterResponseDto.builder()
                 .name(String.valueOf(monster.getName()))
                 .status(String.valueOf(monster.getStatus()))
@@ -120,46 +150,10 @@ public class MonsterService {
         List<Child> children = childRepository.findAll();
 
         for (Child child : children) {
-            if(child.getTodayCheck()){
-                child.setConsecutiveceAttemptAndTodayCheck(child.getConsecutiveAttempt());
-            }else{
+            if(!child.getTodayCheck()){
                 child.setConsecutiveceAttemptAndTodayCheck(0);
             }
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Scheduled(cron = "0 0 0 1 * ?")
-//    @Scheduled(cron = "0 * * * * ?")
-    public void upgradeExp(){
-        log.info("경험치 업 실행");
-        List<Child> children = childRepository.findAll();
-
-        for (Child child : children) {
-
-            List<Boolean> month = child.getAMonth();
-            LocalDate date = LocalDate.now();
-            int days = allMonth(date.getYear(), date.getMonthValue());
-
-//            if(month.size() > days - 5){
-//                child.getMonster().setMonsterExp(child.getMonster().getExp() + 500);
-//            }
-
-            child.getMonster().setMonsterExp(child.getMonster().getExp() + 500);
-
-//            if(child.getMonster().getExp() == 1000){
-//                registerMonster(child);
-//                child.setCntMonsters(child.getCntMonsters()-1);
-//            }
-
-            // Month 리스트를 초기화합니다.
-            month = new ArrayList<>();
-
-            child.setAMonth(month);
-
-            // 변경 사항을 저장합니다.
-            childRepository.save(child);
-
+            child.setTodayCheck(false);
         }
     }
 
@@ -173,60 +167,138 @@ public class MonsterService {
     }
 
 
-//    private String registerMonster(Child child) {
-//        Monster monster = child.getMonster();
-//        MonsterEncyclopedia monsterEncyclopedia = child.getMonsterEncyclopedia();
-//
-//        String monsterNameKey = monster.getName().toString().toUpperCase();
-//
-//        /**
-//         *         this.SOL = SOL;
-//         *         this.MOLI = MOLI;
-//         *         this.RINO = RINO;
-//         *         this.SHOO = SHOO;
-//         *         this.DOREMI = DOREMI;
-//         *         this.LULULALA = LULULALA;
-//         *         this.PLI = PLI;
-//         *         this.LAY = LAY;
-//         */
-//
-//        if(monsterNameKey.equals("SOL")){
-//            List<MonsterEncyclopedia.ShinhanMong> sol = monsterEncyclopedia.getSOL();
-//            sol.get(0).ge;
-//
-//        }
-//
-//        if(monsterNameKey.equals("MOLI")){
-//
-//        }
-//
-//        if(monsterNameKey.equals("RINO")){
-//
-//        }
-//
-//        if(monsterNameKey.equals("SHOO")){
-//
-//        }
-//        if(monsterNameKey.equals("DOREMI")){
-//
-//        }
-//
-//        if(monsterNameKey.equals("LULULALA")){
-//
-//        }
-//
-//        if(monsterNameKey.equals("PLI")){
-//
-//        }
-//
-//        if(monsterNameKey.equals("LAY")){
-//
-//        }
-//
-//
-//
-//        return "도감 등록 성공";
-//    }
+    private String registerMonster(Child child) {
+        Monster monster = child.getMonster();
+        MonsterEncyclopedia monsterEncyclopedia = child.getMonsterEncyclopedia();
+
+        String monsterNameKey = monster.getName().toString().toUpperCase();
+
+        /**
+         *         this.SOL = SOL;
+         *         this.MOLI = MOLI;
+         *         this.RINO = RINO;
+         *         this.SHOO = SHOO;
+         *         this.DOREMI = DOREMI;
+         *         this.LULULALA = LULULALA;
+         *         this.PLI = PLI;
+         *         this.LAY = LAY;
+         */
+
+        if(monsterNameKey.equals("SOL")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(0);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+
+
+        }
+
+        if(monsterNameKey.equals("MOLI")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(1);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+
+        }
+
+        if(monsterNameKey.equals("RINO")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(2);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetail.setRegisterTime(LocalDate.now());
+
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+        }
+
+        if(monsterNameKey.equals("SHOO")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(3);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetail.setRegisterTime(LocalDate.now());
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+        }
+        if(monsterNameKey.equals("DOREMI")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(4);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetail.setRegisterTime(LocalDate.now());
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+        }
+
+        if(monsterNameKey.equals("LULULALA")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(5);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetail.setRegisterTime(LocalDate.now());
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+        }
+
+        if(monsterNameKey.equals("PLI")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(6);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister == true) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetail.setRegisterTime(LocalDate.now());
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+        }
+
+        if(monsterNameKey.equals("LAY")){
+            EncyclopediaDetail encyclopediaDetail = monsterEncyclopedia.getEncyclopediaDetails().get(7);
+            Boolean isRegister = encyclopediaDetail.getIsRegister();
+            if(isRegister == true) {
+                return "이미 완료";
+            }
+            isRegister = true;
+            encyclopediaDetail.setIsRegister(isRegister);
+            encyclopediaDetail.setRegisterTime(LocalDate.now());
+            encyclopediaDetailRepository.save(encyclopediaDetail);
+        }
+        child.setCntMonsters(0);
+        monsterRepository.delete(monster);
+
+        return "도감 등록 성공";
+    }
+
+    public MonsterDetail monsterDetail (Long id){
+        Child child = childRepository.findById(id).orElseThrow();
+        Monster monster = child.getMonster();
+
+        List<History> histories = monster.getHistories();
+
+        return MonsterDetail.builder()
+                .exp(monster.getExp())
+                .status(monster.getStatus())
+                .feel(monster.getFeel())
+                .historyList(histories)
+                .build();
+    }
 
     private int allMonth(int year, int month) {
         HashMap<Integer, List<Integer>> daysInMonth = new HashMap<>();

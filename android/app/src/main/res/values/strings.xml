@@ -28,8 +28,8 @@
     <string name="authUserAccountExplain">계좌를\n입력해주세요</string>
     <string name="authUserAccountEditText">계좌번호 입력</string>
     <string name="authUserSend1WonExplain">계좌인증을 위해\n1원을 보내볼게요</string>
-    <string name="authUserCheckExplain">입금내역을 확인하고\n\'신한\' 뒤 4자리 영어를 알려주세요</string>
-    <string name="authUserCheckEditText">4자리 영어</string>
+    <string name="authUserCheckExplain">입금내역을 확인하고\n\'신한\' 뒤 3자리 숫자를 알려주세요</string>
+    <string name="authUserCheckEditText">3자리 숫자</string>
 
     <!--  selectChild  -->
     <string name="selectChildBannerTitle">나의 자녀 찾기</string>
@@ -71,7 +71,8 @@
     
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
-    <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
+    <string name="eggmoneyna_rest_money_title_parent">자녀 용돈 잔액</string>
+    <string name="eggmoneyna_rest_money_title_child">나의 용돈 잔액</string>
 
     <!-- shinhanMong -->
     <string name="shinhanmong_appbar_title">신한몽</string>
@@ -82,7 +83,8 @@
     <string name="shinhanmong_collection_appbar_title">신한몽 도감</string>
 
     <!-- expense Analysis -->
-    <string name="expense_analysis_appbar_title">자녀 지출 분석</string>
+    <string name="expense_analysis_appbar_title_parent">자녀 지출 분석</string>
+    <string name="expense_analysis_appbar_title_child">나의 지출 분석</string>
     <string name="expense_analysis_month_expense">이 달의 총 지출액</string>
 
     <!-- setting -->

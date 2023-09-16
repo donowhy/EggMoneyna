@@ -3,10 +3,14 @@ package shinhan.EggMoneyna.user.follow.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import shinhan.EggMoneyna.global.error.code.ErrorCode;
+import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.jwt.JwtProvider;
+import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
+import shinhan.EggMoneyna.monster.entity.enumType.Benefit;
+import shinhan.EggMoneyna.monster.service.MonsterService;
 import shinhan.EggMoneyna.user.follow.service.dto.RelationEggMoney;
 import shinhan.EggMoneyna.user.follow.service.dto.RelationParentChild;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
@@ -25,20 +29,18 @@ import javax.transaction.Transactional;
 public class RelationService {
 
     private final RelationRepository relationRepository;
-
     private final ParentRepository parentRepository;
-
     private final ChildRepository childRepository;
-
     private final JwtProvider jwtProvider;
+    private final MonsterService monsterService;
 
     // 연관 관계 생성
     public RelationParentChild createRelation(Long parentId, Long childId) {
         Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
-                new RuntimeException("Parent not found")
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
         );
         Child child = childRepository.findById(childId).orElseThrow(() ->
-                new RuntimeException("Child not found")
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
         );
 
         Relation relation = Relation.builder()
@@ -66,16 +68,27 @@ public class RelationService {
 
     // 에그머니나 생성
     public RelationEggMoney createEggMoneyRelation(Long parentId, Long childId) {
-        Parent parent = parentRepository.findById(parentId).orElseThrow(() -> new RuntimeException("Parent not found"));
-        Child child = childRepository.findById(childId).orElseThrow(() -> new RuntimeException("Child not found"));
+        Parent parent = parentRepository.findById(parentId).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
+        Child child = childRepository.findById(childId).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         String childToken = jwtProvider.createChildToken(child);
 
         parent.setEggMoney(true);
         child.setEggMoney(true);
 
+        MonsterSaveRequestDto monsterSaveRequestDto = MonsterSaveRequestDto.builder()
+                .benefit(Benefit.Delivery)
+                .build();
+
+
         parentRepository.save(parent);
         childRepository.save(child);
+        monsterService.save(monsterSaveRequestDto, childId);
+
 
         return RelationEggMoney.builder()
                 .pId(parent.getId())
@@ -88,14 +101,18 @@ public class RelationService {
 
     // 연관 관계 읽기
     public Relation getRelation(Long relationId) {
-        return relationRepository.findById(relationId).orElseThrow(() -> new RuntimeException("Relation not found"));
+        return relationRepository.findById(relationId).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_RELATION)
+        );
     }
 
     // 연관 관계 삭제
     public void deleteRelation(Long parentid, Long childId) {
 
         Relation relation = relationRepository.findRelationByParentIdAndChildId(childId, parentid)
-                .orElseThrow(() -> new RuntimeException("Relation not found"));
+                .orElseThrow(() ->
+                        new BadRequestException(ErrorCode.NOT_EXISTS_RELATION)
+                );
 
         Parent parent = relation.getParent();
         Child child = relation.getChild();

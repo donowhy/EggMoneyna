@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import shinhan.EggMoneyna.global.response.Response;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
-import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
-import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
-import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
+import shinhan.EggMoneyna.monster.dto.*;
+import shinhan.EggMoneyna.monster.service.MonsterEncyclopediaService;
 import shinhan.EggMoneyna.monster.service.MonsterService;
 
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
 //@RequestMapping
 public class MonsterController {
     private final MonsterService monsterService;
-
+    private final MonsterEncyclopediaService monsterEncyclopediaService;
     // 몬스터 생성
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "신한몽 생성",
@@ -55,4 +54,24 @@ public class MonsterController {
     }
 
 
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "몬스터 디테일 조회 ", description = "몬스터 디테일 조회.", tags = { "Monster Controller" })
+    @GetMapping("/getMyMongDetail")
+    public MonsterDetail monsterDetail (@UserInfo UsersInfo usersInfo) {
+        return monsterService.monsterDetail(usersInfo.getId());
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "몬스터 도감 디테일 조회 ", description = "몬스터 도감 디테일 조회.", tags = { "Monster Controller" })
+    @GetMapping("/getDogamDetail")
+    public MonsterDetailResponse monsterDetail (@UserInfo UsersInfo usersInfo, @RequestBody MonsterDetailRequest request) {
+        return monsterEncyclopediaService.monsterDetail(usersInfo.getId(), request);
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "몬스터 도감 내가 가진 것들 조회 ", description = "몬스터 도감 내가 가진 것들 조회.", tags = { "Monster Controller" })
+    @GetMapping("/getDogam")
+    public List<MonstersResponse> monsters (@UserInfo UsersInfo usersInfo) {
+        return monsterEncyclopediaService.monsters(usersInfo.getId());
+    }
 }

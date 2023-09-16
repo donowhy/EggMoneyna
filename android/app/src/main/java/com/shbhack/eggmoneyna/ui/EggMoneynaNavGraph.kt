@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -20,8 +21,10 @@ import com.shbhack.eggmoneyna.MainActivity
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserCheckScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserMainScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
+import com.shbhack.eggmoneyna.ui.authuser.viewmodel.AuthUserViewModel
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
 import com.shbhack.eggmoneyna.ui.comment.CommentScreen
+import com.shbhack.eggmoneyna.ui.comment.viewmodel.CommentViewModel
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
@@ -43,9 +46,13 @@ fun EggMoneynaNavGraph(
     activity: MainActivity,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+
 //    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.WISH_BOX_EXIST
+    startDestination: String = EggMoneynaDestination.MAIN_CHILD
 ) {
+    val commentViewModel: CommentViewModel = hiltViewModel()
+
+    val authUserViewModel: AuthUserViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -101,7 +108,7 @@ fun EggMoneynaNavGraph(
             SplashScreen(navController, activity)
         }
         defaultSlideTransitions(EggMoneynaDestination.EGGMONEYNA) {
-            EggMoneynaScreen(navController)
+            EggMoneynaScreen(navController, commentViewModel = commentViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.ON_BOARDING) {
             OnBoardingScreen(navController, activity)
@@ -110,13 +117,13 @@ fun EggMoneynaNavGraph(
             ChooseWhoScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_MAIN) {
-            AuthUserMainScreen(navController)
+            AuthUserMainScreen(navController, authUserViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_SEND_1WON) {
-            AuthUserSend1WonScreen(navController)
+            AuthUserSend1WonScreen(navController, authUserViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.AUTH_USER_CHECK) {
-            AuthUserCheckScreen(navController)
+            AuthUserCheckScreen(navController, authUserViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.SELECT_CHILD) {
             SelectChildScreen(navController)
@@ -152,7 +159,7 @@ fun EggMoneynaNavGraph(
             SettingScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.EXPENSE_COMMENT) {
-            CommentScreen(navController)
+            CommentScreen(navController, commentViewModel)
         }
     }
 }

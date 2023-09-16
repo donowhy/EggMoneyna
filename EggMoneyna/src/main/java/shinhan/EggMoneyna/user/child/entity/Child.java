@@ -141,7 +141,6 @@ public class Child {
 
     public void setConsecutiveceAttemptAndTodayCheck(int consecutiveAttempt) {
         this.consecutiveAttempt = consecutiveAttempt;
-        this.todayCheck = false;
     }
 
     public void setConsecutiveceAttempt(int consecutiveAttempt) {
@@ -160,5 +159,8 @@ public class Child {
         this.eggMoney = eggMoney;
     }
 
+    public void setTodayCheck(Boolean todayCheck) {
+        this.todayCheck = todayCheck;
+    }
 }
 

@@ -15,6 +15,12 @@ import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
+import shinhan.EggMoneyna.monster.dto.HistoryRequest;
+import shinhan.EggMoneyna.monster.dto.HistoryResponse;
+import shinhan.EggMoneyna.monster.entity.Monster;
+import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
+import shinhan.EggMoneyna.monster.repository.HistoryRepository;
+import shinhan.EggMoneyna.monster.service.HistoryService;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
@@ -28,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus.getMonsterStatus;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -38,6 +46,7 @@ public class ComplimentService {
     private final ChildRepository childRepository;
     private final ParentRepository parentRepository;
     private final ComplimentRepository complimentRepository;
+    private final HistoryService historyService;
 
     public ComplimentResponseDto switchCompliment(Long usersId, Long childId, Long inputOutputId) {
         Parent parent = parentRepository.findById(usersId)
@@ -52,6 +61,23 @@ public class ComplimentService {
         if (parent.getId() == null) throw new BadRequestException(ErrorCode.INVALID_PARENT);
 
         comment.switchCompliment(true);
+
+
+        Monster monster = child.getMonster();
+        HistoryRequest request = HistoryRequest.builder()
+                .number(1)
+                .build();
+
+        HistoryResponse save = historyService.save(usersId, request);
+
+        monster.setExp(monster.getExp() + save.getExp());
+
+
+        if (monster.getExp() >= 300 && monster.getStatus() != MonsterStatus.register) {
+            monster.setStatus(MonsterStatus.register);
+        } else if (monster.getExp() >= 10 && monster.getStatus() == MonsterStatus.Egg) {
+            monster.setStatus(MonsterStatus.Adult);
+        }
 
         Optional<Compliment> optionalCompliment = complimentRepository.findByComplimentDate(LocalDate.now());
 
