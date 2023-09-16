@@ -31,7 +31,7 @@ public class AccountController {
         description = "Authorize만 되면 계좌 조회",
         tags = { "Account Controller" })
     @GetMapping()
-    public ResponseEntity<Account> getAccount(@UserInfo UsersInfo usersInfo) {
+    public ResponseEntity<ReturnBalance> getAccount(@UserInfo UsersInfo usersInfo) {
         log.info("userinfo={}", usersInfo.getId());
         return ResponseEntity.ok(accountService.getAccount(usersInfo.getId()));
 

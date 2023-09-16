@@ -18,6 +18,10 @@ import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.dto.*;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
+import shinhan.EggMoneyna.monster.dto.HistoryRequest;
+import shinhan.EggMoneyna.monster.dto.HistoryResponse;
+import shinhan.EggMoneyna.monster.entity.Monster;
+import shinhan.EggMoneyna.monster.service.HistoryService;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.users.entity.Users;
@@ -46,6 +50,7 @@ public class InputOutputService {
     private final CommentRepository commentRepository;
     private final ChildRepository childRepository;
     private final AmazonS3Client amazonS3Client;
+    private final HistoryService historyService;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -157,7 +162,6 @@ public class InputOutputService {
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, changeSmallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
         account.outBalance(addInputOutRequestDto.getInput());
-
         return AddInputOutputResponseDto.builder()
                 .bigCategory(bigCategory)
                 .smallCategory(changeSmallCategory)
@@ -194,6 +198,17 @@ public class InputOutputService {
         LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
 
         List<InputOutput> outputs = inputOutputRepository.findByAccountAndInputAndCreateTimeBetween(account, 0, startOfDay, endOfDay);
+
+        Monster monster = child.getMonster();
+
+        if(LocalDate.now().getDayOfMonth() == 1){
+            HistoryRequest request = HistoryRequest.builder()
+                    .number(2)
+                    .build();
+
+            HistoryResponse save = historyService.save(usersId, request);
+            monster.setExp(monster.getExp() + save.getExp());
+        }
 
         return InputOutputResponseDto.builder()
                 .inputOutputs(outputs)

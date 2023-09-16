@@ -45,4 +45,7 @@ public class MonsterEncyclopedia extends BaseTimeEntity {
     }
 
 
+    public void EncyclopediaDetail(List<EncyclopediaDetail> save) {
+        this.encyclopediaDetails = save;
+    }
 }
