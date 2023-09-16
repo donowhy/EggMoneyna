@@ -24,6 +24,7 @@ import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
 import com.shbhack.eggmoneyna.ui.authuser.viewmodel.AuthUserViewModel
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
 import com.shbhack.eggmoneyna.ui.comment.CommentScreen
+import com.shbhack.eggmoneyna.ui.comment.viewmodel.CommentViewModel
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
@@ -45,9 +46,11 @@ fun EggMoneynaNavGraph(
     activity: MainActivity,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = EggMoneynaDestination.SPLASH
-//    startDestination: String = EggMoneynaDestination.WISH_BOX_EXIST
+
+//    startDestination: String = EggMoneynaDestination.SPLASH
+    startDestination: String = EggMoneynaDestination.MAIN_CHILD
 ) {
+    val commentViewModel: CommentViewModel = hiltViewModel()
 
     val authUserViewModel: AuthUserViewModel = hiltViewModel()
 
@@ -105,7 +108,7 @@ fun EggMoneynaNavGraph(
             SplashScreen(navController, activity)
         }
         defaultSlideTransitions(EggMoneynaDestination.EGGMONEYNA) {
-            EggMoneynaScreen(navController)
+            EggMoneynaScreen(navController, commentViewModel = commentViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.ON_BOARDING) {
             OnBoardingScreen(navController, activity)
@@ -156,7 +159,7 @@ fun EggMoneynaNavGraph(
             SettingScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.EXPENSE_COMMENT) {
-            CommentScreen(navController)
+            CommentScreen(navController, commentViewModel)
         }
     }
 }

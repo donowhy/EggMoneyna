@@ -86,7 +86,7 @@ fun SpendingListItem(selectedDay: LocalDate, item: InputOutputDTO, onClick: () -
         }
         Spacer(modifier = Modifier.size(12.sdp))
         // 타입 뱃지
-        CustomSurfaceWithText("카페")
+        CustomSurfaceWithText(item.smallCategory)
         Spacer(modifier = Modifier.size(8.sdp))
         Icon(
             painter = painterResource(id = R.drawable.icon_forward), contentDescription = "forward",

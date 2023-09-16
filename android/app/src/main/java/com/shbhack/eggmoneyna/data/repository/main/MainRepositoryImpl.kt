@@ -1,7 +1,9 @@
 package com.shbhack.eggmoneyna.data.repository.main
 
+import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
+
 import com.shbhack.eggmoneyna.data.model.checkAuthDto
 import com.shbhack.eggmoneyna.data.model.checkChildAuthResponseDto
 import com.shbhack.eggmoneyna.data.model.checkParentAuthResponseDto
@@ -15,8 +17,12 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : MainRepository {
-    override suspend fun getInputOutput(inputOuputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse> {
-        return apiService.getInputOutput(inputOuputDate)
+    override suspend fun getInputOutput(inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse> {
+        return apiService.getInputOutput(inputOutputDate)
+    }
+
+    override suspend fun getCompliment(inputOuputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse> {
+        return apiService.getCompliment(inputOuputDate)
     }
 
     override suspend fun send1Won(accountNumber: send1WonDto): NetworkResponse<send1WonResponseDto, ErrorResponse> {

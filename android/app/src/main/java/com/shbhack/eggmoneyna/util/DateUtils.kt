@@ -2,14 +2,16 @@ package com.shbhack.eggmoneyna.util
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
 import java.util.Date
-import kotlin.math.abs
+import java.util.Locale
 
 object DateUtils {
     private const val MINUTE = 60L
@@ -65,5 +67,49 @@ object DateUtils {
 
         return "+${daysDifference}일"
     }
+
+    fun formatToYearMonth(dateString: String): String {
+        return if (dateString.matches("""\d{4}-\d{2}-\d{2}""".toRegex())) {
+            dateString.substring(0, 7)
+        } else {
+            throw IllegalArgumentException("Invalid date format: $dateString")
+        }
+    }
+
+    @SuppressLint("NewApi")
+    fun getDayOfWeekFromDateString(dateString: String): String {
+        val date = LocalDate.parse(dateString)
+        return when (date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())) {
+            "Mon" -> "월"
+            "Tue" -> "화"
+            "Wed" -> "수"
+            "Thu" -> "목"
+            "Fri" -> "금"
+            "Sat" -> "토"
+            "Sun" -> "일"
+            else -> ""
+        }
+    }
+
+    @SuppressLint("NewApi")
+    fun getCurrentDateInYearMonthFormat(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM")
+        return currentDate.format(formatter)
+    }
+
+    @SuppressLint("NewApi")
+    fun formatDateString(input: String?): String {
+        if (input == null) return ""
+        // 입력된 문자열을 LocalDateTime으로 변환
+        val dateTime = LocalDateTime.parse(input, DateTimeFormatter.ISO_DATE_TIME)
+
+        // 출력 포맷을 설정
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm")
+
+        // 변환된 날짜를 원하는 포맷으로 반환
+        return dateTime.format(outputFormatter)
+    }
+
 
 }
