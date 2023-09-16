@@ -115,8 +115,10 @@ public class MonsterService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Scheduled(cron = "0 0 0 * * ?")
+//    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void attempt(){
+        log.info("출석 실행 ");
         List<Child> children = childRepository.findAll();
 
         for (Child child : children) {
@@ -129,8 +131,10 @@ public class MonsterService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Scheduled(cron = "0 0 0 1 * ?")
+//    @Scheduled(cron = "0 0 0 1 * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void upgradeExp(){
+        log.info("경험치 업 실행");
         List<Child> children = childRepository.findAll();
 
         for (Child child : children) {
