@@ -121,7 +121,7 @@ public class MonsterService {
             child.setConsecutiveceAttempt(child.getConsecutiveAttempt() + 1);
         }
 
-        if(child.getMonster().getExp() > 4) {
+        if(child.getMonster().getExp() > 300) {
             registerMonster(child);
         }
 
