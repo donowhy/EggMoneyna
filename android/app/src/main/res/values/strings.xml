@@ -51,6 +51,17 @@
     <string name="mainParentWarningContent1">이 광고는 법령 및 내부통제기준에 따른 관련 절차를 거쳐 제공됩니다.</string>
     <string name="mainParentWarningContent2">기타 자세한 사항은 신한은행 고객센터(1599-8000)에 문의 바랍니다.</string>
 
+    <!--  mainChild  -->
+    <string name="mainChildDDayStart">신한몽과 함께한지</string>
+    <string name="mainChildDDayEnd">일 째</string>
+    <string name="mainChildLastMoney">나의 잔액</string>
+    <string name="mainChildWishBox">나의 위시박스</string>
+    <string name="mainChildMaxmumStart">이 달의 한도</string>
+    <string name="mainChildMaxmumMiddle">중</string>
+    <string name="mainChildMaxmumEnd">이 남았어요!</string>
+    <string name="mainChildAttendance">이 달의\n출석 일수</string>
+    <string name="mainChildCompliment">최근\n칭찬 횟수</string>
+
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
