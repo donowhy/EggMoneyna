@@ -26,7 +26,7 @@ public class RelationController {
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "부모가 아이 가족관계증명서를 제출한 경우 연관",
         description = "부모 Authorize, 아이의 pk값",
-        tags = { "Relation Controller" })
+        tags = { "Develop Controller" })
     @PostMapping("/createRelation/{childId}")
     public RelationParentChild createRelation(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
         return relationService.createRelation(usersInfo.getId(), childId);

@@ -7,17 +7,24 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-import shinhan.EggMoneyna.account.dto.AccountCreateDto;
+import shinhan.EggMoneyna.account.dto.Check1CertChildResponse;
+import shinhan.EggMoneyna.account.dto.Check1CertParentResponse;
+import shinhan.EggMoneyna.account.dto.Send1CertResponse;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
 import shinhan.EggMoneyna.account.repository.AccountRepository;
+import shinhan.EggMoneyna.account.service.dto.CheckRequset;
+import shinhan.EggMoneyna.account.service.dto.Send1CertRequest;
+import shinhan.EggMoneyna.global.error.code.ErrorCode;
+import shinhan.EggMoneyna.global.error.exception.BadRequestException;
+import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
+import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
+import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
 import shinhan.EggMoneyna.user.parent.repository.ParentRepository;
-import shinhan.EggMoneyna.users.entity.Users;
-import shinhan.EggMoneyna.users.repository.UsersRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +37,8 @@ public class AccountService {
 	private final AccountRepository accountRepository;
 	private final ChildRepository childRepository;
 	private final ParentRepository parentRepository;
+	private final InputOutputRepository inputOutputRepository;
+	private final JwtProvider jwtProvider;
 
 	// 생성
 	public Long childCreate(Long id) {
@@ -55,7 +64,7 @@ public class AccountService {
 				.build();
 		child.setAccount(account);
 
-		accountRepository.save(account);
+		accountRepository.saveAndFlush(account);
 
 		return account.getId();
 	}
@@ -86,7 +95,7 @@ public class AccountService {
 		parent.setAccount(account);
 
 
-		accountRepository.save(account);
+		accountRepository.saveAndFlush(account);
 
 		return account.getId();
 	}
@@ -99,46 +108,108 @@ public class AccountService {
 
 	}
 
+	public Send1CertResponse send1Cert (Send1CertRequest request){
+
+		Random rand = new Random();
+		String randomNum = String.valueOf(rand.nextInt((999 - 101) + 1) + 101);
+		log.info("request={}", request.getAccountNumber());
+		Account account = accountRepository.findByAccountNumber(request.getAccountNumber()).orElseThrow();
+
+		log.info("account={}",account.getAccountNumber());
+
+		InputOutput inputOutput = InputOutput.builder()
+				.brandName("신한은행")
+				.brandImg("신한은행")
+				.bigCategory("1원이체")
+				.smallCategory("신한" + randomNum)
+				.output(0)
+				.input(1)
+				.account(account)
+				.build();
+
+		inputOutputRepository.save(inputOutput);
+
+		return Send1CertResponse.builder()
+				.certNumber(Long.valueOf(randomNum))
+				.build();
+	}
+
 
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
-//	public Boolean checkAccount(Long id, String random) {
-//		Users users = usersRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
-//		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow(() -> new NoSuchElementException("Account not found"));
-//
-//		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
-//		List<InAccount> inAccounts = inAccountRepository.findLatestByAccountAndSendUser(account, "신한은행", null);
-//
-//		if(inAccounts.isEmpty()) {
-//			throw new NoSuchElementException("InAccount not found with the specified sendUser");
-//		}
-//
-//		InAccount inAccount = inAccounts.get(0);
-//
-//		return random.equals(inAccount.getMemo());
-//	}
-//
-//
-//	public List<DetailAccountResponseDto> getAccountDetail(Long id){
-//
-//		Users users = usersRepository.findById(id).orElseThrow();
-//		Account account = accountRepository.findByAccountNumber(users.getAccount().getAccountNumber()).orElseThrow();
-//		List<InAccount> inAccounts = inAccountRepository.findAllByAccount(account);
-//
-//		List<DetailAccountResponseDto> detailAccountResponseDtos = new ArrayList<>();
-//
-//		for(InAccount inAccount : inAccounts) {
-//			DetailAccountResponseDto detailAccountResponseDto = DetailAccountResponseDto.builder()
-//					.memo(inAccount.getMemo())
-//					.sendUser(inAccount.getSendUser())
-//					.money(inAccount.getMoney())
-//					.build();
-//
-//			detailAccountResponseDtos.add(detailAccountResponseDto);
-//		}
-//
-//		return detailAccountResponseDtos;
-//	}
+
+	public Check1CertParentResponse checkParentAccount(CheckRequset requset) {
+		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow();
+		Parent parent = account.getParent();
+
+		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
+
+		List<InputOutput> shinhans = inputOutputRepository.findLatestByAccountAndSendUser(account, "신한은행");
+
+		log.info("shinhans={}",shinhans.size() );
+
+		if(shinhans.isEmpty()) {
+			throw new NoSuchElementException("InAccount not found with the specified sendUser");
+		}
+
+		log.info("random={}", requset.getCertNumber());
+		log.info("shinhans={}",shinhans.get(0).getSmallCategory());
+
+		InputOutput inputOutput = shinhans.get(0);
+		String smallCategory = inputOutput.getSmallCategory();
+		String checkNumber = smallCategory.substring(smallCategory.length() - 3);
+		boolean equals = requset.getCertNumber().equals(checkNumber);
+
+		String parentToken = jwtProvider.createParentToken(parent);
+
+		return Check1CertParentResponse.builder()
+				.isRight(equals)
+				.parentToken(parentToken)
+				.build();
+
+	}
+
+	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
+	public Check1CertChildResponse checkChildAccount(CheckRequset requset) throws RuntimeException {
+		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow();
+		Child child = account.getChild();
+		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
+
+		List<InputOutput> shinhans = inputOutputRepository.findLatestByAccountAndSendUser(account, "신한은행");
+
+		if(shinhans.isEmpty()) {
+			throw new NoSuchElementException("InAccount not found with the specified sendUser");
+		}
+
+		InputOutput inputOutput = shinhans.get(0);
+
+		String smallCategory = inputOutput.getSmallCategory();
+		String checkNumber = smallCategory.substring(smallCategory.length() - 3);
+		boolean equals = requset.getCertNumber().equals(checkNumber);
+
+
+		if(!equals){
+			throw new BadRequestException(ErrorCode.INVALID_CERT_CODE);
+        }
+
+		String childToken = jwtProvider.createChildToken(child);
+
+		if(!child.getEggMoney()) {
+			return Check1CertChildResponse.builder()
+					.isRight(equals)
+					.isAccountActivate(child.getEggMoney())
+					.build();
+		}else {
+			return Check1CertChildResponse.builder()
+					.isRight(equals)
+					.childToken(childToken)
+					.isAccountActivate(child.getEggMoney())
+					.build();
+		}
+
+
+	}
+
 
 	// 계좌 별명 변경
 	public Account updateNickName(String name, Long id) {
@@ -155,5 +226,13 @@ public class AccountService {
 		Account account = child.getAccount();
 		accountRepository.delete(account);
 		return "성공";
+	}
+
+	public Account getAccountParent(Long id, Long childId) {
+		Child child = childRepository.findById(childId).orElseThrow();
+		Account account = child.getAccount();
+		log.info("account = {}", account);
+		return account;
+
 	}
 }

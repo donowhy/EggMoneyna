@@ -4,8 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class SendMoneyMyAccountRequest {
-    private Long myAccountNumber;
-    private int bankCode;
-    private Long myRealAccountNumber;
+    private Long virtualAccountNumber;
     private int money;
 }
+

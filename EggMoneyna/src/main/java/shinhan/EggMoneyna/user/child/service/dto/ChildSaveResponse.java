@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 public class ChildSaveResponse {
     private Long id;
-    private String childId;
+    private String childName;
     private Boolean isGirl;
     private LocalDate birthday;
 

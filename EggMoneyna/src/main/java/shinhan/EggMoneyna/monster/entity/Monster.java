@@ -1,6 +1,8 @@
 package shinhan.EggMoneyna.monster.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Random;
 @Entity
 @Getter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Monster extends BaseTimeEntity {
 
     @Id
@@ -37,9 +40,11 @@ public class Monster extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Benefit benefit;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "childs_default_id")
     private Child child;
+
 
     @Builder
     public Monster(Long id, ShinhanMong name, MonsterStatus status, Feel feel, int exp, Benefit benefit, Child child) {

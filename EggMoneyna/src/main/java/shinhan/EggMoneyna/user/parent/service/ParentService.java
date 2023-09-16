@@ -12,6 +12,7 @@ import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.service.dto.ChildLoginRequest;
+import shinhan.EggMoneyna.user.child.service.dto.ChildResponse;
 import shinhan.EggMoneyna.user.child.service.dto.returnToken;
 import shinhan.EggMoneyna.user.follow.entity.Relation;
 import shinhan.EggMoneyna.user.follow.repository.RelationRepository;
@@ -42,7 +43,7 @@ public class ParentService {
 
 
         Parent parent = Parent.builder()
-                .parentId(request.getParentId())
+                .parentName(request.getParentId())
                 .password("123")
                 .gender(request.getRole())
                 .build();
@@ -52,7 +53,7 @@ public class ParentService {
         accountService.parentCreate(parent.getId());
 
         ParentLoginRequest parentLoginRequest = ParentLoginRequest.builder()
-                .parentId(parent.getParentId())
+                .parentId(parent.getParentName())
                 .build();
 
         returnParentToken login = login(parentLoginRequest);
@@ -65,9 +66,9 @@ public class ParentService {
 
         return ParentSaveResponse.builder()
                 .id(parent.getId())
-                .parentId(parent.getParentId())
-                .role(isMom)
-                .parentToken("Bearer " + login.getParentToken())
+                .parentId(parent.getParentName())
+                .accountNumber(parent.getAccount().getAccountNumber())
+                .Role(isMom)
                 .build();
     }
 
@@ -107,18 +108,18 @@ public class ParentService {
         List<Child> childrenByParentId = parentRepository.findChildrenByParentId(id);
 
         List<String> childNames = childrenByParentId.stream()
-                .map(Child::getChildId)
+                .map(Child::getChildName)
                 .collect(Collectors.toList());
 
         List<Child> childrenEggMoneyNa = parentRepository.findChildrenEggMoneyNa(id);
 
         List<String> eggMoneyNa = childrenEggMoneyNa.stream()
-                .map(Child::getChildId)
+                .map(Child::getChildName)
                 .collect(Collectors.toList());
 
 
         return ParentResponse.builder()
-                .parentId(parent.getParentId())
+                .parentId(parent.getParentName())
                 .childNicknames(childNames)
                 .eggMoneynaChild(eggMoneyNa)
                 .pocketMoneyDate(parent.getPocketMoneyDate())
@@ -139,10 +140,10 @@ public class ParentService {
             Child child = relation.getChild();
             int age = Period.between(child.getBirthday(), currentDate).getYears();
             log.info("age={}", age);
-            log.info("child = {}",child.getChildId());
+            log.info("child = {}",child.getChildName());
             MyChildsResponse build = MyChildsResponse.builder()
-                    .childId(child.getChildId())
-                    .isGirl(child.getGender())
+                    .id(child.getId())
+                    .childName(child.getChildName())
                     .age(age)
                     .build();
 
@@ -152,34 +153,34 @@ public class ParentService {
         return myChildsResponse;
     }
 
-    public MyChildResponse findMyOnechild(Long id){
-        Relation relation = relationRepository.findRelationEggMoneyByParentIdOneChild(id).orElseThrow(
+    public ChildResponse findMyOnechild(Long id, Long childId){
+        Relation relation = relationRepository.findRelationEggMoneyByParentIdAndChildId(id, childId).orElseThrow(
                 () -> new BadRequestException(ErrorCode.NOT_EXISTS_EGGMONEY_RELATION)
         );
 
         Child child = relation.getChild();
 
-        LocalDate currentDate = LocalDate.now();
-
-        return MyChildResponse.builder()
-                .childId(child.getChildId())
-                .birthday(child.getBirthday())
-                .age(currentDate.getYear() - child.getBirthday().getYear())
-                .inputOutput(child.getAccount().getInputOutputs())
+        return ChildResponse.builder()
+                .childName(child.getChildName())
                 .pocketMoney(child.getPocketMoney())
                 .pocketMoneyDate(child.getPocketMoneyDate())
                 .account(child.getAccount())
+                .cntMonsters(child.getCntMonsters())
+                .wishBoxes(child.getWishBoxes())
+                .monsterEncyclopedia(child.getMonsterEncyclopedia())
+                .limitMoney(child.getLimitMoney())
+                .monster(child.getMonster())
                 .build();
     }
 
 
     // 에그머니나 되어있는 조건
-    public List<MyChildsResponse> findMyEggMoneyChilds(Long id){
+    public List<MyChildsEggList> findMyEggMoneyChilds(Long id){
 
         List<Relation> childList= relationRepository.findRelationEggMoneyAllByParentId(id);
 
         log.info("childList = {}", childList);
-        List<MyChildsResponse> myChildsResponse = new ArrayList<>();
+        List<MyChildsEggList> myChildsEggList = new ArrayList<>();
 
         LocalDate currentDate = LocalDate.now();
 
@@ -188,16 +189,16 @@ public class ParentService {
             Child child = relation.getChild();
             int age = Period.between(child.getBirthday(), currentDate).getYears();
             log.info("age={}", age);
-            log.info("child = {}",child.getChildId());
-            MyChildsResponse build = MyChildsResponse.builder()
-                    .childId(child.getChildId())
-                    .isGirl(child.getGender())
-                    .age(age)
+            log.info("child = {}",child.getChildName());
+            MyChildsEggList build = MyChildsEggList.builder()
+                    .childId(child.getId())
+                    .childName(child.getChildName())
+                    .balance(child.getAccount().getBalance())
                     .build();
 
-            myChildsResponse.add(build);
+            myChildsEggList.add(build);
         }
 
-        return myChildsResponse;
+        return myChildsEggList;
     }
 }

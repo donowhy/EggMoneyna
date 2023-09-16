@@ -35,7 +35,7 @@ public class JwtProvider {
 
         Claims claims = Jwts.claims();
         claims.put("id", child.getId());
-        claims.put("username", child.getChildId());
+        claims.put("username", child.getChildName());
 
 
         return Jwts.builder()
@@ -57,7 +57,7 @@ public class JwtProvider {
 
         Claims claims = Jwts.claims();
         claims.put("id", member.getId());
-        claims.put("parentName", member.getParentId());
+        claims.put("parentName", member.getParentName());
 
 
         return Jwts.builder()
