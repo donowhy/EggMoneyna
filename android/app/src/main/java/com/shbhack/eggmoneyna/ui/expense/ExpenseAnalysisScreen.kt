@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.expense
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,8 +19,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.github.tehras.charts.line.LineChart
@@ -45,54 +51,74 @@ import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.ExpenseAnalysisPink
-import com.shbhack.eggmoneyna.ui.theme.PieChartColor1
-import com.shbhack.eggmoneyna.ui.theme.PieChartColor2
-import com.shbhack.eggmoneyna.ui.theme.PieChartColor3
-import com.shbhack.eggmoneyna.ui.theme.PieChartColor4
-import com.shbhack.eggmoneyna.ui.theme.PieChartColor5
-import com.shbhack.eggmoneyna.ui.theme.PieChartColor6
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
+import com.shbhack.eggmoneyna.util.AnalysisUtils
+import com.shbhack.eggmoneyna.util.AnalysisUtils.parseToExpenseCategory
+import com.shbhack.eggmoneyna.util.AnalysisUtils.parseToLineChartData
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 import java.text.NumberFormat
 
 @Composable
-fun ExpenseAnalysisScreen(navController: NavController) {
-    val emailViewModel = ExpenseViewModel()
-    val categoryList by emailViewModel.categoryState.collectAsState()
+fun ExpenseAnalysisScreen(
+    navController: NavController,
+    viewModel: ExpenseViewModel = hiltViewModel()
+) {
+    val monthGraph by viewModel.monthGraphState.collectAsState()
+    val weekGraph by viewModel.weekGraphState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMonthGraph()
+        viewModel.getWeekGraph()
+    }
+
+    var pieChartData by remember {
+        mutableStateOf(listOf<ExpenseCategory>())
+    }
+    var lineChartData by remember {
+        mutableStateOf(listOf<LineChartData>())
+    }
+
+    LaunchedEffect(monthGraph) {
+        pieChartData = parseToExpenseCategory(monthGraph)
+    }
+
+    LaunchedEffect(weekGraph) {
+        lineChartData = parseToLineChartData(weekGraph)
+    }
 
     // 1f -> 1000원
-    val lineChartData = listOf<LineChartData>(
-        // 수입
-        LineChartData(
-            points = listOf(
-                LineChartData.Point(5f, "월"),
-                LineChartData.Point(8f, "화"),
-                LineChartData.Point(0f, "수"),
-                LineChartData.Point(0f, "목"),
-                LineChartData.Point(0.5f, "금"),
-                LineChartData.Point(50f, "토"),
-                LineChartData.Point(1.5f, "일")
-            ),
-            startAtZero = true,
-            lineDrawer = SolidLineDrawer(color = Color(0xFFFF96AF))
-        ),
-        // 지출
-        LineChartData(
-            points = listOf(
-                LineChartData.Point(0f, "월"),
-                LineChartData.Point(0f, "화"),
-                LineChartData.Point(100f, "수"),
-                LineChartData.Point(0f, "목"),
-                LineChartData.Point(5f, "금"),
-                LineChartData.Point(0f, "토"),
-                LineChartData.Point(50f, "일")
-            ),
-            startAtZero = true,
-            padBy = 100f,
-            lineDrawer = SolidLineDrawer(color = Color(0xFF76BAFF))
-        )
-    )
+//    val lineChartData = listOf<LineChartData>(
+//        // 수입
+//        LineChartData(
+//            points = listOf(
+//                LineChartData.Point(5f, "월"),
+//                LineChartData.Point(8f, "화"),
+//                LineChartData.Point(0f, "수"),
+//                LineChartData.Point(0f, "목"),
+//                LineChartData.Point(0.5f, "금"),
+//                LineChartData.Point(50f, "토"),
+//                LineChartData.Point(1.5f, "일")
+//            ),
+//            startAtZero = true,
+//            lineDrawer = SolidLineDrawer(color = Color(0xFFFF96AF))
+//        ),
+//        // 지출
+//        LineChartData(
+//            points = listOf(
+//                LineChartData.Point(0f, "월"),
+//                LineChartData.Point(0f, "화"),
+//                LineChartData.Point(100f, "수"),
+//                LineChartData.Point(0f, "목"),
+//                LineChartData.Point(5f, "금"),
+//                LineChartData.Point(0f, "토"),
+//                LineChartData.Point(50f, "일")
+//            ),
+//            startAtZero = true,
+//            padBy = 100f,
+//            lineDrawer = SolidLineDrawer(color = Color(0xFF76BAFF))
+//        )
+//    )
 
     Scaffold(
         topBar = {
@@ -116,7 +142,7 @@ fun ExpenseAnalysisScreen(navController: NavController) {
             // pie chart
             Text(
                 modifier = Modifier.padding(12.sdp),
-                text = "이 주의 지출 카테고리",
+                text = "이 달의 지출 카테고리",
                 style = TextStyle(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
@@ -129,7 +155,7 @@ fun ExpenseAnalysisScreen(navController: NavController) {
                 thickness = 1.sdp
             )
             Spacer(modifier = Modifier.size(12.sdp))
-            PieChartView(categoryList)
+            PieChartView(pieChartData)
             Divider(
                 modifier = Modifier.padding(top = 12.sdp),
                 thickness = 12.sdp,
@@ -152,7 +178,10 @@ fun ExpenseAnalysisScreen(navController: NavController) {
                 thickness = 1.sdp
             )
             Spacer(modifier = Modifier.size(16.sdp))
-            LineChartView(lineChartData)
+            if (lineChartData.isNotEmpty()) {
+                LineChartView(lineChartData)
+            }
+
             Spacer(modifier = Modifier.size(12.sdp))
             Divider(
                 modifier = Modifier.padding(top = 12.sdp),
@@ -176,29 +205,20 @@ fun LineChartView(lineChartData: List<LineChartData>) {
         pointDrawer = NoPointDrawer,
         animation = simpleChartAnimation(),
         xAxisDrawer = SimpleXAxisDrawer(labelTextSize = 12.ssp, axisLineColor = Color.Gray),
-        yAxisDrawer = SimpleYAxisDrawer(labelTextSize = 12.ssp, axisLineColor = Color.Gray,
-            labelValueFormatter = { value -> formatter.format((value * 1000).toLong()) }),
+        yAxisDrawer = SimpleYAxisDrawer(
+            labelTextSize = 12.ssp, axisLineColor = Color.Gray,
+            labelValueFormatter = { value -> formatter.format(value.toInt()) }
+        ),
         horizontalOffset = 10f
     )
 
 }
 
-val predefinedColors =
-    listOf(
-        PieChartColor1,
-        PieChartColor2,
-        PieChartColor3,
-        PieChartColor4,
-        PieChartColor5,
-        PieChartColor6
-    )
-
 @Composable
 fun PieChartView(categoryList: List<ExpenseCategory>) {
-    val slices = categoryList.mapIndexed { index, category ->
-        val colorIndex = index % predefinedColors.size
+    val slices = categoryList.map { category ->
         PieChartData.Slice(
-            category.value, predefinedColors[colorIndex]
+            category.value, AnalysisUtils.convertCategoryColor(category.type)
         )
     }
     val pieChartData =
@@ -252,7 +272,7 @@ fun CategoryView(item: PieChartData.Slice, type: String) {
             )
         }
         Text(
-            text = "${(item.value * 100).toInt()}%",
+            text = "${item.value}%",
             style = TextStyle(
                 fontSize = 10.ssp,
                 fontWeight = FontWeight.Normal
@@ -269,7 +289,6 @@ fun ExpenseAnalysisScreenPreivew() {
 }
 
 data class ExpenseCategory(
-    val id: Int,
     val type: String,
     val value: Float
 )

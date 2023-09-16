@@ -5,9 +5,11 @@ import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
 import com.shbhack.eggmoneyna.data.model.MonsterResponseDto
 import com.shbhack.eggmoneyna.data.model.MonsterSaveResponseDto
+import com.shbhack.eggmoneyna.data.model.MonthGraphResponseDto
 import com.shbhack.eggmoneyna.data.model.ParentSaveDto
 import com.shbhack.eggmoneyna.data.model.ParentSaveResponseDto
 import com.shbhack.eggmoneyna.data.model.RelationResponse
+import com.shbhack.eggmoneyna.data.model.WeekGraphResponseDto
 import com.shbhack.eggmoneyna.data.model.WriteCommentRequest
 import com.shbhack.eggmoneyna.util.network.NetworkResponse
 import retrofit2.http.Body
@@ -47,4 +49,10 @@ interface ApiService {
     // 월 칭찬 조회 (yyyy-MM)
     @POST("compliment/month/{inputOutputDate}")
     suspend fun getCompliment(@Path("inputOutputDate") inputOuputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse>
+
+    @POST("graph/week")
+    suspend fun getWeekGraph(): NetworkResponse<List<WeekGraphResponseDto>, ErrorResponse>
+
+    @POST("/v1/graph/category")
+    suspend fun getMonthGraph(): NetworkResponse<MonthGraphResponseDto, ErrorResponse>
 }

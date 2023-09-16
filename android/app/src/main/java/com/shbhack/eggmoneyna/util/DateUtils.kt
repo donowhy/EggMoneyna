@@ -2,14 +2,16 @@ package com.shbhack.eggmoneyna.util
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
 import java.util.Date
-import kotlin.math.abs
+import java.util.Locale
 
 object DateUtils {
     private const val MINUTE = 60L
@@ -73,5 +75,21 @@ object DateUtils {
             throw IllegalArgumentException("Invalid date format: $dateString")
         }
     }
+
+    @SuppressLint("NewApi")
+    fun getDayOfWeekFromDateString(dateString: String): String {
+        val date = LocalDate.parse(dateString)
+        return when (date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())) {
+            "Mon" -> "월"
+            "Tue" -> "화"
+            "Wed" -> "수"
+            "Thu" -> "목"
+            "Fri" -> "금"
+            "Sat" -> "토"
+            "Sun" -> "일"
+            else -> ""
+        }
+    }
+
 
 }

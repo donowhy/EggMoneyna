@@ -1,31 +1,62 @@
 package com.shbhack.eggmoneyna.ui.expense
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.shbhack.eggmoneyna.data.model.MonthGraphResponseDto
+import com.shbhack.eggmoneyna.data.model.WeekGraphResponseDto
+import com.shbhack.eggmoneyna.data.repository.expense.ExpenseRepository
+import com.shbhack.eggmoneyna.util.network.NetworkResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import java.util.Locale.Category
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ExpenseViewModel : ViewModel() {
-    // StateFlow to hold the list of email messages
-    private val _categoryState = MutableStateFlow(emptyList<ExpenseCategory>())
-    val categoryState: StateFlow<List<ExpenseCategory>> = _categoryState.asStateFlow()
+private const val TAG = "ExpenseViewModel_진영"
 
-    init {
-        // Initialize the list of email messages
-        // when the ViewModel is created
-        _categoryState.update { getExpenseCategory() }
+@HiltViewModel
+class ExpenseViewModel @Inject constructor(
+    private val repository: ExpenseRepository
+) : ViewModel() {
+
+    private val _weekGraphState = MutableStateFlow<List<WeekGraphResponseDto>>(emptyList())
+    val weekGraphState: StateFlow<List<WeekGraphResponseDto>> = _weekGraphState.asStateFlow()
+
+    private val _monthGraphState =
+        MutableStateFlow(MonthGraphResponseDto(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+    val monthGraphState: StateFlow<MonthGraphResponseDto> = _monthGraphState.asStateFlow()
+
+    fun getWeekGraph() {
+        viewModelScope.launch {
+            val response = repository.getWeekGraph()
+            Log.d(TAG, "getWeekGraph: $response")
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _weekGraphState.emit(response.body)
+                }
+
+                else -> {
+                    Log.d(TAG, "getWeekGraph: 통신 실패")
+                }
+            }
+        }
     }
 
-    fun getExpenseCategory(): List<ExpenseCategory> {
-        return listOf(
-            ExpenseCategory(id = 1, type = "쇼핑", 0.32f),
-            ExpenseCategory(id = 2, type = "음식점", 0.20f),
-            ExpenseCategory(id = 3, type = "편의점", 0.16f),
-            ExpenseCategory(id = 4, type = "여행", 0.2f),
-            ExpenseCategory(id = 5, type = "문구", 0.07f),
-            ExpenseCategory(id = 6, type = "기타", 0.05f)
-        )
+    fun getMonthGraph() {
+        viewModelScope.launch {
+            val response = repository.getMonthGraph()
+            Log.d(TAG, "getMonthGraph: $response")
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _monthGraphState.emit(response.body)
+                }
+
+                else -> {
+                    Log.d(TAG, "getMonthGraph: 통신 실패")
+                }
+            }
+        }
     }
 }
