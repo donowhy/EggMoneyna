@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.remote
 
+import com.shbhack.eggmoneyna.data.model.BalanceResponse
 import com.shbhack.eggmoneyna.data.model.CommentResponseDto
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
@@ -106,5 +107,9 @@ interface ApiService {
 
     @GET("parent/findMyChilds")
     suspend fun getAllUnActivatedChild(): NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse>
+
+    // 내 계좌 잔액 조회
+    @GET("/accounts")
+    suspend fun getMyBalance(): NetworkResponse<BalanceResponse, ErrorResponse>
 
 }

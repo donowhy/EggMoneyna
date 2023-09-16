@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.repository.main
 
+import com.shbhack.eggmoneyna.data.model.BalanceResponse
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
@@ -30,4 +31,7 @@ interface MainRepository {
     suspend fun checkChildAuth(@Body checkChildAuthDto: checkAuthDto): NetworkResponse<checkChildAuthResponseDto, ErrorResponse>
 
     suspend fun getAllUnActivatedChild(): NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse>
+
+    // 내 계좌 잔액 조회
+    suspend fun getMyBalance(): NetworkResponse<BalanceResponse, ErrorResponse>
 }
