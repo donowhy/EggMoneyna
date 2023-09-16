@@ -67,8 +67,8 @@ public class ParentService {
         return ParentSaveResponse.builder()
                 .id(parent.getId())
                 .parentId(parent.getParentName())
-                .role(isMom)
-                .parentToken("Bearer " + login.getParentToken())
+                .accountNumber(parent.getAccount().getAccountNumber())
+                .Role(isMom)
                 .build();
     }
 

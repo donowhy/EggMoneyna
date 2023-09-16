@@ -43,4 +43,6 @@ public class MonsterEncyclopedia extends BaseTimeEntity {
         this.encyclopediaDetails = encyclopediaDetails;
         this.child = child;
     }
+
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import shinhan.EggMoneyna.account.dto.*;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.service.AccountService;
+import shinhan.EggMoneyna.account.service.dto.CheckRequset;
 import shinhan.EggMoneyna.account.service.dto.Send1CertRequest;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
@@ -71,8 +72,8 @@ public class AccountController {
             description = "Authorize, 계정에 있는 3글자 인증 번호 입력",
             tags = { "Account Controller" })
     @PostMapping("/chekcParent1Cert")
-    public Check1CertParentResponse checkParentAccount(@RequestBody Long number, @RequestBody  String random){
-        return accountService.checkParentAccount(number, random);
+    public Check1CertParentResponse checkParentAccount(@RequestBody CheckRequset requset){
+        return accountService.checkParentAccount(requset);
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -80,8 +81,8 @@ public class AccountController {
             description = "Authorize, 계정에 있는 3글자 인증 번호 입력",
             tags = { "Account Controller" })
     @PostMapping("/checkChild1Cert")
-    public Check1CertChildResponse checkChildAccount(@RequestBody Long number,@RequestBody String random){
-        return accountService.checkChildAccount(number, random);
+    public Check1CertChildResponse checkChildAccount(@RequestBody CheckRequset requset){
+        return accountService.checkChildAccount(requset);
     }
 
 }
