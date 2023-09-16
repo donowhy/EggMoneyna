@@ -32,7 +32,7 @@ public class AccountService {
 	private final ParentRepository parentRepository;
 
 	// 생성
-	public Long create(Long id) {
+	public Long childCreate(Long id) {
 		log.info("account create");
 		Random random = new Random();
 
@@ -60,7 +60,7 @@ public class AccountService {
 		return account.getId();
 	}
 
-	public Long childCreate(Long id) {
+	public Long parentCreate(Long id) {
 		log.info("parent Account create");
 		Random random = new Random();
 
