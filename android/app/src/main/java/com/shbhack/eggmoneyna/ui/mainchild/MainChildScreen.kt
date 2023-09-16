@@ -78,7 +78,11 @@ fun MainChildScreen(navController: NavController) {
                 MyLimitCard(limit = "50,000원", last = "10,000원")
                 Spacer(modifier = Modifier.height(16.sdp))
                 MyWishBoxCard {
-                    navController.navigate(EggMoneynaDestination.WISH_BOX)
+                    if (true) {
+                        navController.navigate(EggMoneynaDestination.WISH_BOX_EXIST)
+                    } else {
+                        navController.navigate(EggMoneynaDestination.WISH_BOX_N0T_EXIST)
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.sdp))
 
