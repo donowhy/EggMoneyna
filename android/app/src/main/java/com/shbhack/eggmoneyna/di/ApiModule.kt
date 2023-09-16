@@ -1,6 +1,7 @@
 package com.shbhack.eggmoneyna.di
 
 import com.google.gson.GsonBuilder
+import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.data.remote.ApiService
 import com.shbhack.eggmoneyna.util.network.NetworkResponseAdapterFactory
 import dagger.Module
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
-    private const val baseUrl = "http://3.37.95.36:8080/"
+    private const val baseUrl = "http://3.37.95.36:8080/v1/"
 
     @Provides
     @Singleton
@@ -29,7 +30,8 @@ object ApiModule {
             }).addInterceptor {
                 val request = it.request()
                 it.proceed(request.newBuilder().apply {
-
+                    // 헤더에 토큰 넣어주기
+                    addHeader("Authorization", "Bearer ${AppPreferences.getToken()}")
                 }.build())
 
             }.build()

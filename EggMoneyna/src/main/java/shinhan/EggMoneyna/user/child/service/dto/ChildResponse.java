@@ -23,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ChildResponse {
-    private String childId;
+    private String childName;
 
     private int pocketMoney;
 
@@ -31,19 +31,14 @@ public class ChildResponse {
 
     private int pocketMoneyDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
     private Account account;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Monster monster;
 
     private int cntMonsters;
 
-    @OneToOne(fetch = FetchType.LAZY)
     private MonsterEncyclopedia monsterEncyclopedia;
 
-    @OneToMany(mappedBy = "child")
     private List<WishBox> wishBoxes;
 
     private String firebaseToken;

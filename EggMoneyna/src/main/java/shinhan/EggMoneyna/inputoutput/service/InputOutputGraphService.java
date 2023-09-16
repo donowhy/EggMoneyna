@@ -29,12 +29,6 @@ public class InputOutputGraphService {
     private final AccountRepository accountRepository;
     private final InputOutputRepository inputOutputRepository;
 
-    final String[] smallCategory1 = {"편의점"};
-    final String[] smallCategory2 = {"분식", "패스트푸드", "한식", "일식", "중식", "서양식"};
-    final String[] smallCategory3 = {"오락"};
-    final String[] smallCategory4 = {"기타도소매", "종합소매점"};
-    final String[] smallCategory5 = {"커피", "아이스크림/빙수"};
-
     public CategoryGraphDto getCategoryGraph (Long usersId) {
         Child child = childRepository.findById(usersId).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         Account account = accountRepository.findByChild(child).orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
@@ -69,15 +63,15 @@ public class InputOutputGraphService {
             }
             size++;
             String category = inputOutput.getSmallCategory();
-            if (Arrays.stream(smallCategory1).anyMatch(category::equals)) {
+            if (category.equals("편의점")) {
                 convenienceStore++;
-            } else if (Arrays.stream(smallCategory2).anyMatch(category::equals)) {
+            } else if (category.equals("외식")) {
                 restaurants++;
-            } else if (Arrays.stream(smallCategory3).anyMatch(category::equals)) {
+            } else if (category.equals("오락")) {
                 game++;
-            } else if (Arrays.stream(smallCategory4).anyMatch(category::equals)) {
+            } else if (category.equals("쇼핑")) {
                 shopping++;
-            } else if (Arrays.stream(smallCategory5).anyMatch(category::equals)) {
+            } else if (category.equals("카페")) {
                 cafe++;
             } else {
                 etc++;

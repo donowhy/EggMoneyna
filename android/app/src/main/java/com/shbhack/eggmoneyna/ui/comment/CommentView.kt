@@ -45,8 +45,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.shbhack.eggmoneyna.R
-import com.shbhack.eggmoneyna.ui.theme.bannerRed
-import com.shbhack.eggmoneyna.ui.theme.keyColor1
+import com.shbhack.eggmoneyna.ui.common.component.CustomSurfaceWithText
+import com.shbhack.eggmoneyna.ui.theme.bannerBlue2
+import com.shbhack.eggmoneyna.ui.theme.blueColor
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
@@ -62,7 +63,7 @@ fun CommentBanner(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(color = bannerRed)
+            .background(color = bannerBlue2)
             .padding(start = 32.dp, end = 12.dp, bottom = 32.dp, top = 12.dp)
     ) {
         Surface(
@@ -72,7 +73,7 @@ fun CommentBanner(
                 .clickable {
                     onClick()
                 },
-            color = keyColor1,
+            color = blueColor,
             shape = RoundedCornerShape(40.dp),
         ) {
             Text(
@@ -128,10 +129,14 @@ fun CommentDateCategory(title: String, content: String) {
             text = title, fontWeight = FontWeight.Medium,
             fontSize = 12.ssp
         )
-        Text(
-            text = content, fontWeight = FontWeight.Normal,
-            fontSize = 12.ssp
-        )
+        if (title == "카테고리") {
+            CustomSurfaceWithText(category = content)
+        } else {
+            Text(
+                text = content, fontWeight = FontWeight.Normal,
+                fontSize = 12.ssp
+            )
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
+import shinhan.EggMoneyna.user.child.service.dto.ChildResponse;
 import shinhan.EggMoneyna.user.parent.service.ParentService;
 import shinhan.EggMoneyna.user.parent.service.dto.*;
 
@@ -24,7 +25,7 @@ public class ParentController {
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "부모 생성 및 계좌 생성",
         description = "부모 이름만 넘기면 계정 생성 및 계좌 생성 (돈 5,000,000)",
-        tags = { "Parent Controller" })
+        tags = { "Develop Controller" })
     @PostMapping("/save")
     public ParentSaveResponse save(@RequestBody ParentSaveRequest request){
         return parentService.save(request);
@@ -39,7 +40,7 @@ public class ParentController {
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "아이 별명 설정",
         description = "아이 별명 설정, String값",
-        tags = { "Parent Controller" })
+        tags = { "Develop Controller" })
     @PutMapping("/update/nickname")
     public void updateNickname (@UserInfo UsersInfo usersInfo, @RequestBody String nickname){
         parentService.updateNickname(usersInfo.getId(), nickname);
@@ -94,11 +95,11 @@ public class ParentController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "한 자녀 조회",
-            description = "한 자녀에 대해서 계좌 및 계좌 내역, 이름, 생일, 나이, 용돈 일자, 용돈이 얼마인지" ,
+            description = "아이가 조회한 것과 일치함 ChildResponse" ,
             tags = { "Parent Controller" })
     @GetMapping("/findMyOneChild")
-    public MyChildResponse findMyOneChild(@UserInfo UsersInfo usersInfo){
-        return parentService.findMyOnechild(usersInfo.getId());
+    public ChildResponse findMyOneChild(@UserInfo UsersInfo usersInfo, @RequestBody Long childId){
+        return parentService.findMyOnechild(usersInfo.getId(), childId);
     }
 
     @SecurityRequirement(name = "Bearer Authentication")

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MyChildsResponse {
 
-    private String childId;
+    private String childName;
     private int age;
     private Boolean isGirl;
 }

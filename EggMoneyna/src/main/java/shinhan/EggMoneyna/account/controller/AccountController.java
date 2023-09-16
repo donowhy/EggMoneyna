@@ -7,19 +7,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import shinhan.EggMoneyna.account.dto.AccountCreateDto;
-import shinhan.EggMoneyna.account.dto.CheckAccountRequestDto;
-import shinhan.EggMoneyna.account.dto.DetailAccountResponseDto;
+import shinhan.EggMoneyna.account.dto.*;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.service.AccountService;
-import shinhan.EggMoneyna.global.response.Response;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,21 +34,6 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAccount(usersInfo.getId()));
 
     }
-//    @PostMapping("/sendCheck1")
-//    public ResponseEntity<DetailAccountResponseDto> sendCheck1(@UserInfo UsersInfo usersInfo) {
-//        return ResponseEntity.ok(accountService.sendCheck1(usersInfo.getId()));
-//    }
-
-//    @PostMapping("/checkAccount")
-//    public ResponseEntity<Boolean> checkAccount(@UserInfo UsersInfo usersInfo, @RequestBody CheckAccountRequestDto requestDto) {
-//        return ResponseEntity.ok(accountService.checkAccount(usersInfo.getId(), requestDto.getRandom()));
-//    }
-
-//    @GetMapping("/details")
-//    public ResponseEntity<List<DetailAccountResponseDto>> getAccountDetail(@UserInfo UsersInfo usersInfo) {
-//        return ResponseEntity.ok(accountService.getAccountDetail(usersInfo.getId()));
-//    }
-//
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "내 계좌 별명 부여",
@@ -74,10 +53,43 @@ public class AccountController {
     public ResponseEntity<String> delete(@UserInfo UsersInfo usersInfo) {
         return ResponseEntity.ok(accountService.delete(usersInfo.getId()));
     }
-//
-//    @PostMapping("/payment")
-//    public ResponseEntity<InAccount> payment(@UserInfo UsersInfo usersInfo, InAccount inAccount){
-//        return ResponseEntity.ok(accountService.payment(usersInfo.getId(), inAccount));
-//    }
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "1원 이체 부모",
+            description = "값 3개 반환",
+            tags = { "Account Controller" })
+    @PostMapping("/send1CertParent")
+    public Send1CertResponse send1Cert (@UserInfo UsersInfo usersInfo){
+        return accountService.send1Cert(usersInfo.getId());
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "1원 이체 아이",
+            description = "값 3개 반환",
+            tags = { "Account Controller" })
+    @PostMapping("/send1CertChild")
+    public Send1CertResponse send1CertChild (@UserInfo UsersInfo usersInfo){
+        return accountService.send1CertChild(usersInfo.getId());
+    }
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "부모 계좌에 1원 인증 확인",
+            description = "Authorize, 계정에 있는 3글자 인증 번호 입력",
+            tags = { "Account Controller" })
+    @PostMapping("/chekcParent1Cert")
+    public Check1CertParentResponse checkParentAccount(@UserInfo UsersInfo usersInfo, @RequestBody  String random){
+        return accountService.checkParentAccount(usersInfo.getId(), random);
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "아이 계좌에 1원 인증 확인",
+            description = "Authorize, 계정에 있는 3글자 인증 번호 입력",
+            tags = { "Account Controller" })
+    @PostMapping("/checkChild1Cert")
+    public Check1CertChildResponse checkChildAccount(@UserInfo UsersInfo usersInfo,@RequestBody String random){
+        return accountService.checkChildAccount(usersInfo.getId(), random);
+    }
 
 }

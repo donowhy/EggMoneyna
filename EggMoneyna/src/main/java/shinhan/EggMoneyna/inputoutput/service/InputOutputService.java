@@ -107,7 +107,7 @@ public class InputOutputService {
                 break;
             }
         }
-        String changeSmallCategory = changeSmallCategory(smallCategory);
+        String changeSmallCategory = "입금";
 
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, changeSmallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
@@ -299,7 +299,7 @@ public class InputOutputService {
     public String changeSmallCategory(String category) {
         log.info(category);
         if (Arrays.stream(smallCategory1).anyMatch(category::equals)) {
-            return "퍈의점";
+            return "편의점";
         } else if (Arrays.stream(smallCategory2).anyMatch(category::equals)) {
             return "외식";
         } else if (Arrays.stream(smallCategory3).anyMatch(category::equals)) {

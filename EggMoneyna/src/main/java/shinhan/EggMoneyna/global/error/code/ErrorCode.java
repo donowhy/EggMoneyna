@@ -45,7 +45,10 @@ public enum ErrorCode {
     NOT_EXISTS_COMPLIMENT_ID(HttpStatus.BAD_REQUEST, "C-002", "존재하지 않는 칭찬 아이디입니다."),
 
     // 관계 (Relation)
-    NOT_EXISTS_EGGMONEY_RELATION(HttpStatus.BAD_REQUEST, "R-001", "에그머니나 관계 된 자녀가 없습니다.");
+    NOT_EXISTS_EGGMONEY_RELATION(HttpStatus.BAD_REQUEST, "R-001", "에그머니나 관계 된 자녀가 없습니다."),
+
+    // 1원 인증
+    INVALID_CERT_CODE(HttpStatus.BAD_REQUEST, "CC-001", "인증 보낸 값과 인증하는 값과 다릅니다.");
 
 
     private HttpStatus httpStatus;

@@ -22,7 +22,7 @@ public class ChildController {
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "아이 생성 및 계좌 생성",
         description = "아이 이름만 넘기면 계정 생성 및 계좌 생성",
-        tags = { "Child Controller" })
+        tags = { "Develop Controller" })
     @PostMapping("/save")
     public ChildSaveResponse save (@RequestBody ChildSaveRequest request){
         return childService.save(request);
@@ -58,5 +58,14 @@ public class ChildController {
     @DeleteMapping("/delete")
     public @ResponseBody void deleteChild(@UserInfo UsersInfo usersInfo){
         childService.deleteChild(usersInfo.getId());
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "에그머니나 확인",
+            description = "부모와 연결된 계좌인지 확인.",
+            tags = { "Child Controller" })
+    @PostMapping("/checkEggMoney")
+    public @ResponseBody boolean checkEggMoney(@UserInfo UsersInfo usersInfo){
+        return childService.checkEggMoney(usersInfo.getId());
     }
 }
