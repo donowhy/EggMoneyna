@@ -1,17 +1,15 @@
-package com.shbhack.eggmoneyna.data.repository.main
+package com.shbhack.eggmoneyna.data.repository.monster
 
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.MonsterResponseDto
 import com.shbhack.eggmoneyna.data.model.MonsterSaveResponseDto
-import com.shbhack.eggmoneyna.data.model.ParentSaveDto
-import com.shbhack.eggmoneyna.data.model.ParentSaveResponseDto
 import com.shbhack.eggmoneyna.data.remote.ApiService
 import com.shbhack.eggmoneyna.util.network.NetworkResponse
 import javax.inject.Inject
 
-class MainRepositoryImpl @Inject constructor(
+class MonsterRepositoryImpl @Inject constructor(
     private val apiService: ApiService
-) : MainRepository {
+) : MonsterRepository {
     override suspend fun save(): NetworkResponse<MonsterSaveResponseDto, ErrorResponse> {
         return apiService.save()
     }

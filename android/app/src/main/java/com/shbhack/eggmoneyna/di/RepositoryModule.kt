@@ -1,7 +1,11 @@
 package com.shbhack.eggmoneyna.di
 
+import com.shbhack.eggmoneyna.data.repository.comment.CommentRepository
+import com.shbhack.eggmoneyna.data.repository.comment.CommentRepositoryImpl
 import com.shbhack.eggmoneyna.data.repository.main.MainRepository
 import com.shbhack.eggmoneyna.data.repository.main.MainRepositoryImpl
+import com.shbhack.eggmoneyna.data.repository.monster.MonsterRepository
+import com.shbhack.eggmoneyna.data.repository.monster.MonsterRepositoryImpl
 import com.shbhack.eggmoneyna.data.repository.parent.ParentRepository
 import com.shbhack.eggmoneyna.data.repository.parent.ParentRepositoryImpl
 import dagger.Binds
@@ -23,4 +27,13 @@ abstract class RepositoryModule {
         repositoryImpl: ParentRepositoryImpl
     ): ParentRepository
 
+    @Binds
+    abstract fun bindsMonsterRepository(
+        repositoryImpl: MonsterRepositoryImpl
+    ): MonsterRepository
+
+    @Binds
+    abstract fun bindsCommentRepository(
+        repositoryImpl: CommentRepositoryImpl
+    ): CommentRepository
 }
