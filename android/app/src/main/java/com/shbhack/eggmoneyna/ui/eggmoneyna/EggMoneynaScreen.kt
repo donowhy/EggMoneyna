@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -17,6 +18,7 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,10 +55,21 @@ fun EggMoneynaScreen(
     navController: NavController, eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel()
 ) {
     var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
-    Log.d(TAG, "EggMoneynaScreen: ${selectedDay.toString()}")
-    LaunchedEffect(Unit) {
+    val inputOutput by eggMoneynaViewModel.inputOutputsState.collectAsState()
+
+//    LaunchedEffect(Unit) {
+//        eggMoneynaViewModel.getInputOutput(selectedDay.toString())
+//    }
+
+    LaunchedEffect(selectedDay) {
         eggMoneynaViewModel.getInputOutput(selectedDay.toString())
     }
+
+    LaunchedEffect(inputOutput) {
+        Log.d(TAG, "EggMoneynaScreen: ${inputOutput.inputOutputs}")
+    }
+
+
 
     Scaffold(
         topBar = {
@@ -102,13 +115,14 @@ fun EggMoneynaScreen(
                         )
                     ) { localDate ->
                         // 날짜 선택 할 때마다 지출 내역 불러오기
+
                         selectedDay = localDate
                     }
                 }
-                items(3) {
-                    SpendingListItem(selectedDay) {
-                        navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
-                    }
+                items(inputOutput.inputOutputs) { item ->
+//                    SpendingListItem(selectedDay, item) {
+//                        navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
+//                    }
                 }
                 item {
                     Spacer(modifier = Modifier.size(32.sdp))

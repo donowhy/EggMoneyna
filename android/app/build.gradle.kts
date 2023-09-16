@@ -68,7 +68,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    
+
     // Retrofit & OkHttp
     implementation ("com.squareup.retrofit2:converter-scalars:2.1.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

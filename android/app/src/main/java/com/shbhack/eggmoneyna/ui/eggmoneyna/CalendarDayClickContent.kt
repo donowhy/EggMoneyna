@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,9 +25,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.data.model.InputOutputDTO
 import com.shbhack.eggmoneyna.ui.common.component.CustomSurfaceWithText
 import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
-import com.shbhack.eggmoneyna.ui.theme.EggmoneynaOrange
+import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 import kotlinx.datetime.Clock
@@ -50,7 +49,9 @@ fun DayClickContent(selectedDay: LocalDate) {
 }
 
 @Composable
-fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate, onClick: () -> Unit) {
+fun SpendingListItem(selectedDay: LocalDate, item: InputOutputDTO, onClick: () -> Unit) {
+
+    var value = MoneyUtils.formatCurrency(input = item.input, output = item.output)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,19 +63,20 @@ fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate, onClick: () -> Uni
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = "https://picsum.photos/200",
+            model = item.brandImg,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(58.sdp)
                 .clip(CircleShape)
-                .background(Color.Gray)
         )
         Spacer(modifier = Modifier.size(12.sdp))
         Column(modifier = Modifier.weight(2f)) {
-            Text(text = "-4,900원", fontSize = 12.ssp, fontWeight = FontWeight.SemiBold)
+            if (value != null) {
+                Text(text = value, fontSize = 12.ssp, fontWeight = FontWeight.SemiBold)
+            }
             Text(
-                text = "투썸플레이스 진평점",
+                text = item.brandName,
                 fontSize = 10.ssp,
                 fontWeight = FontWeight.Medium,
                 color = Color.DarkGray,

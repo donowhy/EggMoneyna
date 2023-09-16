@@ -25,7 +25,6 @@ class EggMoneynaViewModel @Inject constructor(
     val inputOutputsState: StateFlow<InputOutputsResponse> = _inputOutputsState.asStateFlow()
 
     fun getInputOutput(date: String) {
-        Log.d(TAG, "getInputOutput: $date")
         viewModelScope.launch {
             val response = repository.getInputOutput(date)
             Log.d(TAG, "getInputOutput: $response")
