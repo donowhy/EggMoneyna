@@ -18,6 +18,7 @@ import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.monster.dto.HistoryRequest;
 import shinhan.EggMoneyna.monster.dto.HistoryResponse;
 import shinhan.EggMoneyna.monster.entity.Monster;
+import shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus;
 import shinhan.EggMoneyna.monster.repository.HistoryRepository;
 import shinhan.EggMoneyna.monster.service.HistoryService;
 import shinhan.EggMoneyna.user.child.entity.Child;
@@ -32,6 +33,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus.getMonsterStatus;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +73,11 @@ public class ComplimentService {
         monster.setExp(monster.getExp() + save.getExp());
 
 
+        if (monster.getExp() >= 300 && monster.getStatus() != MonsterStatus.register) {
+            monster.setStatus(MonsterStatus.register);
+        } else if (monster.getExp() >= 10 && monster.getStatus() == MonsterStatus.Egg) {
+            monster.setStatus(MonsterStatus.Adult);
+        }
 
         Optional<Compliment> optionalCompliment = complimentRepository.findByComplimentDate(LocalDate.now());
 

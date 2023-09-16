@@ -3,8 +3,11 @@ package shinhan.EggMoneyna.monster.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import shinhan.EggMoneyna.global.error.code.ErrorCode;
+import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.monster.dto.MonsterDetailRequest;
 import shinhan.EggMoneyna.monster.dto.MonsterDetailResponse;
+import shinhan.EggMoneyna.monster.dto.MonstersResponse;
 import shinhan.EggMoneyna.monster.entity.EncyclopediaDetail;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.monster.repository.MonsterEncyclopediaRepository;
@@ -17,10 +20,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -33,7 +33,9 @@ public class MonsterEncyclopediaService {
 
     private final EncyclopediaDetailService encyclopediaDetailService;
     public void save(Long id){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         MonsterEncyclopedia monsterEncyclopedia = MonsterEncyclopedia.builder()
                 .worldView("일 년 내내 밤하늘에서 찾아볼 수 있는 작은 곰자리는 북쪽 하늘의 대표적인 별자리로 알려져 있으며, 북극성은 작은 곰자리의 끝에 자리 잡고 있습니다.\\n예로부터 항해자들의 길잡이가 되어주던 북극성을 모티브로 개발된 신한 프렌즈.\\n시대를 앞장서서 도전해 나가는 탐험대의 이야기를 담아 신한이 리드하는 새로운 금융 가치를 이야기하게 될 것입니다.")
@@ -48,7 +50,9 @@ public class MonsterEncyclopediaService {
 
     public MonsterDetailResponse monsterDetail (Long id, MonsterDetailRequest request){
         log.info("monstername={}", request.getChracterName());
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         List<EncyclopediaDetail> encyclopediaDetails = child.getMonsterEncyclopedia().getEncyclopediaDetails();
         EncyclopediaDetail encyclopediaDetail = null;
         for (EncyclopediaDetail temp : encyclopediaDetails) {
@@ -70,6 +74,35 @@ public class MonsterEncyclopediaService {
                 .registerDate(encyclopediaDetail.getRegisterDate())
                 .build();
 
+    }
+
+    public List<MonstersResponse> monsters (Long id){
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
+
+        List<MonstersResponse> ms = new ArrayList<>();
+
+        List<EncyclopediaDetail> encyclopediaDetails = child.getMonsterEncyclopedia().getEncyclopediaDetails();
+        for (EncyclopediaDetail detail : encyclopediaDetails) {
+            if(detail.getIsRegister()){
+                String mongName = detail.getMongName();
+                String englishName = mongName.replaceAll("[^A-Za-z0-9 ]", "").trim().replaceAll("\\s+", "");
+
+                log.info("englishName={}, request character name={}", englishName,mongName);
+
+
+                MonstersResponse build = MonstersResponse.builder()
+                        .certName(englishName)
+                        .showName(mongName)
+                        .haveI(detail.getIsRegister())
+                        .build();
+
+                ms.add(build);
+
+            }
+        }
+        return ms;
     }
 
 

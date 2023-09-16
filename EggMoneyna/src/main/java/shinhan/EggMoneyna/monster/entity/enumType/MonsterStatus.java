@@ -14,4 +14,18 @@ public enum MonsterStatus {
     private final int key;
     private final String title;
 
+    public static MonsterStatus getMonsterStatus(int exp) {
+        MonsterStatus[] monsterStatuses = MonsterStatus.values();
+        MonsterStatus result = MonsterStatus.Egg;
+
+        for (MonsterStatus monsterStatus : monsterStatuses) {
+            if (exp >= monsterStatus.getKey()) {
+                result = monsterStatus;
+            } else {
+                break;
+            }
+        }
+        return result;
+    }
+
 }

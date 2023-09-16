@@ -74,7 +74,9 @@ public class ParentService {
 
     private returnParentToken login(ParentLoginRequest request){
 
-        Parent parent = parentRepository.checkParentPw(request.getParentId(), "123").orElseThrow();
+        Parent parent = parentRepository.checkParentPw(request.getParentId(), "123").orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         return returnParentToken.builder()
                 .parentToken(jwtProvider.createParentToken(parent))
@@ -83,27 +85,37 @@ public class ParentService {
 
 
     public void delete (Long id){
-        Parent parent = parentRepository.findById(id).orElseThrow();
+        Parent parent = parentRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         parentRepository.delete(parent);
     }
 
     public void updateNickname(Long id, String nickname){
-        Parent parent = parentRepository.findById(id).orElseThrow();
+        Parent parent = parentRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         parent.setNickname(nickname);
     }
 
     public void updatePocketMoneyDate(Long id, int day){
-        Parent parent = parentRepository.findById(id).orElseThrow();
+        Parent parent = parentRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         parent.setPocketMoneyDate(day);
     }
 
     public void updatePocketMoney(Long id, int money){
-        Parent parent = parentRepository.findById(id).orElseThrow();
+        Parent parent = parentRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         parent.setPocketMoney(money);
     }
 
     public ParentResponse getMyInfo(Long id){
-        Parent parent = parentRepository.findById(id).orElseThrow();
+        Parent parent = parentRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         List<Child> childrenEggMoneyNa = parentRepository.findChildrenEggMoneyNa(id);
 

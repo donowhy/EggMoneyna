@@ -55,7 +55,9 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-		Child child = childRepository.findById(id).orElseThrow();
+		Child child = childRepository.findById(id).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+		);
 		Account account = Account.builder()
 				.nickName("에그머니나")
 				.bankCode(BankCode.SHINHAN)
@@ -83,7 +85,9 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-		Parent parent = parentRepository.findById(id).orElseThrow();
+		Parent parent = parentRepository.findById(id).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+		);
 
 		Account account = Account.builder()
 				.nickName("에그머니나")
@@ -102,7 +106,9 @@ public class AccountService {
 	}
 	// 계좌 조회
 	public ReturnBalance getAccount(Long id) {
-		Child child = childRepository.findById(id).orElseThrow();
+		Child child = childRepository.findById(id).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+		);
 		Account account = child.getAccount();
 		log.info("account = {}", account);
 		return ReturnBalance.builder()
@@ -142,7 +148,9 @@ public class AccountService {
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
 
 	public Check1CertParentResponse checkParentAccount(CheckRequset requset) {
-		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow();
+		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+		);
 		Parent parent = account.getParent();
 
 		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
@@ -174,7 +182,9 @@ public class AccountService {
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
 	public Check1CertChildResponse checkChildAccount(CheckRequset requset) throws RuntimeException {
-		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow();
+		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_ACCOUNT)
+		);
 		Child child = account.getChild();
 		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
 
@@ -216,7 +226,9 @@ public class AccountService {
 
 	// 계좌 별명 변경
 	public Account updateNickName(String name, Long id) {
-		Child child = childRepository.findById(id).orElseThrow();
+		Child child = childRepository.findById(id).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+		);
 		Account account = child.getAccount();
 		account.setNickName(name);
 
@@ -225,7 +237,9 @@ public class AccountService {
 
 	// 계좌 삭제
 	public String delete(Long id) {
-		Child child = childRepository.findById(id).orElseThrow();
+		Child child = childRepository.findById(id).orElseThrow(() ->
+				new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+		);
 		Account account = child.getAccount();
 		accountRepository.delete(account);
 		return "성공";
