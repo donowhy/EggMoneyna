@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
 import shinhan.EggMoneyna.wishbox.service.WishboxService;
-import shinhan.EggMoneyna.wishbox.service.dto.CreateWishBoxRequestDto;
-import shinhan.EggMoneyna.wishbox.service.dto.GetWishboxRequest;
-import shinhan.EggMoneyna.wishbox.service.dto.GetWishboxResponse;
-import shinhan.EggMoneyna.wishbox.service.dto.UpdateNicknameRequest;
+import shinhan.EggMoneyna.wishbox.service.dto.*;
 
 import java.util.List;
 
@@ -27,17 +24,17 @@ public class WishboxController {
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "위시박스 생성", description = "위시박스 생성 시 가상계좌 생성", tags = { "Wishbox Controller" })
     @PostMapping("/create")
-    public String create(@UserInfo UsersInfo usersInfo, @RequestBody CreateWishBoxRequestDto requestDto){
-        wishboxService.create(usersInfo.getId(), requestDto);
-        return "생성 성공";
+    public Long create(@UserInfo UsersInfo usersInfo, @RequestBody CreateWishBoxRequestDto requestDto){
+        return wishboxService.create(usersInfo.getId(), requestDto);
+
     }
 
-    @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "위시박스 별명 변경", description = "위시박스 별명 변경", tags = { "Wishbox Controller" })
-    @PutMapping("/nickname")
-    public void updateNickname(@UserInfo UsersInfo usersInfo, @RequestBody UpdateNicknameRequest request){
-        wishboxService.updateNickname(usersInfo.getId(), request);
-    }
+//    @SecurityRequirement(name = "Bearer Authentication")
+//    @Operation(summary = "위시박스 별명 변경", description = "위시박스 별명 변경", tags = { "Wishbox Controller" })
+//    @PutMapping("/nickname")
+//    public void updateNickname(@UserInfo UsersInfo usersInfo, @RequestBody UpdateNicknameRequest request){
+//        wishboxService.updateNickname(usersInfo.getId(), request);
+//    }
 
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -59,5 +56,19 @@ public class WishboxController {
     @GetMapping("/getWishbox")
     public List<GetWishboxResponse> getWishbox (@UserInfo UsersInfo usersInfo){
         return wishboxService.getWishbox(usersInfo.getId());
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "위시박스에서 내 계좌로 입금 ", description = "위시박스에서 내 계좌로 입금, 내 위시박스 계좌 Long 타입 필요", tags = { "Wishbox Controller" })
+    @PostMapping("/sendMoneyMyAccount")
+    public SendMoneyMyAccountResponse sendMoneyMyAccount(@UserInfo UsersInfo usersInfo, @RequestBody SendMoneyMyAccountRequest request){
+        return wishboxService.sendMoneyMyAccount(usersInfo.getId(), request);
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "내 계좌에서 위시박스로 입금 , description = 내 계좌에서 위시박스로 입금, 내 위시박스 계좌 Long 타입 필요", tags = { "Wishbox Controller" })
+    @PostMapping("/sendMoneyMyVirtualAccount")
+    public SendMoneyMyAccountResponse sendMoneyMyVirtualAccount(@UserInfo UsersInfo usersInfo, @RequestBody SendMoneyMyAccountRequest request){
+        return wishboxService.sendMoneyMyVirtualAccount(usersInfo.getId(), request);
     }
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,4 +22,7 @@ public class GetWishboxResponse {
     private int balance;
 
     private Long virtualNumber;
+
+    private String createTime;
+    private String modifyingTime;
 }

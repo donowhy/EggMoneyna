@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class RelationParentChild {
 	private String ParentToken;
 	private Long pId;
-	private String parentId;
+	private String parentName;
 	private Long cId;
-	private String childId;
+	private String childName;
 
 
 }

@@ -16,11 +16,10 @@ import java.util.List;
 @Builder
 public class MyChildResponse {
 
-    private String childId;
-    private Account account;
-    private LocalDate birthday;
-    private int age;
-    private int pocketMoney;
-    private int pocketMoneyDate;
+    private String childName;
+    private int balance;
+    private Long accountNumber;
     private List<InputOutput> inputOutput;
+    private String attempt;
+    private int commentCnt;
 }

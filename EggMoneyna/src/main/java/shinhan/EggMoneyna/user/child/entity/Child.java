@@ -26,7 +26,7 @@ public class Child {
     @Column(name = "childs_default_id")
     private Long id;
 
-    private String childId;
+    private String childName;
 
     private String password;
 
@@ -40,12 +40,13 @@ public class Child {
 
     private int pocketMoneyDate;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Account account;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "monster_id")
+    @JsonIgnore
+    @OneToOne(mappedBy = "child", fetch = FetchType.LAZY)
     private Monster monster;
+
 
     private int cntMonsters;
 
@@ -77,10 +78,11 @@ public class Child {
 
     private int consecutiveAttempt;
 
+
     @Builder
-    public Child(Long id, String childId, String password, Boolean gender, LocalDate birthday, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int compliment, int consecutiveAttempt) {
+    public Child(Long id, String childName, String password, Boolean gender, LocalDate birthday, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int compliment, int consecutiveAttempt) {
         this.id = id;
-        this.childId = childId;
+        this.childName = childName;
         this.password = password;
         this.gender = gender;
         this.birthday = birthday;
@@ -94,15 +96,14 @@ public class Child {
         this.wishBoxes = wishBoxes;
         this.firebaseToken = firebaseToken;
         this.relations = relations;
-        this.isRelation = isRelation;
-        this.eggMoney = eggMoney;
-        this.todayCheck = todayCheck;
+        this.isRelation = false;
+        this.eggMoney = false;
+        this.todayCheck = false;
         this.sevendays = sevendays;
         this.aMonth = aMonth;
         this.compliment = compliment;
         this.consecutiveAttempt = consecutiveAttempt;
     }
-
 
     public void setLimitMoney(int limitMoney) {
         this.limitMoney = limitMoney;

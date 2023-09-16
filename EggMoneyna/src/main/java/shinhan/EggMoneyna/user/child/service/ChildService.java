@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.account.service.AccountService;
+import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.monster.service.MonsterEncyclopediaService;
@@ -13,6 +14,7 @@ import shinhan.EggMoneyna.user.child.service.dto.*;
 
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -27,7 +29,7 @@ public class ChildService {
 
     public ChildSaveResponse save(ChildSaveRequest request){
         Child child = Child.builder()
-                .childId(request.getChildId())
+                .childName(request.getChildId())
                 .password("123")
                 .birthday(request.getBirthday())
                 .gender(request.getIsGirl())
@@ -38,7 +40,7 @@ public class ChildService {
         accountService.childCreate(child.getId());
 
         ChildLoginRequest childLoginRequest = ChildLoginRequest.builder()
-                .childId(child.getChildId())
+                .childId(child.getChildName())
                 .build();
 
 
@@ -46,7 +48,7 @@ public class ChildService {
 
         return ChildSaveResponse.builder()
                 .id(child.getId())
-                .childId(request.getChildId())
+                .childName(request.getChildId())
                 .isGirl(request.getIsGirl())
                 .birthday(request.getBirthday())
                 .build();
@@ -67,7 +69,7 @@ public class ChildService {
         Child child = childRepository.findByIdWithAccount(id).orElseThrow();
 
         return ChildResponse.builder()
-                .childId(child.getChildId())
+                .childName(child.getChildName())
                 .pocketMoney(child.getPocketMoney())
                 .pocketMoneyDate(child.getPocketMoneyDate())
                 .account(child.getAccount())
@@ -75,7 +77,6 @@ public class ChildService {
                 .wishBoxes(child.getWishBoxes())
                 .monsterEncyclopedia(child.getMonsterEncyclopedia())
                 .limitMoney(child.getLimitMoney())
-                .firebaseToken(child.getFirebaseToken())
                 .monster(child.getMonster())
                 .build();
     }
@@ -89,4 +90,10 @@ public class ChildService {
         Child child = childRepository.findById(id).orElseThrow();
         childRepository.delete(child);
     }
+
+
+    public boolean checkEggMoney (Long id){
+        Child child = childRepository.findById(id).orElseThrow();
+        return child.getEggMoney();
+    };
 }

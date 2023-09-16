@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.monster.dto.MonsterResponseDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
 import shinhan.EggMoneyna.monster.dto.MonsterSaveResponseDto;
@@ -21,8 +20,6 @@ import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 
 
 import javax.persistence.EntityNotFoundException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -67,10 +64,11 @@ public class MonsterService {
     public MonsterResponseDto findById(Long id) {
         Child child = childRepository.findById(id).orElseThrow();
         Monster monster = child.getMonster();
-
+        log.info("도감 ={}", child.getMonsterEncyclopedia().getLAY().get(0).toString());
         List<Boolean> sevendays = child.getSevendays();
 
         boolean checkOne = child.getTodayCheck();
+
         List<Boolean> aMonth = child.getAMonth();
         if (!child.getTodayCheck()) {
             child.setTodayLogin(true);
@@ -143,14 +141,16 @@ public class MonsterService {
             LocalDate date = LocalDate.now();
             int days = allMonth(date.getYear(), date.getMonthValue());
 
-            if(month.size() > days - 5){
-                child.getMonster().setMonsterExp(child.getMonster().getExp() + 500);
-            }
+//            if(month.size() > days - 5){
+//                child.getMonster().setMonsterExp(child.getMonster().getExp() + 500);
+//            }
 
-            if(child.getMonster().getExp() == 1000){
-                registerMonster(child.getMonster(), child.getMonsterEncyclopedia());
-                child.setCntMonsters(child.getCntMonsters()-1);
-            }
+            child.getMonster().setMonsterExp(child.getMonster().getExp() + 500);
+
+//            if(child.getMonster().getExp() == 1000){
+//                registerMonster(child);
+//                child.setCntMonsters(child.getCntMonsters()-1);
+//            }
 
             // Month 리스트를 초기화합니다.
             month = new ArrayList<>();
@@ -173,24 +173,60 @@ public class MonsterService {
     }
 
 
-    private String registerMonster(Monster monster, MonsterEncyclopedia monsterEncyclopedia) {
-        try {
-            String monsterNameKey = monster.getName().toString().toUpperCase();
-            String methodName = "set" + monsterNameKey;
-
-            Method method = MonsterEncyclopedia.class.getMethod(methodName, boolean.class);
-            Method getMethod = MonsterEncyclopedia.class.getMethod("get" + monsterNameKey);
-
-            Boolean currentStatus = (Boolean) getMethod.invoke(monsterEncyclopedia);
-            if (currentStatus == null || !currentStatus) {
-                method.invoke(monsterEncyclopedia, true);
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Monster registration failed", e);
-        }
-
-        return "도감 등록 성공";
-    }
+//    private String registerMonster(Child child) {
+//        Monster monster = child.getMonster();
+//        MonsterEncyclopedia monsterEncyclopedia = child.getMonsterEncyclopedia();
+//
+//        String monsterNameKey = monster.getName().toString().toUpperCase();
+//
+//        /**
+//         *         this.SOL = SOL;
+//         *         this.MOLI = MOLI;
+//         *         this.RINO = RINO;
+//         *         this.SHOO = SHOO;
+//         *         this.DOREMI = DOREMI;
+//         *         this.LULULALA = LULULALA;
+//         *         this.PLI = PLI;
+//         *         this.LAY = LAY;
+//         */
+//
+//        if(monsterNameKey.equals("SOL")){
+//            List<MonsterEncyclopedia.ShinhanMong> sol = monsterEncyclopedia.getSOL();
+//            sol.get(0).ge;
+//
+//        }
+//
+//        if(monsterNameKey.equals("MOLI")){
+//
+//        }
+//
+//        if(monsterNameKey.equals("RINO")){
+//
+//        }
+//
+//        if(monsterNameKey.equals("SHOO")){
+//
+//        }
+//        if(monsterNameKey.equals("DOREMI")){
+//
+//        }
+//
+//        if(monsterNameKey.equals("LULULALA")){
+//
+//        }
+//
+//        if(monsterNameKey.equals("PLI")){
+//
+//        }
+//
+//        if(monsterNameKey.equals("LAY")){
+//
+//        }
+//
+//
+//
+//        return "도감 등록 성공";
+//    }
 
     private int allMonth(int year, int month) {
         HashMap<Integer, List<Integer>> daysInMonth = new HashMap<>();
