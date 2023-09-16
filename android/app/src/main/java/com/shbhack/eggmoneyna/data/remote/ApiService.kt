@@ -4,6 +4,7 @@ import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
 import com.shbhack.eggmoneyna.data.model.MonsterResponseDto
+import com.shbhack.eggmoneyna.data.model.MonsterSaveRequestDto
 import com.shbhack.eggmoneyna.data.model.MonsterSaveResponseDto
 import com.shbhack.eggmoneyna.data.model.MonthGraphResponseDto
 import com.shbhack.eggmoneyna.data.model.ParentSaveDto
@@ -30,7 +31,7 @@ interface ApiService {
 
     // 신한몽
     @POST("monsters/save")
-    suspend fun save(): NetworkResponse<MonsterSaveResponseDto, ErrorResponse>
+    suspend fun save(@Body monsterSaveRequestDto: MonsterSaveRequestDto): NetworkResponse<MonsterSaveResponseDto, ErrorResponse>
 
     @GET("monsters/getMyMong")
     suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse>
