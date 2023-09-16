@@ -61,7 +61,7 @@ public class AccountController {
             description = "값 3개 반환",
             tags = { "Account Controller" })
     @PostMapping("/send1CertParent")
-    public Send1CertResponse send1Cert (Send1CertRequest request){
+    public Send1CertResponse send1Cert (@RequestBody Send1CertRequest request){
         return accountService.send1Cert(request);
     }
 
@@ -71,8 +71,8 @@ public class AccountController {
             description = "Authorize, 계정에 있는 3글자 인증 번호 입력",
             tags = { "Account Controller" })
     @PostMapping("/chekcParent1Cert")
-    public Check1CertParentResponse checkParentAccount(@UserInfo UsersInfo usersInfo, @RequestBody  String random){
-        return accountService.checkParentAccount(usersInfo.getId(), random);
+    public Check1CertParentResponse checkParentAccount(@RequestBody Long number, @RequestBody  String random){
+        return accountService.checkParentAccount(number, random);
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -80,8 +80,8 @@ public class AccountController {
             description = "Authorize, 계정에 있는 3글자 인증 번호 입력",
             tags = { "Account Controller" })
     @PostMapping("/checkChild1Cert")
-    public Check1CertChildResponse checkChildAccount(@UserInfo UsersInfo usersInfo,@RequestBody String random){
-        return accountService.checkChildAccount(usersInfo.getId(), random);
+    public Check1CertChildResponse checkChildAccount(@RequestBody Long number,@RequestBody String random){
+        return accountService.checkChildAccount(number, random);
     }
 
 }
