@@ -35,8 +35,12 @@ public class CommentService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
 
         return CommentResponseDto.builder()
+                .childNickname("자녀")
                 .childComment(comment.getChildComment())
+                .childCommentCreateTime(comment.getChildCommentCreateTime())
+                .parentNickname("엄마")
                 .parentComment(comment.getParentComment())
+                .parentCommentCreateTime(comment.getParentCommentCreateTime())
                 .compliment(comment.getCompliment())
                 .build();
     }
@@ -52,8 +56,12 @@ public class CommentService {
         comment.addChildComment(commentRequestDto.getComment());
 
         return CommentResponseDto.builder()
+                .childNickname("자녀")
                 .childComment(comment.getChildComment())
+                .childCommentCreateTime(comment.getChildCommentCreateTime())
+                .parentNickname("엄마")
                 .parentComment(comment.getParentComment())
+                .parentCommentCreateTime(comment.getParentCommentCreateTime())
                 .compliment(comment.getCompliment())
                 .build();
     }
@@ -67,8 +75,12 @@ public class CommentService {
         comment.addChildComment(commentRequestDto.getComment());
 
         return CommentResponseDto.builder()
+                .childNickname("자녀")
                 .childComment(comment.getChildComment())
+                .childCommentCreateTime(comment.getChildCommentCreateTime())
+                .parentNickname("엄마")
                 .parentComment(comment.getParentComment())
+                .parentCommentCreateTime(comment.getParentCommentCreateTime())
                 .compliment(comment.getCompliment())
                 .build();
     }
@@ -82,8 +94,12 @@ public class CommentService {
         comment.removeChildComment();
 
         return CommentResponseDto.builder()
+                .childNickname("자녀")
                 .childComment(comment.getChildComment())
+                .childCommentCreateTime(comment.getChildCommentCreateTime())
+                .parentNickname("엄마")
                 .parentComment(comment.getParentComment())
+                .parentCommentCreateTime(comment.getParentCommentCreateTime())
                 .compliment(comment.getCompliment())
                 .build();
     }
