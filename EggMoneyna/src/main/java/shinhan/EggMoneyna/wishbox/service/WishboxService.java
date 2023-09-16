@@ -7,6 +7,8 @@ import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.account.service.AccountService;
+import shinhan.EggMoneyna.global.error.code.ErrorCode;
+import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.users.repository.UsersRepository;
@@ -31,7 +33,9 @@ public class WishboxService {
 
     public Long create(Long id, CreateWishBoxRequestDto requestDto){
         log.info("id={}", id);
-        Account account = childRepository.findById(id).orElseThrow().getAccount();
+        Account account = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        ).getAccount();
         Long accountNumber = account.getAccountNumber();
         Long accountId = account.getId();
         String temp = String.valueOf(accountNumber);
@@ -62,15 +66,10 @@ public class WishboxService {
         return virtualNum;
     }
 
-//    public void updateNickname(Long id, UpdateNicknameRequest request){
-//        childRepository.findById(id).orElseThrow();
-//
-//        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
-//        wishBox.setNickname(request.getNickname());
-//    }
-
     public GetWishboxResponse getOneWishbox(Long id, GetWishboxRequest request){
-        childRepository.findById(id).orElseThrow();
+        childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
         return GetWishboxResponse.builder()
                 .wishName(wishBox.getWishName())
@@ -81,7 +80,9 @@ public class WishboxService {
     }
 
     public List<GetWishboxResponse> getWishbox(Long id){
-        Account account = childRepository.findById(id).orElseThrow().getAccount();
+        Account account = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        ).getAccount();
         List<WishBox> wishboxByAccount = wishboxRepository.findWishBoxByAccount(account);
 
         List<GetWishboxResponse> responses = new ArrayList<>();
@@ -100,14 +101,20 @@ public class WishboxService {
     }
 
     public void deleteWishbox(Long id, GetWishboxRequest request){
-        childRepository.findById(id).orElseThrow();
+        childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
         wishboxRepository.delete(wishBox);
     }
 
     public SendMoneyMyAccountResponse sendMoneyMyAccount(Long id, SendMoneyMyAccountRequest request){
-        Child child = childRepository.findById(id).orElseThrow();
-        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualAccountNumber()).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
+        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualAccountNumber()).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         Account account = child.getAccount();
 
         if(wishBox.getBalance() < request.getMoney()){
@@ -126,8 +133,12 @@ public class WishboxService {
     }
 
     public SendMoneyMyAccountResponse sendMoneyMyVirtualAccount (Long id, SendMoneyMyAccountRequest request){
-        Child child = childRepository.findById(id).orElseThrow();
-        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualAccountNumber()).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
+        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualAccountNumber()).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_WISHBOX)
+        );
         Account account = child.getAccount();
 
         if(account.getBalance() < request.getMoney()){

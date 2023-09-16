@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
+import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.jwt.JwtProvider;
@@ -48,10 +49,6 @@ public class ChildService {
 
         log.info(String.valueOf(child.getId()));
         accountService.childCreate(child.getId());
-        
-        ChildLoginRequest childLoginRequest = ChildLoginRequest.builder()
-                .childId(child.getChildName())
-                .build();
 
         return ChildSaveResponse.builder()
                 .id(child.getId())
@@ -62,18 +59,12 @@ public class ChildService {
     }
 
 
-//    private returnToken login(ChildLoginRequest request){
-//
-//        Child child = childRepository.checkChildPw(request.getChildId(), "123").orElseThrow();
-//
-//        return returnToken.builder()
-//                .childToken(jwtProvider.createChildToken(child))
-//                .build();
-//    }
 
     public ChildResponse getMyInfo(Long id){
 
-        Child child = childRepository.findByIdWithAccount(id).orElseThrow();
+        Child child = childRepository.findByIdWithAccount(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         return ChildResponse.builder()
                 .childName(child.getChildName())
@@ -89,22 +80,12 @@ public class ChildService {
     }
 
 
-    /**
-     *     private String childName;
-     *     private String shinhanMongDate;
-     *     private int balance;
-     *     private int limitMoney;
-     *     private int leftMoneyToLimit;
-     *     private int attemptDate;
-     *     private int compliment;
-     *     private Boolean HaveWishbox;
-     *     private Long wishboxNumber;
-     * @param id
-     * @return
-     */
+
     public GetChildHomeResponse getChildHome(Long id, String inputDate){
 
-        Child child = childRepository.findByIdWithAccount(id).orElseThrow();
+        Child child = childRepository.findByIdWithAccount(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(inputDate, formatter);
@@ -166,18 +147,24 @@ public class ChildService {
     }
 
     public void updateLimitMoney(Long id, UpdateLimitMoneyRequest request){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         child.setLimitMoney(request.getLimitMoney());
     }
 
     public void deleteChild (Long id){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow( () ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         childRepository.delete(child);
     }
 
 
     public boolean checkEggMoney (Long id){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         return child.getEggMoney();
     };
 }

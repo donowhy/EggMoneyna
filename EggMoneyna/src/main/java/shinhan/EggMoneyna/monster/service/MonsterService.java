@@ -24,6 +24,8 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.*;
 
+import static shinhan.EggMoneyna.monster.entity.enumType.MonsterStatus.getMonsterStatus;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -90,6 +92,12 @@ public class MonsterService {
 
             monster.setExp(monster.getExp() + save.getExp());
 
+            if (monster.getExp() >= 300 && monster.getStatus() != MonsterStatus.register) {
+                monster.setStatus(MonsterStatus.register);
+            } else if (monster.getExp() >= 10 && monster.getStatus() == MonsterStatus.Egg) {
+                monster.setStatus(MonsterStatus.Adult);
+            }
+
             if (sevendays.size() < 7) {
                 sevendays.add(true);
             } else {
@@ -121,7 +129,7 @@ public class MonsterService {
             child.setConsecutiveceAttempt(child.getConsecutiveAttempt() + 1);
         }
 
-        if(child.getMonster().getExp() > 4) {
+        if(child.getMonster().getExp() > 300) {
             registerMonster(child);
         }
 
@@ -185,6 +193,7 @@ public class MonsterService {
             isRegister = true;
             encyclopediaDetail.setIsRegister(isRegister);
             encyclopediaDetailRepository.save(encyclopediaDetail);
+
 
         }
 
@@ -271,8 +280,8 @@ public class MonsterService {
             encyclopediaDetail.setRegisterTime(LocalDate.now());
             encyclopediaDetailRepository.save(encyclopediaDetail);
         }
-
-
+        child.setCntMonsters(0);
+        monsterRepository.delete(monster);
 
         return "도감 등록 성공";
     }

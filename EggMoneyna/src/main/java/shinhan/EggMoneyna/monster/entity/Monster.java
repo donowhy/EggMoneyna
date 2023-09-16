@@ -84,4 +84,8 @@ public class Monster extends BaseTimeEntity {
     public void setExp(int exp) {
         this.exp = exp;
     }
+
+    public void setStatus(MonsterStatus monsterStatus) {
+        this.status = monsterStatus;
+    }
 }

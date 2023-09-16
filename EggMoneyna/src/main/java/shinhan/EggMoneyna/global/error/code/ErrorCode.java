@@ -46,9 +46,16 @@ public enum ErrorCode {
 
     // 관계 (Relation)
     NOT_EXISTS_EGGMONEY_RELATION(HttpStatus.BAD_REQUEST, "R-001", "에그머니나 관계 된 자녀가 없습니다."),
+    NOT_EXISTS_RELATION(HttpStatus.BAD_REQUEST, "R-002", "가족관계가 아닙니다."),
 
     // 1원 인증
-    INVALID_CERT_CODE(HttpStatus.BAD_REQUEST, "CC-001", "인증 보낸 값과 인증하는 값과 다릅니다.");
+    INVALID_CERT_CODE(HttpStatus.BAD_REQUEST, "CC-001", "인증 보낸 값과 인증하는 값과 다릅니다."),
+
+    // 위시 박스
+    NOT_EXISTS_WISHBOX(HttpStatus.BAD_REQUEST, "W-001", "조회한 위시박스가 없습니다."),
+
+    // 계정
+    NOT_EXISTS_ACCOUNT(HttpStatus.BAD_REQUEST, "AC-001", "조회한 계좌가 없습니다.");
 
 
     private HttpStatus httpStatus;

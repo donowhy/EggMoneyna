@@ -7,12 +7,9 @@ import shinhan.EggMoneyna.monster.entity.EncyclopediaDetail;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.monster.repository.EncyclopediaDetailRepository;
 import shinhan.EggMoneyna.monster.repository.MonsterEncyclopediaRepository;
-import shinhan.EggMoneyna.user.child.entity.Child;
-import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,6 @@ import java.util.List;
 public class EncyclopediaDetailService {
 
     private final EncyclopediaDetailRepository encyclopediaDetailRepository;
-    private final ChildRepository childRepository;
     private final MonsterEncyclopediaRepository monsterEncyclopediaRepository;
 
     public List<EncyclopediaDetail> save(Long id) {
