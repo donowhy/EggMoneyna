@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.logoColor
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
@@ -39,9 +40,9 @@ fun GoodsItemCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 15.sdp)
-            .coloredShadow(color = Color.Black.copy(0.2f), 10.sdp, 3.sdp, 0.sdp, 0.sdp, 0.5f)
+            .coloredShadow(color = Color.Black.copy(0.05f), 10.sdp, 8.sdp, 0.sdp, 0.sdp, 0.5f)
             .background(color = Color.White, shape = RoundedCornerShape(10.sdp))
-            .clickable {
+            .noRippleClickable {
                 onClick()
             }
     ) {

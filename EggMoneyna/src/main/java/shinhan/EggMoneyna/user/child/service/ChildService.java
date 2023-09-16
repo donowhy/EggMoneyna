@@ -29,7 +29,10 @@ public class ChildService {
         Child child = Child.builder()
                 .childId(request.getChildId())
                 .password("123")
+                .birthday(request.getBirthday())
+                .gender(request.getIsGirl())
                 .build();
+
         childRepository.saveAndFlush(child);
 
         accountService.create(child.getId());
@@ -38,26 +41,26 @@ public class ChildService {
                 .childId(child.getChildId())
                 .build();
 
-        returnToken login = login(childLoginRequest);
 
         monsterEncyclopediaService.setMonsterEncyclopedia(child.getId());
 
         return ChildSaveResponse.builder()
                 .id(child.getId())
                 .childId(request.getChildId())
-                .childToken("Bearer " + login.getChildToken())
+                .isGirl(request.getIsGirl())
+                .birthday(request.getBirthday())
                 .build();
     }
 
 
-    private returnToken login(ChildLoginRequest request){
-
-        Child child = childRepository.checkChildPw(request.getChildId(), "123").orElseThrow();
-
-        return returnToken.builder()
-                .childToken(jwtProvider.createChildToken(child))
-                .build();
-    }
+//    private returnToken login(ChildLoginRequest request){
+//
+//        Child child = childRepository.checkChildPw(request.getChildId(), "123").orElseThrow();
+//
+//        return returnToken.builder()
+//                .childToken(jwtProvider.createChildToken(child))
+//                .build();
+//    }
 
     public ChildResponse getMyInfo(Long id){
 
