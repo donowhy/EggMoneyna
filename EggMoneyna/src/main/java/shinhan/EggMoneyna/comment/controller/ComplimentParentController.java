@@ -29,7 +29,13 @@ public class ComplimentParentController {
 
     @Operation(summary = "부모: 칭찬 여부 월 조회", description = "yyyy-MM 형식으로 특정 월에 대한 칭찬 여부를 조회", tags = { "Compliment Controller" })
     @PostMapping("/{childId}/month/{inputOutputDate}")
-    public ResponseEntity<List<ComplimentMonthDto>> switchCompliment(@UserInfo UsersInfo usersInfo, @PathVariable Long childId, @PathVariable String inputOutputDate) {
+    public ResponseEntity<List<ComplimentMonthDto>> switchComplimentParent(@UserInfo UsersInfo usersInfo, @PathVariable Long childId, @PathVariable String inputOutputDate) {
         return ResponseEntity.ok(complimentService.getMonthComplimentParent(usersInfo.getId(), childId, inputOutputDate));
     }
+
+//    @Operation(summary = "부모: 칭찬 여부 월 조회", description = "yyyy-MM 형식으로 특정 월에 대한 칭찬 여부를 조회", tags = { "Compliment Controller" })
+//    @PostMapping("/{childId}/month2/{inputOutputDate}")
+//    public ResponseEntity<List<ComplimentMonthDto>> switchComplimentParent2(@UserInfo UsersInfo usersInfo, @PathVariable Long childId, @PathVariable String inputOutputDate) {
+//        return ResponseEntity.ok(complimentService.getMonthComplimentParent2(usersInfo.getId(), childId, inputOutputDate));
+//    }
 }

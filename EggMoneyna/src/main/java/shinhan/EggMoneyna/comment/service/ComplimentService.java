@@ -119,4 +119,10 @@ public class ComplimentService {
         }
         return complimentMonthList;
     }
+
+//    public List<ComplimentMonthDto> getMonthComplimentParent2(Long userId, Long childId, String inputOutputDate) {
+//        /**
+//         **지출여부가 있고 코멘트 작성이 안된경우를 반환
+//         **/
+//    }
 }
