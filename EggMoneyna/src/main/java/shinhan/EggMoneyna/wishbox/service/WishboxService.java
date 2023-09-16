@@ -92,8 +92,7 @@ public class WishboxService {
                     .price(wishbox.getPrice())
                     .balance(wishbox.getBalance())
                     .virtualNumber(wishbox.getVirtualNumber())
-                    .createTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
-                    .modifyingTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
+                    .createTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                     .build()
             );
         }

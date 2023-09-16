@@ -14,7 +14,7 @@ public interface RelationRepository extends JpaRepository<Relation, Long> {
 	@Query("SELECT r FROM Relation r WHERE r.child.id = :childId AND r.parent.id = :parentId")
 	Optional<Relation> findRelationByParentIdAndChildId(@Param("childId") Long childId, @Param("parentId") Long parentId);
 
-	@Query("SELECT r FROM Relation r WHERE r.parent.id = :parentId")
+	@Query("SELECT r FROM Relation r WHERE r.parent.id = :parentId AND r.child.eggMoney = false")
 	List<Relation> findRelationAllByParentId(@Param("parentId") Long parentId);
 
 	@Query("SELECT r FROM Relation r WHERE r.parent.id = :parentId")

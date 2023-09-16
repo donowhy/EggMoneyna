@@ -142,8 +142,8 @@ public class ParentService {
             log.info("age={}", age);
             log.info("child = {}",child.getChildName());
             MyChildsResponse build = MyChildsResponse.builder()
+                    .id(child.getId())
                     .childName(child.getChildName())
-                    .isGirl(child.getGender())
                     .age(age)
                     .build();
 
@@ -175,12 +175,12 @@ public class ParentService {
 
 
     // 에그머니나 되어있는 조건
-    public List<MyChildsResponse> findMyEggMoneyChilds(Long id){
+    public List<MyChildsEggList> findMyEggMoneyChilds(Long id){
 
         List<Relation> childList= relationRepository.findRelationEggMoneyAllByParentId(id);
 
         log.info("childList = {}", childList);
-        List<MyChildsResponse> myChildsResponse = new ArrayList<>();
+        List<MyChildsEggList> myChildsEggList = new ArrayList<>();
 
         LocalDate currentDate = LocalDate.now();
 
@@ -190,15 +190,15 @@ public class ParentService {
             int age = Period.between(child.getBirthday(), currentDate).getYears();
             log.info("age={}", age);
             log.info("child = {}",child.getChildName());
-            MyChildsResponse build = MyChildsResponse.builder()
+            MyChildsEggList build = MyChildsEggList.builder()
+                    .childId(child.getId())
                     .childName(child.getChildName())
-                    .isGirl(child.getGender())
-                    .age(age)
+                    .balance(child.getAccount().getBalance())
                     .build();
 
-            myChildsResponse.add(build);
+            myChildsEggList.add(build);
         }
 
-        return myChildsResponse;
+        return myChildsEggList;
     }
 }
