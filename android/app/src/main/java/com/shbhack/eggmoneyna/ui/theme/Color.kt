@@ -12,7 +12,7 @@ val keyColorDark1 = Color(0xFF0C1F51)
 val logoColor = Color(0xFF0046FF)
 
 val secondaryBackgroundColor1 = Color(0xFFE3C9CF)
-val secondaryColorLight1 = Color(0xFFFFD8E1)
+val secondaryColorLight1 = Color(0xFFFFEFF3)
 val secondaryColorLight2 = Color(0xFFFFB1C4)
 val secondaryColor1 = Color(0xFFF73261)
 val secondaryColor2 = Color(0xFFD81544)

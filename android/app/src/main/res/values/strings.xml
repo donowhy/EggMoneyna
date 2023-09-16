@@ -62,6 +62,13 @@
     <string name="mainChildAttendance">이 달의\n출석 일수</string>
     <string name="mainChildCompliment">최근\n칭찬 횟수</string>
 
+    <!--  wishBox  -->
+    <string name="wishBoxBannerTitle">아직도\n위시 박스가 없다면?</string>
+    <string name="wishBoxBannerContent">목표 상품, 금액을 입력하면\n위시 박스를 관리해드려요.</string>
+    <string name="wishBoxButtonText">위시 박스 생성하기</string>
+    <string name="wishBoxMoneyHintText">모으고 싶은 금액을 입력해주세요</string>
+    <string name="wishBoxGoodsHintText">원하는 상품을 입력해주세요</string>
+    
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
     <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
