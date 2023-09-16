@@ -5,6 +5,7 @@ import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
 import com.shbhack.eggmoneyna.data.model.checkAuthDto
 import com.shbhack.eggmoneyna.data.model.checkChildAuthResponseDto
 import com.shbhack.eggmoneyna.data.model.checkParentAuthResponseDto
+import com.shbhack.eggmoneyna.data.model.getAllUnActivatedChildResponseDto
 import com.shbhack.eggmoneyna.data.model.send1WonDto
 import com.shbhack.eggmoneyna.data.model.send1WonResponseDto
 import com.shbhack.eggmoneyna.util.network.NetworkResponse
@@ -23,4 +24,6 @@ interface MainRepository {
 
     // 사용자 인증 - 자녀 인증코드 확인
     suspend fun checkChildAuth(@Body checkChildAuthDto: checkAuthDto): NetworkResponse<checkChildAuthResponseDto, ErrorResponse>
+
+    suspend fun getAllUnActivatedChild() : NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse>
 }

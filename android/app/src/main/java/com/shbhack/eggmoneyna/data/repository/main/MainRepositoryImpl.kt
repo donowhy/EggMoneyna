@@ -5,6 +5,7 @@ import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
 import com.shbhack.eggmoneyna.data.model.checkAuthDto
 import com.shbhack.eggmoneyna.data.model.checkChildAuthResponseDto
 import com.shbhack.eggmoneyna.data.model.checkParentAuthResponseDto
+import com.shbhack.eggmoneyna.data.model.getAllUnActivatedChildResponseDto
 import com.shbhack.eggmoneyna.data.model.send1WonDto
 import com.shbhack.eggmoneyna.data.model.send1WonResponseDto
 import com.shbhack.eggmoneyna.data.remote.ApiService
@@ -28,6 +29,10 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun checkChildAuth(checkChildAuthDto: checkAuthDto): NetworkResponse<checkChildAuthResponseDto, ErrorResponse> {
         return apiService.checkChildAuth(checkChildAuthDto)
+    }
+
+    override suspend fun getAllUnActivatedChild(): NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse> {
+        return apiService.getAllUnActivatedChild()
     }
 
 }

@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,12 +56,46 @@ fun AuthUserCheckScreen(
     val accountNum by authUserViewModel.account.collectAsState()
     val authNum by authUserViewModel.authNum.collectAsState()
     val activatedStatus by authUserViewModel.activated.collectAsState()
+    val tokenState by authUserViewModel.tokenState.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
 
     var text by remember { mutableStateOf(TextFieldValue(authNum.toString())) }
 
     val context = LocalContext.current
+
+    LaunchedEffect(tokenState) {
+        if (tokenState) {
+            authUserViewModel.setAccountValue(0L)
+            authUserViewModel.setAuthNumValue(0)
+            authUserViewModel.setActivatedValue(false)
+            authUserViewModel.setTokenState(false)
+
+            if (AppPreferences.getToken() == "") {
+                Toast.makeText(context, "본인 인증에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
+
+            } else if (!AppPreferences.isParent() && !activatedStatus) {
+                Toast.makeText(context, "계정이 등록되어 있지 않습니다.", Toast.LENGTH_SHORT).show()
+                navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
+
+            } else {
+                Toast.makeText(context, "본인 인증에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                navController.popBackStack()
+//                AppPreferences.checkFirstShowed()
+
+                if (AppPreferences.isParent()) {
+                    navController.navigate(EggMoneynaDestination.SELECT_CHILD)
+                } else {
+                    navController.navigate(EggMoneynaDestination.MAIN_CHILD)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(authNum) {
+        text = TextFieldValue(authNum.toString())
+    }
 
     Scaffold(
         topBar = {
@@ -131,32 +166,11 @@ fun AuthUserCheckScreen(
                 backgroundColor = logoColor,
                 textColor = Color.White
             ) {
-
                 coroutineScope.launch {
                     if (AppPreferences.isParent()) {
                         authUserViewModel.checkParentAuth()
                     } else {
                         authUserViewModel.checkChildAuth()
-                    }
-
-                    if (AppPreferences.getToken() == "") {
-                        Toast.makeText(context, "본인 인증에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                        navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-
-                    } else if (!AppPreferences.isParent() && !activatedStatus) {
-                        Toast.makeText(context, "계정이 등록되어 있지 않습니다.", Toast.LENGTH_SHORT).show()
-                        navController.navigate(EggMoneynaDestination.CHOOSE_WHO)
-
-                    } else {
-                        Toast.makeText(context, "본인 인증에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
-//                AppPreferences.checkFirstShowed()
-
-                        if (AppPreferences.isParent()) {
-                            navController.navigate(EggMoneynaDestination.SELECT_CHILD)
-                        } else {
-                            navController.navigate(EggMoneynaDestination.MAIN_CHILD)
-                        }
                     }
                 }
             }

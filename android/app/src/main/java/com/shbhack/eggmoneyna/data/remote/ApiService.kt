@@ -11,6 +11,7 @@ import com.shbhack.eggmoneyna.data.model.WriteCommentRequest
 import com.shbhack.eggmoneyna.data.model.checkAuthDto
 import com.shbhack.eggmoneyna.data.model.checkChildAuthResponseDto
 import com.shbhack.eggmoneyna.data.model.checkParentAuthResponseDto
+import com.shbhack.eggmoneyna.data.model.getAllUnActivatedChildResponseDto
 import com.shbhack.eggmoneyna.data.model.send1WonDto
 import com.shbhack.eggmoneyna.data.model.send1WonResponseDto
 import com.shbhack.eggmoneyna.util.network.NetworkResponse
@@ -59,4 +60,7 @@ interface ApiService {
     // 사용자 인증 - 자녀 인증코드 확인
     @POST("accounts/checkChild1Cert")
     suspend fun checkChildAuth(@Body checkChildAuthDto: checkAuthDto): NetworkResponse<checkChildAuthResponseDto, ErrorResponse>
+
+    @GET("parent/findMyChilds")
+    suspend fun getAllUnActivatedChild() : NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse>
 }
