@@ -67,4 +67,11 @@ public class MonsterController {
     public MonsterDetailResponse monsterDetail (@UserInfo UsersInfo usersInfo, @RequestBody MonsterDetailRequest request) {
         return monsterEncyclopediaService.monsterDetail(usersInfo.getId(), request);
     }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "몬스터 도감 내가 가진 것들 조회 ", description = "몬스터 도감 내가 가진 것들 조회.", tags = { "Monster Controller" })
+    @GetMapping("/getDogam")
+    public List<MonstersResponse> monsters (@UserInfo UsersInfo usersInfo) {
+        return monsterEncyclopediaService.monsters(usersInfo.getId());
+    }
 }
