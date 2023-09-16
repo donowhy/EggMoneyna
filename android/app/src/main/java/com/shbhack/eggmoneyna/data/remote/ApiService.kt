@@ -1,6 +1,7 @@
 package com.shbhack.eggmoneyna.data.remote
 
 import com.shbhack.eggmoneyna.data.model.BalanceResponse
+import com.shbhack.eggmoneyna.data.model.CollectionResponseDto
 import com.shbhack.eggmoneyna.data.model.CommentResponseDto
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
@@ -43,6 +44,9 @@ interface ApiService {
 
     @GET("monsters/getMyMongDetail")
     suspend fun getMyMongDetail(): NetworkResponse<MonsterResponseDto, ErrorResponse>
+
+    @GET("monsters/getDogam")
+    suspend fun getDogam(): NetworkResponse<List<CollectionResponseDto>, ErrorResponse>
 
 
     // 당일 입출금 조회

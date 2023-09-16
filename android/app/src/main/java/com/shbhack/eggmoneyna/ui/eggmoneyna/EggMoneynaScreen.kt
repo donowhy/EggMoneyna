@@ -98,6 +98,7 @@ fun EggMoneynaScreen(
         if (AppPreferences.isParent()) stringResource(id = R.string.eggmoneyna_rest_money_title_parent) else stringResource(
             id = R.string.eggmoneyna_rest_money_title_child
         )
+    val money = if (balance.balance == 0) 500000 else balance.balance
 
     Scaffold(
         topBar = {
@@ -117,7 +118,7 @@ fun EggMoneynaScreen(
                     ColorBackgroundWithText(
                         EggmoneynaPurple,
                         title,
-                        "${MoneyUtils.convertAddComma(balance.balance)}원"
+                        "${MoneyUtils.convertAddComma(money)}원"
                     )
                 }
                 item {
