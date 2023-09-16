@@ -58,9 +58,9 @@ public class RelationService {
         return RelationParentChild.builder()
                 .ParentToken(parentToken)
                 .pId(parent.getId())
-                .parentId(parent.getParentId())
+                .parentName(parent.getParentName())
                 .cId(child.getId())
-                .childId(child.getChildId())
+                .childName(child.getChildName())
                 .build();
     }
 
@@ -79,10 +79,10 @@ public class RelationService {
 
         return RelationEggMoney.builder()
                 .pId(parent.getId())
-                .parentId(parent.getParentId())
+                .parentName(parent.getParentName())
                 .childToken(childToken)
                 .cId(child.getId())
-                .childId(child.getChildId())
+                .childName(child.getChildName())
                 .build();
     }
 

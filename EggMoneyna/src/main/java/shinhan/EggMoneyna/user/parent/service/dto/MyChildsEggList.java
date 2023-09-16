@@ -1,4 +1,4 @@
-package shinhan.EggMoneyna.monster.dto;
+package shinhan.EggMoneyna.user.parent.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpgradeExpResponse {
-    private int exp;
-
+public class MyChildsEggList {
+    private Long childId;
+    private String childName;
+    private int balance;
 }

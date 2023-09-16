@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RelationEggMoney {
 	private Long pId;
-	private String parentId;
+	private String parentName;
 	private String childToken;
 	private Long cId;
-	private String childId;
+	private String childName;
 
 
 }

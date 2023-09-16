@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class GetWishboxResponse {
-    private String nickName;
 
     private String wishName;
 
@@ -20,4 +21,6 @@ public class GetWishboxResponse {
     private int balance;
 
     private Long virtualNumber;
+
+    private String createTime;
 }
