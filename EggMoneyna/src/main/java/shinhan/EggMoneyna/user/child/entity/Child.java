@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.account.entity.Account;
+import shinhan.EggMoneyna.comment.entity.Compliment;
 import shinhan.EggMoneyna.monster.entity.Monster;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
 import shinhan.EggMoneyna.user.follow.entity.Relation;
@@ -73,12 +74,14 @@ public class Child {
     @ElementCollection
     private List<Boolean> aMonth = new ArrayList<>();
 
-    private int compliment;
+    @OneToMany(mappedBy = "child")
+    @JsonIgnore
+    private List<Compliment> compliments = new ArrayList<>();
 
     private int consecutiveAttempt;
 
     @Builder
-    public Child(Long id, String childId, String password, Boolean gender, LocalDate birthday, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int compliment, int consecutiveAttempt) {
+    public Child(Long id, String childId, String password, Boolean gender, LocalDate birthday, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int consecutiveAttempt, List<Compliment> compliments) {
         this.id = id;
         this.childId = childId;
         this.password = password;
@@ -99,8 +102,8 @@ public class Child {
         this.todayCheck = todayCheck;
         this.sevendays = sevendays;
         this.aMonth = aMonth;
-        this.compliment = compliment;
         this.consecutiveAttempt = consecutiveAttempt;
+        this.compliments = compliments;
     }
 
 

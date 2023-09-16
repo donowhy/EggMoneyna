@@ -59,6 +59,7 @@ public class ComplimentService {
             Compliment compliment = Compliment.builder()
                     .complimentDate(LocalDate.now())
                     .isCompliment(true)
+                    .child(child)
                     .build();
 
             complimentRepository.save(compliment);
@@ -69,25 +70,28 @@ public class ComplimentService {
                 .build();
     }
 
-//    public List<ComplimentMonthDto> getMonthCompliment(Long userId, String inputOutputDate) {
-//        Child child = childRepository.findById(userId)
-//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-//        Account account = accountRepository.findByChild(child)
-//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter);
-//
-//        LocalDate startOfMonth = localDate.withDayOfMonth(1);
-//        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
-//
-//        List<InputOutput> inputOutputs = inputOutputRepository.findByAccountAndCreateTimeBetween(account, startOfMonth.atStartOfDay(), endOfMonth.atTime(23, 59, 59));
-//        List<ComplimentMonthDto> complimentMonthList = new ArrayList<>();
-//
-//        for (InputOutput inputOutput : inputOutputs) {
-//            if (inputOutput.getComment().getCompliment()) {
-//            }
-//        }
-//        ComplimentMonthDto.builder().build();
-//    }
+    public List<ComplimentMonthDto> getMonthCompliment(Long userId, String inputOutputDate) {
+        Child child = childRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter);
+
+        LocalDate startOfMonth = localDate.withDayOfMonth(1);
+        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        List<ComplimentMonthDto> complimentMonthList = new ArrayList<>();
+        List<Compliment> compliments = complimentRepository.findByChildAndComplimentDateBetween(child, startOfMonth, endOfMonth);
+
+        for (Compliment compliment : compliments) {
+            ComplimentMonthDto complimentMonthDto = ComplimentMonthDto.builder()
+                    .localDate(compliment.getComplimentDate())
+                    .compliment(compliment.isCompliment())
+                    .build();
+            complimentMonthList.add(complimentMonthDto);
+        }
+        return complimentMonthList;
+    }
 }

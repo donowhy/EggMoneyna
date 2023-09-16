@@ -144,7 +144,7 @@ public class InputOutputService {
         }
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
-        account.inBalance(addInputOutRequestDto.getInput());
+        account.outBalance(addInputOutRequestDto.getInput());
 
         return AddInputOutputResponseDto.builder()
                 .bigCategory(bigCategory)

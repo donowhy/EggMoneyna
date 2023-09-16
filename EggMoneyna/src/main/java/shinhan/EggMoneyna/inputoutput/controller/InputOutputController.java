@@ -48,23 +48,23 @@ public class InputOutputController{
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "당일 입출금 조회", description = "/yyyy-MM-dd로 조회한 사용자 계좌에 해당하는 날짜의 출금내역을 조회합니다.", tags = { "InputOutput Controller" })
-    @PostMapping("/all/{inputOuputDate}")
-    public ResponseEntity<InputOutputResponseDto> getInputOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
-        return ResponseEntity.ok(inputOutputService.getInputOutput(usersInfo.getId(), inputOuputDate));
+    @PostMapping("/all/{inputOutputDate}")
+    public ResponseEntity<InputOutputResponseDto> getInputOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOutputDate) {
+        return ResponseEntity.ok(inputOutputService.getInputOutput(usersInfo.getId(), inputOutputDate));
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "해당월 총 출금 금액 조회", description = "/yyyy-MM 형식으로 입력하게 되면 입력 달에 해당하는 총 출금금액을 조회합니다.", tags = { "InputOutput Controller" })
-    @PostMapping("/total/out/{inputOuputDate}")
-    public ResponseEntity<MonthOutputResponseDto> getTotalMonthOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
-        return ResponseEntity.ok(inputOutputService.getTotalMonthOutput(usersInfo.getId(), inputOuputDate));
+    @PostMapping("/total/out/{inputOutputDate}")
+    public ResponseEntity<MonthOutputResponseDto> getTotalMonthOutput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOutputDate) {
+        return ResponseEntity.ok(inputOutputService.getTotalMonthOutput(usersInfo.getId(), inputOutputDate));
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "해당월 총 입금 금액 조회", description = "/yyyy-MM 형식으로 입력하게 되면 입력 달에 해당하는 총 입금금액을 조회합니다.", tags = { "InputOutput Controller" })
-    @PostMapping("/total/in/{inputOuputDate}")
-    public ResponseEntity<MonthOutputResponseDto> getTotalMonthInput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOuputDate) {
-        return ResponseEntity.ok(inputOutputService.getTotalMonthInput(usersInfo.getId(), inputOuputDate));
+    @PostMapping("/total/in/{inputOutputDate}")
+    public ResponseEntity<MonthOutputResponseDto> getTotalMonthInput(@UserInfo UsersInfo usersInfo, @PathVariable String inputOutputDate) {
+        return ResponseEntity.ok(inputOutputService.getTotalMonthInput(usersInfo.getId(), inputOutputDate));
     }
 
 //    @GetMapping("/test")
