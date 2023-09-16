@@ -2,17 +2,28 @@ package com.shbhack.eggmoneyna.ui.eggmoneyna
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -23,6 +34,9 @@ import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
+import com.shbhack.eggmoneyna.ui.theme.keyColor1
+import ir.kaaveh.sdpcompose.sdp
+import ir.kaaveh.sdpcompose.ssp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -42,7 +56,11 @@ fun EggMoneynaScreen(
             )
         }
     ) {
-        Column(modifier = Modifier.padding(it)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
             LazyColumn {
                 item {
                     ColorBackgroundWithText(
@@ -81,9 +99,29 @@ fun EggMoneynaScreen(
                         navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
                     }
                 }
+                item {
+                    Spacer(modifier = Modifier.size(32.sdp))
+                }
+
             }
-
-
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.sdp, end = 16.sdp)
+                    .align(Alignment.BottomCenter),
+                shape = ShapeDefaults.Medium,
+                colors = ButtonDefaults.buttonColors(keyColor1),
+                onClick = {
+                    navController.navigate(EggMoneynaDestination.EXPENSE_ANALYSIS)
+                }) {
+                // 부모 -> 자녀 지출 분석
+                // 아이 -> 나의 지출 분석
+                Text(
+                    text = "자녀 지출 분석", style = TextStyle(
+                        fontSize = 12.ssp, fontWeight = FontWeight.SemiBold
+                    )
+                )
+            }
         }
     }
 }
