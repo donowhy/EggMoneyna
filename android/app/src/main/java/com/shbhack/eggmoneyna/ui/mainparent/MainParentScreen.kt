@@ -64,7 +64,7 @@ fun MainParentScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(10.sdp))
                 ChildMoneyInfoCard(
                     name = child.name,
-                    lastMoney = MoneyUtils.convertAddComma(child.money),
+                    lastMoney = MoneyUtils.convertAddComma(child.money) + "원",
                 ) {
                     navController.navigate(EggMoneynaDestination.EGGMONEYNA)
                 }

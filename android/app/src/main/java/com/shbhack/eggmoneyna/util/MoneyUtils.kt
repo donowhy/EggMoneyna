@@ -6,6 +6,6 @@ object MoneyUtils {
 
     fun convertAddComma(money: Int) :String {
         val dec = DecimalFormat("#,###")
-        return dec.format(money) + "원"
+        return dec.format(money)
     }
 }
