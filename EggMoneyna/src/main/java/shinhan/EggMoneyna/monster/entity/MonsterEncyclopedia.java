@@ -28,6 +28,7 @@ public class MonsterEncyclopedia extends BaseTimeEntity {
 
     private String worldView;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "monsterEncyclopedia")
     private List<EncyclopediaDetail> encyclopediaDetails;
 
@@ -45,4 +46,7 @@ public class MonsterEncyclopedia extends BaseTimeEntity {
     }
 
 
+    public void EncyclopediaDetail(List<EncyclopediaDetail> save) {
+        this.encyclopediaDetails = save;
+    }
 }

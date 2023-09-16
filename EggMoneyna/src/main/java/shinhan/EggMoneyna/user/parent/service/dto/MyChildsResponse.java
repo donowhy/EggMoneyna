@@ -13,5 +13,6 @@ public class MyChildsResponse {
 
     private Long id;
     private String childName;
+    private Boolean gender;
     private int age;
 }

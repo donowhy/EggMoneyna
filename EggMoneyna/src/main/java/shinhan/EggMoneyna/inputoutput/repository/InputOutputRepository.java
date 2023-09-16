@@ -30,8 +30,6 @@ public interface InputOutputRepository extends JpaRepository<InputOutput, Long> 
 
     List<InputOutput> findByAccountAndCreateTimeBetween(Account account, LocalDateTime startOfDay, LocalDateTime endOfDay);
 
-    @Query("SELECT io FROM InputOutput io WHERE io.account = :account AND io.createTime BETWEEN :startOfMonth AND :now ORDER BY io.createTime DESC")
-    List<InputOutput> findInputOutputsByTime(@Param("account") Account account, @Param("startOfMonth") LocalDate startOfMonth, @Param("now") LocalDate now);
 
 
 }

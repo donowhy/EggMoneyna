@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.account.service.AccountService;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
+import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.jwt.JwtProvider;
 import shinhan.EggMoneyna.monster.entity.MonsterEncyclopedia;
+import shinhan.EggMoneyna.monster.repository.MonsterRepository;
 import shinhan.EggMoneyna.monster.service.MonsterEncyclopediaService;
+import shinhan.EggMoneyna.monster.service.MonsterService;
 import shinhan.EggMoneyna.user.child.entity.Child;
 import shinhan.EggMoneyna.user.child.repository.ChildRepository;
 import shinhan.EggMoneyna.user.child.service.dto.*;
@@ -20,6 +23,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -29,10 +33,9 @@ import java.util.List;
 public class ChildService {
 
     private final ChildRepository childRepository;
-    private final JwtProvider jwtProvider;
     private final AccountService accountService;
-    private final MonsterEncyclopediaService monsterEncyclopediaService;
     private final InputOutputRepository inputOutputRepository;
+
 
     public ChildSaveResponse save(ChildSaveRequest request){
         Child child = Child.builder()
@@ -46,12 +49,6 @@ public class ChildService {
 
         accountService.childCreate(child.getId());
 
-        ChildLoginRequest childLoginRequest = ChildLoginRequest.builder()
-                .childId(child.getChildName())
-                .build();
-
-
-        monsterEncyclopediaService.save(child.getId());
 
         return ChildSaveResponse.builder()
                 .id(child.getId())
@@ -62,18 +59,12 @@ public class ChildService {
     }
 
 
-//    private returnToken login(ChildLoginRequest request){
-//
-//        Child child = childRepository.checkChildPw(request.getChildId(), "123").orElseThrow();
-//
-//        return returnToken.builder()
-//                .childToken(jwtProvider.createChildToken(child))
-//                .build();
-//    }
 
     public ChildResponse getMyInfo(Long id){
 
-        Child child = childRepository.findByIdWithAccount(id).orElseThrow();
+        Child child = childRepository.findByIdWithAccount(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
         return ChildResponse.builder()
                 .childName(child.getChildName())
@@ -89,37 +80,47 @@ public class ChildService {
     }
 
 
-    /**
-     *     private String childName;
-     *     private String shinhanMongDate;
-     *     private int balance;
-     *     private int limitMoney;
-     *     private int leftMoneyToLimit;
-     *     private int attemptDate;
-     *     private int compliment;
-     *     private Boolean HaveWishbox;
-     *     private Long wishboxNumber;
-     * @param id
-     * @return
-     */
-    public GetChildHomeResponse getChildHome(Long id){
 
-        Child child = childRepository.findByIdWithAccount(id).orElseThrow();
+    public GetChildHomeResponse getChildHome(Long id, String inputDate){
 
-        Period period = Period.between(child.getMonster().getCreateTime().toLocalDate(), LocalDate.now());
-        String shinhanMongDate = period.toString();
+        Child child = childRepository.findByIdWithAccount(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
 
-        List<InputOutput> inputOutputsByTime = inputOutputRepository.findInputOutputsByTime(child.getAccount(), LocalDate.of(LocalDate.now().getYear(), 1, 1), LocalDate.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputDate, formatter);
+
+        LocalDateTime startOfDay = localDate.atStartOfDay();
+        LocalDateTime endOfDay = localDate.atTime(23, 59, 59, 999999);
+
+        List<InputOutput> inputs = inputOutputRepository.findByAccountAndOutputAndCreateTimeBetween(child.getAccount(), 0, startOfDay, endOfDay);
+
+        List<Boolean> sevendays = child.getSevendays();
+
+        List<Boolean> aMonth = child.getAMonth();
+        if (!child.getTodayCheck()) {
+            child.setTodayLogin(true);
+            if (sevendays.size() < 7) {
+                sevendays.add(true);
+            } else {
+                sevendays.remove(0);
+                sevendays.add(true);
+            }
+
+            aMonth.add(true);
+        }
 
         int temp = 0;
 
-        for (InputOutput inputOutput : inputOutputsByTime) {
-            int output = inputOutput.getOutput();
+        for (InputOutput input : inputs) {
+            int output = input.getOutput();
             temp += output;
         }
 
         List<WishBox> wishBoxes = child.getWishBoxes();
+
         boolean HaveWishbox = false;
+
         if(!wishBoxes.isEmpty()){
             HaveWishbox = true;
         }
@@ -130,14 +131,14 @@ public class ChildService {
             Long virtualNumber1 = wishBox.getVirtualNumber();
             virtualNumber = virtualNumber1;
         }
-
+        log.info("time ={}",child.getMonster().getCreateTime());
         return GetChildHomeResponse.builder()
                 .childName(child.getChildName())
-                .shinhanMongDate(shinhanMongDate)
+                .shinhanMongDate(child.getMonster().getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .balance(child.getAccount().getBalance())
                 .limitMoney(child.getLimitMoney())
                 .leftMoneyToLimit(child.getLimitMoney() - temp)
-                .attemptDate(String.valueOf(child.getAMonth().size()) + " / " + String.valueOf(LocalDate.now().getDayOfMonth()))
+                .attemptDate(aMonth.size() + " / " + (LocalDate.now().getDayOfMonth()))
                 .compliment(child.getCompliments().size())
                 .HaveWishbox(HaveWishbox)
                 .wishboxNumber(virtualNumber)
@@ -145,18 +146,24 @@ public class ChildService {
     }
 
     public void updateLimitMoney(Long id, UpdateLimitMoneyRequest request){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         child.setLimitMoney(request.getLimitMoney());
     }
 
     public void deleteChild (Long id){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow( () ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         childRepository.delete(child);
     }
 
 
     public boolean checkEggMoney (Long id){
-        Child child = childRepository.findById(id).orElseThrow();
+        Child child = childRepository.findById(id).orElseThrow(() ->
+                new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+        );
         return child.getEggMoney();
     };
 }
