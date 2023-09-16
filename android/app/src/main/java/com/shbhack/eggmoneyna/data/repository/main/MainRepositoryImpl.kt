@@ -10,8 +10,8 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : MainRepository {
-    override suspend fun getInputOutput(inputOuputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse> {
-        return apiService.getInputOutput(inputOuputDate)
+    override suspend fun getInputOutput(inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse> {
+        return apiService.getInputOutput(inputOutputDate)
     }
 
     override suspend fun getCompliment(inputOuputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse> {

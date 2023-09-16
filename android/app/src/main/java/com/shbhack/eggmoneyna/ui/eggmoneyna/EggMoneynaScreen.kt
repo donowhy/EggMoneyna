@@ -37,6 +37,7 @@ import com.himanshoe.kalendar.KalendarEvents
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
+import com.shbhack.eggmoneyna.ui.comment.viewmodel.CommentViewModel
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.eggmoneyna.viewModel.EggMoneynaViewModel
@@ -55,7 +56,9 @@ private const val TAG = "EggMoneynaScreen_진영"
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EggMoneynaScreen(
-    navController: NavController, eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel()
+    navController: NavController,
+    eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel(),
+    commentViewModel: CommentViewModel
 ) {
     var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
     val complements by eggMoneynaViewModel.complimentsState.collectAsState()
@@ -115,25 +118,6 @@ fun EggMoneynaScreen(
                 item {
                     CustomCalendar(
                         kalendarEvents
-//                        KalendarEvents(
-//                            listOf(
-//                                KalendarEvent(
-//                                    LocalDate(2023, 9, 11),
-//                                    "",
-//                                    ""
-//                                ),
-//                                KalendarEvent(
-//                                    LocalDate(2023, 9, 14),
-//                                    "dd",
-//                                    "dd"
-//                                ),
-//                                KalendarEvent(
-//                                    LocalDate(2023, 9, 17),
-//                                    "dd",
-//                                    "dd"
-//                                )
-//                            )
-//                        )
                     ) { localDate ->
                         // 날짜 선택 할 때마다 지출 내역 불러오기
 
@@ -142,6 +126,7 @@ fun EggMoneynaScreen(
                 }
                 items(inputOutput.inputOutputs) { item ->
                     SpendingListItem(selectedDay, item) {
+                        commentViewModel.selectItem(item)
                         navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
                     }
                 }
@@ -179,5 +164,5 @@ fun EggMoneynaScreen(
 @Preview
 @Composable
 fun EggMoneynaScreenPreview() {
-    EggMoneynaScreen(rememberNavController())
+//    EggMoneynaScreen(rememberNavController())
 }

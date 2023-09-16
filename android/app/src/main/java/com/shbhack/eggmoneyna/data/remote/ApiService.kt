@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.remote
 
+import com.shbhack.eggmoneyna.data.model.CommentResponseDto
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
@@ -38,15 +39,39 @@ interface ApiService {
 
 
     // 당일 입출금 조회
-    @POST("inputoutput/all/{inputOuputDate}")
-    suspend fun getInputOutput(@Path("inputOuputDate") inputOuputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
+    @POST("inputoutput/all/{inputOutputDate}")
+    suspend fun getInputOutput(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
     // 코멘트
+
+    // 코멘트 작성 (아이)
     @POST("comment/{inputOutputId}")
     suspend fun writeComment(
-        @Path("inputOutputDate") inputOutputDate: String,
+        @Path("inputOutputId") inputOutputId: String,
         @Body writeCommentRequest: WriteCommentRequest
-    ): NetworkResponse<MonsterResponseDto, ErrorResponse>
+    ): NetworkResponse<CommentResponseDto, ErrorResponse>
+
+    // 코멘트 조회 (아이)
+    @GET("comment/{inputOutputId}")
+    suspend fun getComment(
+        @Path("inputOutputId") inputOutputId: String
+    ): NetworkResponse<CommentResponseDto, ErrorResponse>
+
+    // 코멘트 작성 (부모)
+    @POST("comment/{childId}/{inputOutputId}")
+    suspend fun writeParentComment(
+        @Path("childId") childId: String,
+        @Path("inputOutputId") inputOutputId: String,
+        @Body writeCommentRequest: WriteCommentRequest
+    ): NetworkResponse<CommentResponseDto, ErrorResponse>
+
+    // 코멘트 조회 (부모)
+    @GET("comment/{childId}/{inputOutputId}")
+    suspend fun getParentComment(
+        @Path("childId") childId: String,
+        @Path("inputOutputId") inputOutputId: String
+    ): NetworkResponse<CommentResponseDto, ErrorResponse>
+
 
     // 월 칭찬 조회 (yyyy-MM)
     @POST("compliment/month/{inputOutputDate}")

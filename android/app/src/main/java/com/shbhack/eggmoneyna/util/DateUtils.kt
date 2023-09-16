@@ -98,5 +98,18 @@ object DateUtils {
         return currentDate.format(formatter)
     }
 
+    @SuppressLint("NewApi")
+    fun formatDateString(input: String?): String {
+        if (input == null) return ""
+        // 입력된 문자열을 LocalDateTime으로 변환
+        val dateTime = LocalDateTime.parse(input, DateTimeFormatter.ISO_DATE_TIME)
+
+        // 출력 포맷을 설정
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH:mm")
+
+        // 변환된 날짜를 원하는 포맷으로 반환
+        return dateTime.format(outputFormatter)
+    }
+
 
 }
