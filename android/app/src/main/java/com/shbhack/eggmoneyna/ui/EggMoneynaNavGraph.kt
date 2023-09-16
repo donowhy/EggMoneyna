@@ -43,7 +43,7 @@ fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 //    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.MAIN_PARENT
+    startDestination: String = EggMoneynaDestination.MAIN_CHILD
 ) {
 
     NavHost(
