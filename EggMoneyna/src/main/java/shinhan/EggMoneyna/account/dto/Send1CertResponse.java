@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Send1CertResponse {
 
-    private String message;
+    private Long certNumber;
 }

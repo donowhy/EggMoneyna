@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class GetWishboxResponse {
-    private String nickName;
 
     private String wishName;
 
@@ -24,5 +23,4 @@ public class GetWishboxResponse {
     private Long virtualNumber;
 
     private String createTime;
-    private String modifyingTime;
 }

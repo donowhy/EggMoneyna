@@ -159,6 +159,6 @@ public class Child {
     public void setEggMoney(boolean eggMoney) {
         this.eggMoney = eggMoney;
     }
-    
+
 }
 

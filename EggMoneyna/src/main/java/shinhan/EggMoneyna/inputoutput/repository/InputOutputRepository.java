@@ -8,11 +8,12 @@ import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 
 import java.awt.print.Pageable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface InputOutputRepository extends JpaRepository<InputOutput, Long> {
-//    /**
+    //    /**
 //    ** 1원 계좌 조회
 //     */
     @Query("SELECT ia FROM InputOutput ia JOIN FETCH ia.account acc WHERE acc = :account AND ia.brandName = :brandName ORDER BY ia.createTime DESC")
@@ -28,4 +29,9 @@ public interface InputOutputRepository extends JpaRepository<InputOutput, Long> 
     List<InputOutput> findByAccountAndInputAndCreateTimeBetween(Account account, int input, LocalDateTime startOfDay, LocalDateTime endOfDay);
 
     List<InputOutput> findByAccountAndCreateTimeBetween(Account account, LocalDateTime startOfDay, LocalDateTime endOfDay);
+
+    @Query("SELECT io FROM InputOutput io WHERE io.account = :account AND io.createTime BETWEEN :startOfMonth AND :now ORDER BY io.createTime DESC")
+    List<InputOutput> findInputOutputsByTime(@Param("account") Account account, @Param("startOfMonth") LocalDate startOfMonth, @Param("now") LocalDate now);
+
+
 }

@@ -1,5 +1,4 @@
-package shinhan.EggMoneyna.account.dto;
-
+package shinhan.EggMoneyna.user.parent.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Check1CertChildResponse {
-
-    private Boolean isRight;
-    private Boolean isAccountActivate;
+public class MyChildsEggList {
+    private Long childId;
+    private String childName;
+    private int balance;
 }

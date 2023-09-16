@@ -64,7 +64,7 @@ public class MonsterService {
     public MonsterResponseDto findById(Long id) {
         Child child = childRepository.findById(id).orElseThrow();
         Monster monster = child.getMonster();
-        log.info("도감 ={}", child.getMonsterEncyclopedia().getLAY().get(0).toString());
+
         List<Boolean> sevendays = child.getSevendays();
 
         boolean checkOne = child.getTodayCheck();
