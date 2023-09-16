@@ -76,6 +76,7 @@ fun WishBoxExistScreen(navController: NavController) {
                 backgroundColor = secondaryColor1,
                 textColor = Color.White
             ) {
+                navController.popBackStack()
                 navController.navigate(EggMoneynaDestination.WISH_BOX_SAVE_MONEY)
             }
         }

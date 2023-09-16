@@ -101,7 +101,7 @@ fun WishBoxSaveMoneyScreen(navController: NavController) {
                 textColor = Color.White
             ) {
                 navController.popBackStack()
-                navController.navigate(EggMoneynaDestination.AUTH_USER_SEND_1WON)
+                navController.navigate(EggMoneynaDestination.MAIN_CHILD)
             }
         }
     }
