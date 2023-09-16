@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import shinhan.EggMoneyna.account.dto.Check1CertChildResponse;
 import shinhan.EggMoneyna.account.dto.Check1CertParentResponse;
+import shinhan.EggMoneyna.account.dto.ReturnBalance;
 import shinhan.EggMoneyna.account.dto.Send1CertResponse;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
@@ -100,11 +101,13 @@ public class AccountService {
 		return account.getId();
 	}
 	// 계좌 조회
-	public Account getAccount(Long id) {
+	public ReturnBalance getAccount(Long id) {
 		Child child = childRepository.findById(id).orElseThrow();
 		Account account = child.getAccount();
 		log.info("account = {}", account);
-		return account;
+		return ReturnBalance.builder()
+				.balance(account.getBalance())
+				.build();
 
 	}
 
@@ -226,5 +229,13 @@ public class AccountService {
 		Account account = child.getAccount();
 		accountRepository.delete(account);
 		return "성공";
+	}
+
+	public Account getAccountParent(Long id, Long childId) {
+		Child child = childRepository.findById(childId).orElseThrow();
+		Account account = child.getAccount();
+		log.info("account = {}", account);
+		return account;
+
 	}
 }

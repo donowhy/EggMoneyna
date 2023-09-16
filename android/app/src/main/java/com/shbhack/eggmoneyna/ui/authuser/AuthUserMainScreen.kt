@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.authuser
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,10 +32,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
+import com.shbhack.eggmoneyna.ui.authuser.viewmodel.AuthUserViewModel
 import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius10
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.logoColor
@@ -43,7 +46,12 @@ import ir.kaaveh.sdpcompose.ssp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthUserMainScreen(navController: NavController) {
+fun AuthUserMainScreen(
+    navController: NavController,
+    authUserViewModel: AuthUserViewModel
+) {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+
     Scaffold(
         topBar = {
             TopWithBack(
@@ -84,7 +92,6 @@ fun AuthUserMainScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(10.sdp))
 
-            var text by remember { mutableStateOf(TextFieldValue("")) }
 
             OutlinedTextField(
                 value = text,
@@ -113,15 +120,16 @@ fun AuthUserMainScreen(navController: NavController) {
                 backgroundColor = logoColor,
                 textColor = Color.White
             ) {
+                if (text.text == "") {
+                    authUserViewModel.setAccountValue(0L)
+                } else {
+                    authUserViewModel.setAccountValue(text.text.toLong())
+                }
+
+                authUserViewModel.send1Won()
                 navController.popBackStack()
                 navController.navigate(EggMoneynaDestination.AUTH_USER_SEND_1WON)
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun AuthUserMainScreenPreview() {
-    AuthUserMainScreen(navController = rememberNavController())
 }

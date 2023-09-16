@@ -4,8 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.global.common.BaseTimeEntity;
+import shinhan.EggMoneyna.user.child.entity.Child;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -37,5 +40,17 @@ public class EncyclopediaDetail extends BaseTimeEntity {
         MongStory = mongStory;
         this.registerDate = registerDate;
         this.monsterEncyclopedia = monsterEncyclopedia;
+    }
+
+    public void setMonsterEncyclopedia(MonsterEncyclopedia monsterEncyclopedia){
+        this.monsterEncyclopedia = monsterEncyclopedia;
+    }
+
+    public void setIsRegister(Boolean isRegister) {
+        this.isRegister = isRegister;
+    }
+
+    public void setRegisterTime(LocalDate now) {
+        this.registerDate = String.valueOf(now);
     }
 }

@@ -16,8 +16,6 @@ public class ParentResponse {
 
     private String parentId;
 
-    // 아이 닉네임
-    private List<String> childNicknames;
 
     private List<String> eggMoneynaChild;
 

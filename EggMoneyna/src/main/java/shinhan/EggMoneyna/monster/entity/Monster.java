@@ -14,6 +14,8 @@ import shinhan.EggMoneyna.monster.entity.enumType.ShinhanMong;
 import shinhan.EggMoneyna.user.child.entity.Child;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -40,20 +42,24 @@ public class Monster extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Benefit benefit;
 
+    @OneToMany(mappedBy = "monster")
+    @JsonIgnore
+    private List<History> histories = new ArrayList<>();
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "childs_default_id")
     private Child child;
 
-
     @Builder
-    public Monster(Long id, ShinhanMong name, MonsterStatus status, Feel feel, int exp, Benefit benefit, Child child) {
+    public Monster(Long id, ShinhanMong name, MonsterStatus status, Feel feel, int exp, Benefit benefit, List<History> histories, Child child) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.feel = feel;
         this.exp = exp;
         this.benefit = benefit;
+        this.histories = histories;
         this.child = child;
     }
 
@@ -73,5 +79,9 @@ public class Monster extends BaseTimeEntity {
 
     public void setFeel(Feel feel) {
         this.feel = feel;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 }

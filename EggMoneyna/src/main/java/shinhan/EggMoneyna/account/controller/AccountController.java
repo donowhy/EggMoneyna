@@ -31,7 +31,7 @@ public class AccountController {
         description = "Authorize만 되면 계좌 조회",
         tags = { "Account Controller" })
     @GetMapping()
-    public ResponseEntity<Account> getAccount(@UserInfo UsersInfo usersInfo) {
+    public ResponseEntity<ReturnBalance> getAccount(@UserInfo UsersInfo usersInfo) {
         log.info("userinfo={}", usersInfo.getId());
         return ResponseEntity.ok(accountService.getAccount(usersInfo.getId()));
 
@@ -83,6 +83,17 @@ public class AccountController {
     @PostMapping("/checkChild1Cert")
     public Check1CertChildResponse checkChildAccount(@RequestBody CheckRequset requset){
         return accountService.checkChildAccount(requset);
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "부모: 자식 계좌 조회",
+            description = "Authorize만 되면 계좌 조회",
+            tags = { "Account Controller" })
+    @GetMapping("/{childId}")
+    public ResponseEntity<Account> getAccountParent(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+        log.info("userinfo={}", usersInfo.getId());
+        return ResponseEntity.ok(accountService.getAccountParent(usersInfo.getId(), childId));
+
     }
 
 }

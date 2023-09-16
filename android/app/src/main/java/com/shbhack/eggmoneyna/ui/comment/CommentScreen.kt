@@ -1,5 +1,7 @@
 package com.shbhack.eggmoneyna.ui.comment
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,19 +41,48 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.data.local.AppPreferences
+import com.shbhack.eggmoneyna.data.model.WriteCommentRequest
+import com.shbhack.eggmoneyna.ui.comment.viewmodel.CommentViewModel
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
+import com.shbhack.eggmoneyna.util.DateUtils
+import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
+private const val TAG = "CommentScreen_진영"
+
+@SuppressLint("NewApi")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CommentScreen(navController: NavController) {
+fun CommentScreen(navController: NavController, viewModel: CommentViewModel) {
+    val selectedItem by viewModel.selectedItem.collectAsState()
+    val commentValue by viewModel.commentState.collectAsState()
+    var isCommented by remember {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(selectedItem, commentValue) {
+        // selectedItem이 null이 아닐 때만 로직 실행
+        selectedItem?.let {
+            if (AppPreferences.isParent()) {
+                isCommented = commentValue.parentComment.isNotEmpty()
+                val childId = AppPreferences.getChildId() ?: ""
+                viewModel.getComment(childId, it.id.toString())
+            } else {
+                isCommented = commentValue.childComment.isNotEmpty()
+                viewModel.getComment(it.id.toString())
+            }
+
+            Log.d(TAG, "CommentScreen: $commentValue")
+        }
+
+    }
+
+
     Scaffold(
         topBar = {
             TopWithBack(
@@ -68,12 +101,17 @@ fun CommentScreen(navController: NavController) {
             Column(
                 modifier = Modifier
             ) {
-                CommentBanner(
-                    title = "스타벅스 인동점",
-                    content = "-6,700원",
-                    "https://picsum.photos/200"
-                ) {
-                    // 칭찬하기 클릭
+                selectedItem?.let { item ->
+                    var value = MoneyUtils.formatCurrency(input = item.input, output = item.output)
+                    if (value != null) {
+                        CommentBanner(
+                            title = item.brandName,
+                            content = value,
+                            item.brandImg
+                        ) {
+                            // 칭찬하기 클릭
+                        }
+                    }
                 }
 
                 Column(
@@ -83,9 +121,9 @@ fun CommentScreen(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    CommentDateCategory("일시", "2023년 8월 24일 20:13")
+                    CommentDateCategory("일시", DateUtils.formatDateString(selectedItem!!.updateTime))
                     Spacer(modifier = Modifier.size(12.sdp))
-                    CommentDateCategory("카테고리", "카페")
+                    CommentDateCategory("카테고리", selectedItem!!.smallCategory)
                 }
 
 
@@ -109,26 +147,50 @@ fun CommentScreen(navController: NavController) {
                     thickness = 1.sdp
                 )
                 Spacer(modifier = Modifier.size(12.sdp))
-                CommentItemComponent(
-                    R.drawable.icon_profile,
-                    "우리 공주 민승",
-                    "오늘 공부를 하기 위해 카페에서 초코라떼를 시켜먹었어요",
-                    "1일전"
-                )
+                // 아이의 댓글 여부에 따라서 나타내기
+                if (commentValue.childComment.isNotEmpty()) {
+                    CommentItemComponent(
+                        R.drawable.icon_profile,
+                        commentValue.childNickname,
+                        commentValue.childComment,
+                        DateUtils.dateToString(commentValue.childCommentCreateTime)
+                    )
+                }
                 // 부모의 댓글 여부에 따라서 나타내기
-                CommentItemComponent(
-                    R.drawable.icon_profile,
-                    "엄마",
-                    "민승아 오늘 공부하러 카페에 간다더니 초코라떼를 먹었구나^^ 잘했어!",
-                    "1일전"
-                )
+                if (commentValue.parentComment.isNotEmpty()) {
+                    CommentItemComponent(
+                        R.drawable.icon_profile,
+                        commentValue.parentNickname,
+                        commentValue.parentComment,
+                        DateUtils.dateToString(commentValue.parentCommentCreateTime)
+                    )
+                }
             }
             // textField
-            var nickNameValue by remember { mutableStateOf("") }
+            var text by remember { mutableStateOf("") }
             val keyboardController = LocalSoftwareKeyboardController.current
+            val handleSendAction = {
+                keyboardController?.hide()
+                if (AppPreferences.isParent()) {
+                    AppPreferences.getChildId()
+                        ?.let { id ->
+                            viewModel.writeComment(
+                                id,
+                                selectedItem?.id.toString(),
+                                WriteCommentRequest(text)
+                            )
+                        }
+                } else {
+                    viewModel.writeComment(
+                        selectedItem?.id.toString(),
+                        WriteCommentRequest(text)
+                    )
+                }
+                text = ""
+            }
             TextField(
-                value = nickNameValue,
-                onValueChange = { nickNameValue = it },
+                value = text,
+                onValueChange = { text = it },
                 textStyle = TextStyle(
                     fontSize = 12.ssp,
                     fontWeight = FontWeight.Normal
@@ -136,12 +198,12 @@ fun CommentScreen(navController: NavController) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Send),
                 keyboardActions = KeyboardActions(onSend = {
                     // 보내기 버튼
-                    keyboardController?.hide()
+                    handleSendAction()
                 }),
                 trailingIcon = {
                     IconButton(onClick = {
                         // 보내기 버튼
-                        keyboardController?.hide()
+                        handleSendAction()
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_send),
@@ -152,11 +214,12 @@ fun CommentScreen(navController: NavController) {
                 },
                 placeholder = {
                     Text(
-                        "코멘트를 입력하세요",
+                        text = if (isCommented) "오늘은 이미 코멘트를 남겼어요" else "코멘트를 입력하세요",
                         fontWeight = FontWeight.Light,
                         fontSize = 14.sp
                     )
                 },
+                enabled = !isCommented,
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -176,8 +239,8 @@ fun CommentScreen(navController: NavController) {
     }
 }
 
-@Preview
-@Composable
-fun CommentScreenPreview() {
-    CommentScreen(navController = rememberNavController())
-}
+//@Preview
+//@Composable
+//fun CommentScreenPreview() {
+//    CommentScreen(navController = rememberNavController(), CommentViewModel())
+//}
