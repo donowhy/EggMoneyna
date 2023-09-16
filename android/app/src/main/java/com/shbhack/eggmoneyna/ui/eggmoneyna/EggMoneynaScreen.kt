@@ -91,6 +91,7 @@ fun EggMoneynaScreen(
                             )
                         )
                     ) { localDate ->
+                        // 날짜 선택 할 때마다 지출 내역 불러오기
                         selectedDay = localDate
                     }
                 }
@@ -104,6 +105,8 @@ fun EggMoneynaScreen(
                 }
 
             }
+
+            // 지출 분석 버튼
             Button(
                 modifier = Modifier
                     .fillMaxWidth()

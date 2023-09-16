@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.ui.common.component.CustomSurfaceWithText
 import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaOrange
 import ir.kaaveh.sdpcompose.sdp
@@ -82,22 +83,8 @@ fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate, onClick: () -> Uni
             )
         }
         Spacer(modifier = Modifier.size(12.sdp))
-        Surface(
-            color = EggmoneynaOrange,
-            shape = RoundedCornerShape(16.sdp),
-        ) {
-            Text(
-                modifier = Modifier.padding(
-                    start = 10.sdp,
-                    end = 10.sdp,
-                    top = 4.sdp,
-                    bottom = 4.sdp
-                ),
-                text = "카페",
-                fontSize = 10.ssp,
-                fontWeight = FontWeight.Medium
-            )
-        }
+        // 타입 뱃지
+        CustomSurfaceWithText("카페")
         Spacer(modifier = Modifier.size(8.sdp))
         Icon(
             painter = painterResource(id = R.drawable.icon_forward), contentDescription = "forward",
