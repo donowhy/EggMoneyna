@@ -17,6 +17,7 @@ import com.shbhack.eggmoneyna.ui.common.button.RoundedCornerButton
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight2
 import com.shbhack.eggmoneyna.ui.theme.logoColor
+import ir.kaaveh.sdpcompose.sdp
 
 @Composable
 fun CharacterView(onClick: () -> Unit = {}) {
@@ -29,7 +30,7 @@ fun CharacterView(onClick: () -> Unit = {}) {
         Surface(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(12.dp),
+                .padding(12.sdp),
             color = Color.Transparent
         ) {
             RoundedCornerButton(

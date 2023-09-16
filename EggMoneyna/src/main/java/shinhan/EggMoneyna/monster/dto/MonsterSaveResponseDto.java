@@ -1,11 +1,15 @@
 package shinhan.EggMoneyna.monster.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import shinhan.EggMoneyna.monster.entity.Monster;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MonsterSaveResponseDto {
 
     private String name;
