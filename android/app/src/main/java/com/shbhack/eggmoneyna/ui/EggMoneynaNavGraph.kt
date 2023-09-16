@@ -35,6 +35,7 @@ import com.shbhack.eggmoneyna.ui.shinhanmong.collection.detail.ShinhanMongCollec
 import com.shbhack.eggmoneyna.ui.splash.SplashScreen
 import com.shbhack.eggmoneyna.ui.wishbox.WishBoxExistScreen
 import com.shbhack.eggmoneyna.ui.wishbox.WishBoxNotExistScreen
+import com.shbhack.eggmoneyna.ui.wishbox.WishBoxSaveMoneyScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -43,7 +44,7 @@ fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 //    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.MAIN_CHILD
+    startDestination: String = EggMoneynaDestination.WISH_BOX_SAVE_MONEY
 ) {
 
     NavHost(
@@ -131,6 +132,9 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.WISH_BOX_N0T_EXIST) {
             WishBoxNotExistScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.WISH_BOX_SAVE_MONEY) {
+            WishBoxSaveMoneyScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.SHINHAN_MON) {
             ShinhanMongMainScreen(navController)
