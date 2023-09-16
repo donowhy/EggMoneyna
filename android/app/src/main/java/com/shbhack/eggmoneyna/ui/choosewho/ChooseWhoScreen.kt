@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.choosewho
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import ir.kaaveh.sdpcompose.sdp
 
 @Composable
 fun ChooseWhoScreen(navController: NavController) {
+    Log.d("토큰 확인", "ChooseWhoScreen: ${AppPreferences.getToken()}")
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {

@@ -44,4 +44,8 @@ object AppPreferences {
         return preferences.getString(TOKEN, "")
     }
 
+    fun logout() {
+        preferences.edit().remove(IS_PARENT).remove(TOKEN).remove(SHOWED_FIRST).apply()
+    }
+
 }
