@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.jwt.JwtProvider;
+import shinhan.EggMoneyna.monster.dto.MonsterSaveRequestDto;
+import shinhan.EggMoneyna.monster.entity.enumType.Benefit;
+import shinhan.EggMoneyna.monster.service.MonsterService;
 import shinhan.EggMoneyna.user.follow.service.dto.RelationEggMoney;
 import shinhan.EggMoneyna.user.follow.service.dto.RelationParentChild;
 import shinhan.EggMoneyna.user.parent.entity.Parent;
@@ -29,6 +32,7 @@ public class RelationService {
     private final ParentRepository parentRepository;
     private final ChildRepository childRepository;
     private final JwtProvider jwtProvider;
+    private final MonsterService monsterService;
 
     // 연관 관계 생성
     public RelationParentChild createRelation(Long parentId, Long childId) {
@@ -76,8 +80,15 @@ public class RelationService {
         parent.setEggMoney(true);
         child.setEggMoney(true);
 
+        MonsterSaveRequestDto monsterSaveRequestDto = MonsterSaveRequestDto.builder()
+                .benefit(Benefit.Delivery)
+                .build();
+
+
         parentRepository.save(parent);
         childRepository.save(child);
+        monsterService.save(monsterSaveRequestDto, childId);
+
 
         return RelationEggMoney.builder()
                 .pId(parent.getId())
