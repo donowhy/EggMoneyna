@@ -84,7 +84,7 @@ fun CommentScreen(navController: NavController) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     CommentDateCategory("일시", "2023년 8월 24일 20:13")
-                    Spacer(modifier = Modifier.size(8.sdp))
+                    Spacer(modifier = Modifier.size(12.sdp))
                     CommentDateCategory("카테고리", "카페")
                 }
 
