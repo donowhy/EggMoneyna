@@ -18,8 +18,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
-import com.shbhack.eggmoneyna.ui.theme.secondaryColor2
-import com.shbhack.eggmoneyna.ui.theme.secondaryColorLight1
+import com.shbhack.eggmoneyna.ui.theme.keyColor2
+import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
@@ -27,7 +27,7 @@ import ir.kaaveh.sdpcompose.ssp
 fun WishBoxExplainBox() {
     Box(
         modifier = Modifier
-            .background(color = secondaryColorLight1, shape = RoundedCornerShape(10.sdp))
+            .background(color = keyColorLight1, shape = RoundedCornerShape(10.sdp))
             .fillMaxWidth()
             .padding(top = 30.sdp, start = 20.sdp, end = 8.sdp, bottom = 8.sdp)
     ) {
@@ -40,7 +40,7 @@ fun WishBoxExplainBox() {
                 style = TextStyle(
                     fontSize = 18.ssp,
                     fontWeight = FontWeight.Black,
-                    color = secondaryColor2
+                    color = keyColor2
                 )
             )
             Spacer(modifier = Modifier.height(30.sdp))

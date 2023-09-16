@@ -36,7 +36,7 @@ import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius10
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
-import com.shbhack.eggmoneyna.ui.theme.secondaryColor1
+import com.shbhack.eggmoneyna.ui.theme.keyColor1
 import com.shbhack.eggmoneyna.ui.wishbox.views.WishBoxExplainBox
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
@@ -112,7 +112,7 @@ fun WishBoxNotExistScreen(navController: NavController) {
                         keyboardType = KeyboardType.Number
                     ),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = secondaryColor1,
+                        focusedBorderColor = keyColor1,
                     )
                 )
             }
@@ -158,7 +158,7 @@ fun WishBoxNotExistScreen(navController: NavController) {
                         )
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = secondaryColor1,
+                        focusedBorderColor = keyColor1,
                     )
                 )
 
@@ -173,7 +173,7 @@ fun WishBoxNotExistScreen(navController: NavController) {
             ButtonRadius10(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.wishBoxButtonText),
-                backgroundColor = secondaryColor1,
+                backgroundColor = keyColor1,
                 textColor = Color.White
             ) {
                 //위시 박스 생성

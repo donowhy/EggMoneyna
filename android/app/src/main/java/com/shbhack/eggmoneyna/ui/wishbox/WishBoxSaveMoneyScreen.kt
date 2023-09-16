@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.wishbox
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +34,8 @@ import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius10
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
-import com.shbhack.eggmoneyna.ui.theme.secondaryColor1
+import com.shbhack.eggmoneyna.ui.theme.keyColor1
+import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
@@ -88,7 +90,7 @@ fun WishBoxSaveMoneyScreen(navController: NavController) {
                     keyboardType = KeyboardType.Number
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = secondaryColor1,
+                    focusedBorderColor = keyColor1,
                 )
             )
 
@@ -97,7 +99,7 @@ fun WishBoxSaveMoneyScreen(navController: NavController) {
             ButtonRadius10(
                 modifier = Modifier.fillMaxWidth(),
                 text = "입력완료",
-                backgroundColor = secondaryColor1,
+                backgroundColor = keyColor1,
                 textColor = Color.White
             ) {
                 navController.popBackStack()

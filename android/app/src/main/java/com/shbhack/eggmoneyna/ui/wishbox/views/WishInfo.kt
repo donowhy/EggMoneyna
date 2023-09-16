@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
-import com.shbhack.eggmoneyna.ui.theme.secondaryColor2
+import com.shbhack.eggmoneyna.ui.theme.keyColor2
 import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
@@ -32,7 +32,7 @@ fun WishInfo(goods: String, lastMoney: Int) {
                 style = TextStyle(
                     fontSize = 20.ssp,
                     fontWeight = FontWeight.Bold,
-                    color = secondaryColor2
+                    color = keyColor2
                 )
             )
             Text(

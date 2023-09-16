@@ -22,8 +22,8 @@ import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.button.ButtonRadius10
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
-import com.shbhack.eggmoneyna.ui.theme.secondaryColor1
-import com.shbhack.eggmoneyna.ui.theme.secondaryColorLight1
+import com.shbhack.eggmoneyna.ui.theme.keyColor1
+import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import com.shbhack.eggmoneyna.ui.wishbox.views.WishInfo
 import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
@@ -44,7 +44,7 @@ fun WishBoxExistScreen(navController: NavController) {
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(color = secondaryColorLight1),
+                .background(color = keyColorLight1),
         ) {
             Column(
                 modifier = Modifier
@@ -73,7 +73,7 @@ fun WishBoxExistScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(start = 15.sdp, bottom = 15.sdp, end = 15.sdp),
                 text = "위시 박스 채우기",
-                backgroundColor = secondaryColor1,
+                backgroundColor = keyColor1,
                 textColor = Color.White
             ) {
                 navController.popBackStack()
