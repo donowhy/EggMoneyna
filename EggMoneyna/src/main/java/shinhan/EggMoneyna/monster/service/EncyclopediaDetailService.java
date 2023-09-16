@@ -62,6 +62,8 @@ public class EncyclopediaDetailService {
             ed.add(detail);
 
             encyclopediaDetailRepository.save(detail);
+
+
         }
         return ed;
     }

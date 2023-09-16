@@ -14,6 +14,7 @@ import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
 import shinhan.EggMoneyna.account.repository.AccountRepository;
+import shinhan.EggMoneyna.account.service.dto.CheckRequset;
 import shinhan.EggMoneyna.account.service.dto.Send1CertRequest;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
@@ -63,7 +64,7 @@ public class AccountService {
 				.build();
 		child.setAccount(account);
 
-		accountRepository.save(account);
+		accountRepository.saveAndFlush(account);
 
 		return account.getId();
 	}
@@ -94,7 +95,7 @@ public class AccountService {
 		parent.setAccount(account);
 
 
-		accountRepository.save(account);
+		accountRepository.saveAndFlush(account);
 
 		return account.getId();
 	}
@@ -136,8 +137,9 @@ public class AccountService {
 
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
-	public Check1CertParentResponse checkParentAccount(Long number, String random) {
-		Account account = accountRepository.findByAccountNumber(number).orElseThrow();
+
+	public Check1CertParentResponse checkParentAccount(CheckRequset requset) {
+		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow();
 		Parent parent = account.getParent();
 
 		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
@@ -150,13 +152,13 @@ public class AccountService {
 			throw new NoSuchElementException("InAccount not found with the specified sendUser");
 		}
 
-		log.info("random={}", random);
+		log.info("random={}", requset.getCertNumber());
 		log.info("shinhans={}",shinhans.get(0).getSmallCategory());
 
 		InputOutput inputOutput = shinhans.get(0);
 		String smallCategory = inputOutput.getSmallCategory();
 		String checkNumber = smallCategory.substring(smallCategory.length() - 3);
-		boolean equals = random.equals(checkNumber);
+		boolean equals = requset.getCertNumber().equals(checkNumber);
 
 		String parentToken = jwtProvider.createParentToken(parent);
 
@@ -168,8 +170,8 @@ public class AccountService {
 	}
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
-	public Check1CertChildResponse checkChildAccount(Long number, String random) throws RuntimeException {
-		Account account = accountRepository.findByAccountNumber(number).orElseThrow();
+	public Check1CertChildResponse checkChildAccount(CheckRequset requset) throws RuntimeException {
+		Account account = accountRepository.findByAccountNumber(requset.getAccountNumber()).orElseThrow();
 		Child child = account.getChild();
 		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
 
@@ -183,7 +185,7 @@ public class AccountService {
 
 		String smallCategory = inputOutput.getSmallCategory();
 		String checkNumber = smallCategory.substring(smallCategory.length() - 3);
-		boolean equals = random.equals(checkNumber);
+		boolean equals = requset.getCertNumber().equals(checkNumber);
 
 
 		if(!equals){

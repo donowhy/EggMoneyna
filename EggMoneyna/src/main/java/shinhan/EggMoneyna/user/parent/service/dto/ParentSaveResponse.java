@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class ParentSaveResponse {
     private Long id;
     private String parentId;
-    private String parentToken;
-    private String role;
+    private Long accountNumber;
+    private String Role;
 }

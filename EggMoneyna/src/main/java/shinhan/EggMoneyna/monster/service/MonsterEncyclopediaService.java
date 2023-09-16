@@ -35,6 +35,7 @@ public class MonsterEncyclopediaService {
 
         monsterEncyclopediaRepository.save(monsterEncyclopedia);
 
+        child.setMonsterEcyclopedia(monsterEncyclopedia);
     }
 
 
