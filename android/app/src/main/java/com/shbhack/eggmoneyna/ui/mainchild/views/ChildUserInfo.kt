@@ -20,14 +20,14 @@ import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
 @Composable
-fun ChildUserInfo() {
+fun ChildUserInfo(name: String, day: String) {
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = "강민승",
+                text = name,
                 style = TextStyle(
                     fontSize = 16.ssp,
                     fontWeight = FontWeight.SemiBold,
@@ -58,7 +58,7 @@ fun ChildUserInfo() {
             )
             Spacer(modifier = Modifier.width(5.sdp))
             Text(
-                text = "16",
+                text = day,
                 style = TextStyle(
                     fontSize = 16.ssp,
                     fontWeight = FontWeight.Bold,

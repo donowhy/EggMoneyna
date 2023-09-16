@@ -48,4 +48,5 @@ object AppPreferences {
         preferences.edit().remove(IS_PARENT).remove(TOKEN).remove(SHOWED_FIRST).apply()
     }
 
+
 }

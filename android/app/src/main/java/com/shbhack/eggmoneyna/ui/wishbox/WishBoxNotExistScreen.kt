@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.wishbox
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -47,6 +49,7 @@ fun WishBoxNotExistScreen(navController: NavController) {
 
     var moneyText by remember { mutableStateOf(TextFieldValue("")) }
     var goodsText by remember { mutableStateOf(TextFieldValue("")) }
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier
@@ -148,7 +151,7 @@ fun WishBoxNotExistScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(10.sdp))
                 OutlinedTextField(
                     value = goodsText,
-                    onValueChange = { moneyText = it },
+                    onValueChange = { goodsText = it },
                     modifier = Modifier.fillMaxWidth(),
                     textStyle = TextStyle(fontSize = 13.ssp),
                     placeholder = {
@@ -177,6 +180,7 @@ fun WishBoxNotExistScreen(navController: NavController) {
                 textColor = Color.White
             ) {
                 //위시 박스 생성
+                Toast.makeText(context, "위시박스를 만들었어요!", Toast.LENGTH_SHORT).show()
                 navController.navigate(EggMoneynaDestination.MAIN_CHILD)
             }
         }

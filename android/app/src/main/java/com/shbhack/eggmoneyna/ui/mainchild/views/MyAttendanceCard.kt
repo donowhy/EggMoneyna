@@ -28,7 +28,7 @@ import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
 @Composable
-fun MyAttendanceCard(date: Int, onClick: () -> Unit) {
+fun MyAttendanceCard(date: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .padding(horizontal = 20.sdp, vertical = 16.sdp),
@@ -81,7 +81,7 @@ fun MyAttendanceCard(date: Int, onClick: () -> Unit) {
                     .weight(1f)
             )
             Text(
-                "${date}/30",
+                date,
                 style = TextStyle(
                     fontSize = 14.ssp,
                     fontWeight = FontWeight.Bold,

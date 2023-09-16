@@ -9,10 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
@@ -21,18 +24,20 @@ import com.shbhack.eggmoneyna.ui.common.card.GoodsItemCard
 import com.shbhack.eggmoneyna.ui.mainparent.view.MainParentTop
 import com.shbhack.eggmoneyna.ui.mainparent.view.RecommendListTitle
 import com.shbhack.eggmoneyna.ui.mainparent.view.WarningBottom
+import com.shbhack.eggmoneyna.ui.mainparent.viewmodel.MainParentViewModel
 import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
 
 @Composable
-fun MainParentScreen(navController: NavController) {
-    var linkClicked = remember { mutableStateOf(false) }
+fun MainParentScreen(navController: NavController, mainParentViewModel: MainParentViewModel = hiltViewModel()) {
+
+    val childList by mainParentViewModel.myChildren.collectAsState()
+    mainParentViewModel.myChildInfo()
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
-        val childList = listOf<ChildItem>(ChildItem(), ChildItem("이기표", false, 7))
         val goodsList = listOf<GoodsItem>(
             GoodsItem(),
             GoodsItem(
@@ -63,8 +68,8 @@ fun MainParentScreen(navController: NavController) {
             itemsIndexed(childList) { index, child ->
                 Spacer(modifier = Modifier.height(10.sdp))
                 ChildMoneyInfoCard(
-                    name = child.name,
-                    lastMoney = MoneyUtils.convertAddComma(child.money) + "원",
+                    name = child.childName,
+                    lastMoney = MoneyUtils.convertAddComma(child.balance) + "원",
                 ) {
                     navController.navigate(EggMoneynaDestination.EGGMONEYNA)
                 }
@@ -93,14 +98,6 @@ fun MainParentScreen(navController: NavController) {
         }
     }
 }
-
-
-data class ChildItem(
-    var name: String = "강민승",
-    var gender: Boolean = true,
-    var age: Int = 8,
-    var money: Int = 500000,
-)
 
 data class GoodsItem(
     var name: String = "신한 MY 주니어 통장",

@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.selectchild
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,23 +14,34 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.banner.ExplainBanner
 import com.shbhack.eggmoneyna.ui.common.card.SelectChildCard
+import com.shbhack.eggmoneyna.ui.selectchild.viewmodel.SelectChildViewModel
 import com.shbhack.eggmoneyna.ui.theme.bannerPurple
 import com.shbhack.eggmoneyna.ui.theme.contextTextColor
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 
 @Composable
-fun SelectChildScreen(navController: NavController) {
+fun SelectChildScreen(navController: NavController, selectChildViewModel: SelectChildViewModel = hiltViewModel()) {
+
+    Log.d("부모 토큰", "SelectChildScreen: ${AppPreferences.getToken()}")
+    val list by selectChildViewModel.myChildren.collectAsState()
+    selectChildViewModel.getAllUnActivatedChild()
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -70,7 +82,7 @@ fun SelectChildScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.sdp))
 
-            val list = listOf<ChildItem>(ChildItem(), ChildItem("이기표", false, 7))
+//            val list = listOf<ChildItem>(ChildItem(), ChildItem("이기표", false, 7))
             val listState = rememberLazyListState()
             LazyColumn(
                 modifier = Modifier
@@ -83,18 +95,20 @@ fun SelectChildScreen(navController: NavController) {
                         SelectChildCard(
                             imgId = R.drawable.icon_girl,
                             description = "여자 아이 아이콘",
-                            name = child.name,
+                            name = child.childName,
                             info = "만 ${child.age}세 여아"
                         ) {
+                            selectChildViewModel.activatingChild(child.id)
                             navController.navigate(EggMoneynaDestination.MAIN_PARENT)
                         }
                     } else {
                         SelectChildCard(
                             imgId = R.drawable.icon_boy,
                             description = "남자 아이 아이콘",
-                            name = child.name,
+                            name = child.childName,
                             info = "만 ${child.age}세 남아"
                         ) {
+                            selectChildViewModel.activatingChild(child.id)
                             navController.navigate(EggMoneynaDestination.MAIN_PARENT)
                         }
                     }
@@ -104,9 +118,3 @@ fun SelectChildScreen(navController: NavController) {
         }
     }
 }
-
-data class ChildItem(
-    var name: String = "강민승",
-    var gender: Boolean = true,
-    var age: Int = 8,
-)

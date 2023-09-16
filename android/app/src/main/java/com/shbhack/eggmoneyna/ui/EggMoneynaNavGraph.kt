@@ -38,6 +38,7 @@ import com.shbhack.eggmoneyna.ui.splash.SplashScreen
 import com.shbhack.eggmoneyna.ui.wishbox.WishBoxExistScreen
 import com.shbhack.eggmoneyna.ui.wishbox.WishBoxNotExistScreen
 import com.shbhack.eggmoneyna.ui.wishbox.WishBoxSaveMoneyScreen
+import com.shbhack.eggmoneyna.ui.wishbox.viewmodel.WishBoxVewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -50,6 +51,7 @@ fun EggMoneynaNavGraph(
 ) {
 
     val authUserViewModel: AuthUserViewModel = hiltViewModel()
+    val wishBoxViewModel: WishBoxVewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -126,13 +128,13 @@ fun EggMoneynaNavGraph(
             SelectChildScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.MAIN_CHILD) {
-            MainChildScreen(navController)
+            MainChildScreen(navController, hiltViewModel(),wishBoxViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.MAIN_PARENT) {
             MainParentScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.WISH_BOX_EXIST) {
-            WishBoxExistScreen(navController)
+            WishBoxExistScreen(navController, wishBoxViewModel)
         }
         defaultSlideTransitions(EggMoneynaDestination.WISH_BOX_N0T_EXIST) {
             WishBoxNotExistScreen(navController)

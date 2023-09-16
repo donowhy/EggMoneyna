@@ -65,5 +65,16 @@ object DateUtils {
 
         return "+${daysDifference}일"
     }
+    // yyyy-MM-dd 형식의 문자열을 대상 날짜로 받아, 현재 날짜와의 차이를 일자로 반환
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun calculateDdayOnlyNum(targetDate: String): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val targetLocalDate = LocalDate.parse(targetDate, formatter)
+        val currentLocalDate = LocalDate.now()
+
+        val daysDifference = ChronoUnit.DAYS.between(targetLocalDate, currentLocalDate).toInt()
+
+        return "+${daysDifference}"
+    }
 
 }

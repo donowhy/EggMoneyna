@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.wishbox
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,6 +44,7 @@ import ir.kaaveh.sdpcompose.ssp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WishBoxSaveMoneyScreen(navController: NavController) {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopWithBack(
@@ -102,6 +105,7 @@ fun WishBoxSaveMoneyScreen(navController: NavController) {
                 backgroundColor = keyColor1,
                 textColor = Color.White
             ) {
+                Toast.makeText(context, "위시박스가 채워졌어요!", Toast.LENGTH_SHORT).show()
                 navController.popBackStack()
                 navController.navigate(EggMoneynaDestination.MAIN_CHILD)
             }
