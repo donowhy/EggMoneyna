@@ -227,4 +227,12 @@ public class AccountService {
 		accountRepository.delete(account);
 		return "성공";
 	}
+
+	public Account getAccountParent(Long id, Long childId) {
+		Child child = childRepository.findById(childId).orElseThrow();
+		Account account = child.getAccount();
+		log.info("account = {}", account);
+		return account;
+
+	}
 }

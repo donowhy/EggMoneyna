@@ -85,4 +85,15 @@ public class AccountController {
         return accountService.checkChildAccount(requset);
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "부모: 자식 계좌 조회",
+            description = "Authorize만 되면 계좌 조회",
+            tags = { "Account Controller" })
+    @GetMapping("/{childId}")
+    public ResponseEntity<Account> getAccountParent(@UserInfo UsersInfo usersInfo, @PathVariable Long childId) {
+        log.info("userinfo={}", usersInfo.getId());
+        return ResponseEntity.ok(accountService.getAccountParent(usersInfo.getId(), childId));
+
+    }
+
 }
