@@ -16,11 +16,11 @@ import retrofit2.http.Path
 
 interface ApiService {
     // 부모 생성 및 계좌 생성
-    @POST("/parent/save")
+    @POST("parent/save")
     suspend fun parentSave(@Body parentSaveDto: ParentSaveDto): NetworkResponse<ParentSaveResponseDto, ErrorResponse>
 
     // 자녀 계정 활성화
-    @POST("/relations/createEggMoney/{childId}")
+    @POST("relations/createEggMoney/{childId}")
     suspend fun createEggMoney(@Path("childId") childId: Int): NetworkResponse<RelationResponse, ErrorResponse>
 
 
@@ -33,7 +33,7 @@ interface ApiService {
 
 
     // 당일 입출금 조회
-    @POST("/inputoutput/all/{inputOuputDate}")
+    @POST("inputoutput/all/{inputOuputDate}")
     suspend fun getInputOutput(@Path("inputOuputDate") inputOuputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
     // 코멘트
