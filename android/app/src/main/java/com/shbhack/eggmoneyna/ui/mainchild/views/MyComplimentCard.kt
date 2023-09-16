@@ -46,7 +46,7 @@ fun MyComplimentCard(count: Int) {
             Text(
                 stringResource(id = R.string.mainChildCompliment),
                 style = TextStyle(
-                    fontSize = 12.ssp,
+                    fontSize = 11.ssp,
                     fontWeight = FontWeight.Medium,
                     color = contextTextColor
                 )

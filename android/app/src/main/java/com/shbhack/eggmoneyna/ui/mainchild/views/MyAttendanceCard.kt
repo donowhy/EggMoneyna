@@ -51,7 +51,7 @@ fun MyAttendanceCard(date: Int, onClick: () -> Unit) {
             Text(
                 stringResource(id = R.string.mainChildAttendance),
                 style = TextStyle(
-                    fontSize = 12.ssp,
+                    fontSize = 11.ssp,
                     fontWeight = FontWeight.Medium,
                     color = contextTextColor
                 )

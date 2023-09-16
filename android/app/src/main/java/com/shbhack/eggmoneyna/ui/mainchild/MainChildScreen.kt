@@ -87,7 +87,7 @@ fun MainChildScreen(navController: NavController) {
                         modifier = Modifier
                             .width(0.sdp)
                             .weight(1f)
-                            .aspectRatio(1.5f)
+                            .aspectRatio(1.4f)
                             .coloredShadow(
                                 color = Color.Black.copy(0.05f),
                                 10.sdp,
@@ -107,7 +107,7 @@ fun MainChildScreen(navController: NavController) {
                         modifier = Modifier
                             .width(0.sdp)
                             .weight(1f)
-                            .aspectRatio(1.5f)
+                            .aspectRatio(1.4f)
                             .coloredShadow(
                                 color = Color.Black.copy(0.05f),
                                 10.sdp,
