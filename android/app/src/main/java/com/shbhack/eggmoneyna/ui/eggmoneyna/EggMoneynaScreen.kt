@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.himanshoe.kalendar.KalendarEvent
 import com.himanshoe.kalendar.KalendarEvents
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
@@ -76,7 +77,9 @@ fun EggMoneynaScreen(
                     }
                 }
                 items(3) {
-                    SpendingListItem(selectedDay)
+                    SpendingListItem(selectedDay) {
+                        navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
+                    }
                 }
             }
 

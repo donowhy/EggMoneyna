@@ -67,6 +67,7 @@ fun CommentBanner(
     ) {
         Surface(
             modifier = Modifier
+                .wrapContentHeight()
                 .align(Alignment.End)
                 .clickable {
                     onClick()
@@ -84,7 +85,7 @@ fun CommentBanner(
                 text = "칭찬하기",
                 textAlign = TextAlign.Center,
                 style = TextStyle(
-                    fontSize = 10.ssp,
+                    fontSize = 8.ssp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
                 )
