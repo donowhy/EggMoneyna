@@ -42,7 +42,6 @@ import java.util.List;
 public class InputOutputService {
     private final InputOutputRepository inputOutputRepository;
     private final AccountRepository accountRepository;
-    private final UsersRepository usersRepository;
     private final CommentRepository commentRepository;
     private final ChildRepository childRepository;
     private final AmazonS3Client amazonS3Client;
