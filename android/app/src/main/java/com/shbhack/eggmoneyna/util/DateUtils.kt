@@ -91,5 +91,12 @@ object DateUtils {
         }
     }
 
+    @SuppressLint("NewApi")
+    fun getCurrentDateInYearMonthFormat(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM")
+        return currentDate.format(formatter)
+    }
+
 
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shbhack.eggmoneyna.data.model.MonthGraphResponseDto
+import com.shbhack.eggmoneyna.data.model.TotalMonthOutputResponse
 import com.shbhack.eggmoneyna.data.model.WeekGraphResponseDto
 import com.shbhack.eggmoneyna.data.repository.expense.ExpenseRepository
 import com.shbhack.eggmoneyna.util.network.NetworkResponse
@@ -27,6 +28,9 @@ class ExpenseViewModel @Inject constructor(
     private val _monthGraphState =
         MutableStateFlow(MonthGraphResponseDto(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
     val monthGraphState: StateFlow<MonthGraphResponseDto> = _monthGraphState.asStateFlow()
+
+    private val _totalMonthOutputState = MutableStateFlow(TotalMonthOutputResponse(0))
+    val totalMonthOutputState: StateFlow<TotalMonthOutputResponse> = _totalMonthOutputState.asStateFlow()
 
     fun getWeekGraph() {
         viewModelScope.launch {
@@ -55,6 +59,22 @@ class ExpenseViewModel @Inject constructor(
 
                 else -> {
                     Log.d(TAG, "getMonthGraph: 통신 실패")
+                }
+            }
+        }
+    }
+
+    fun getTotalMonthOutput(date: String) {
+        viewModelScope.launch {
+            val response = repository.getTotalMonthOutput(date)
+            Log.d(TAG, "getWeekGraph: $response")
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _totalMonthOutputState.emit(response.body)
+                }
+
+                else -> {
+                    Log.d(TAG, "getTotalMonthOutput: 통신 실패")
                 }
             }
         }

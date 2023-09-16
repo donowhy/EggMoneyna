@@ -9,6 +9,7 @@ import com.shbhack.eggmoneyna.data.model.MonthGraphResponseDto
 import com.shbhack.eggmoneyna.data.model.ParentSaveDto
 import com.shbhack.eggmoneyna.data.model.ParentSaveResponseDto
 import com.shbhack.eggmoneyna.data.model.RelationResponse
+import com.shbhack.eggmoneyna.data.model.TotalMonthOutputResponse
 import com.shbhack.eggmoneyna.data.model.WeekGraphResponseDto
 import com.shbhack.eggmoneyna.data.model.WriteCommentRequest
 import com.shbhack.eggmoneyna.util.network.NetworkResponse
@@ -53,6 +54,9 @@ interface ApiService {
     @POST("graph/week")
     suspend fun getWeekGraph(): NetworkResponse<List<WeekGraphResponseDto>, ErrorResponse>
 
-    @POST("/v1/graph/category")
+    @POST("graph/category")
     suspend fun getMonthGraph(): NetworkResponse<MonthGraphResponseDto, ErrorResponse>
+
+    @POST("inputoutput/total/out/{inputOutputDate}")
+    suspend fun getTotalMonthOutput(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<TotalMonthOutputResponse, ErrorResponse>
 }

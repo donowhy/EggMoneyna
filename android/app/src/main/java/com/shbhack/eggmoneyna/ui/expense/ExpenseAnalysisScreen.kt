@@ -55,6 +55,8 @@ import com.shbhack.eggmoneyna.ui.theme.keyColorLight1
 import com.shbhack.eggmoneyna.util.AnalysisUtils
 import com.shbhack.eggmoneyna.util.AnalysisUtils.parseToExpenseCategory
 import com.shbhack.eggmoneyna.util.AnalysisUtils.parseToLineChartData
+import com.shbhack.eggmoneyna.util.DateUtils
+import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 import java.text.NumberFormat
@@ -66,10 +68,12 @@ fun ExpenseAnalysisScreen(
 ) {
     val monthGraph by viewModel.monthGraphState.collectAsState()
     val weekGraph by viewModel.weekGraphState.collectAsState()
+    val totalMonthOutput by viewModel.totalMonthOutputState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getMonthGraph()
         viewModel.getWeekGraph()
+        viewModel.getTotalMonthOutput(DateUtils.getCurrentDateInYearMonthFormat())
     }
 
     var pieChartData by remember {
@@ -86,6 +90,7 @@ fun ExpenseAnalysisScreen(
     LaunchedEffect(weekGraph) {
         lineChartData = parseToLineChartData(weekGraph)
     }
+
 
     // 1f -> 1000원
 //    val lineChartData = listOf<LineChartData>(
@@ -136,7 +141,7 @@ fun ExpenseAnalysisScreen(
             ColorBackgroundWithText(
                 color = ExpenseAnalysisPink,
                 title = stringResource(id = R.string.expense_analysis_month_expense),
-                content = "150,800원"
+                content = "${MoneyUtils.convertAddComma(totalMonthOutput.totalMonthOutput)}원"
             )
 
             // pie chart
