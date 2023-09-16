@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.mainchild
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import ir.kaaveh.sdpcompose.sdp
 
 @Composable
 fun MainChildScreen(navController: NavController) {
+    Log.d("토큰 확인", "MainChildScreen: ${AppPreferences.getToken()}")
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {

@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.ui.authuser
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,9 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
+import com.shbhack.eggmoneyna.ui.authuser.viewmodel.AuthUserViewModel
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import ir.kaaveh.sdpcompose.sdp
@@ -32,8 +40,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun AuthUserSend1WonScreen(navController: NavController) {
+fun AuthUserSend1WonScreen(navController: NavController, authUserViewModel: AuthUserViewModel) {
+
+    val accountNum by authUserViewModel.account.collectAsState()
+
     LaunchedEffect(Unit) {
         delay(3000)
         withContext(Dispatchers.Main) {
@@ -75,7 +87,7 @@ fun AuthUserSend1WonScreen(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.width(5.sdp))
                 Text(
-                    text = "신한 123456789012",
+                    text = "신한 ${accountNum}",
                     style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 14.ssp)
                 )
             }

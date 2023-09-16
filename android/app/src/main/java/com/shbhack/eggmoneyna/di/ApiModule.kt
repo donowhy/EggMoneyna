@@ -31,9 +31,10 @@ object ApiModule {
                 val request = it.request()
                 it.proceed(request.newBuilder().apply {
                     // 헤더에 토큰 넣어주기
-                    addHeader("Authorization", "Bearer ${AppPreferences.getToken()}")
+                    if (AppPreferences.getToken() != "") {
+                        addHeader("Authorization", "Bearer ${AppPreferences.getToken()}")
+                    }
                 }.build())
-
             }.build()
     }
 
