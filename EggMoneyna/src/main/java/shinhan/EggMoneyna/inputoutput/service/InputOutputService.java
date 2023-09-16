@@ -15,10 +15,7 @@ import shinhan.EggMoneyna.comment.entity.Comment;
 import shinhan.EggMoneyna.comment.repository.CommentRepository;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
-import shinhan.EggMoneyna.inputoutput.dto.AddInputOutRequestDto;
-import shinhan.EggMoneyna.inputoutput.dto.AddInputOutputResponseDto;
-import shinhan.EggMoneyna.inputoutput.dto.InputOutputResponseDto;
-import shinhan.EggMoneyna.inputoutput.dto.MonthOutputResponseDto;
+import shinhan.EggMoneyna.inputoutput.dto.*;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
 import shinhan.EggMoneyna.inputoutput.repository.InputOutputRepository;
 import shinhan.EggMoneyna.user.child.entity.Child;
@@ -56,7 +53,7 @@ public class InputOutputService {
     public HashMap<String, String> brandMap = new HashMap<String, String>() {
         {
             put("배스킨라빈스", "BaskinRobbins");
-            put("버거킹", "BurgerKing");
+            put("버거킹(Burger King)", "BurgerKing");
             put("설빙", "Sulbing");
             put("세븐일레븐", "SevenEleven");
             put("씨유(CU)", "CU");
@@ -147,7 +144,7 @@ public class InputOutputService {
         }
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
-        account.inBalance(addInputOutRequestDto.getInput());
+        account.outBalance(addInputOutRequestDto.getInput());
 
         return AddInputOutputResponseDto.builder()
                 .bigCategory(bigCategory)
