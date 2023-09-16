@@ -188,10 +188,21 @@ public class AccountService {
 			throw new BadRequestException(ErrorCode.INVALID_CERT_CODE);
         }
 
-		return Check1CertChildResponse.builder()
-				.isRight(equals)
-				.isAccountActivate(child.getEggMoney())
-				.build();
+		String childToken = jwtProvider.createChildToken(child);
+
+		if(!child.getEggMoney()) {
+			return Check1CertChildResponse.builder()
+					.isRight(equals)
+					.isAccountActivate(child.getEggMoney())
+					.build();
+		}else {
+			return Check1CertChildResponse.builder()
+					.isRight(equals)
+					.childToken(childToken)
+					.isAccountActivate(child.getEggMoney())
+					.build();
+		}
+
 
 	}
 

@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class Check1CertChildResponse {
 
     private Boolean isRight;
+    private String childToken;
     private Boolean isAccountActivate;
 }
