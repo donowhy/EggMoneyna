@@ -94,4 +94,29 @@ public class ComplimentService {
         }
         return complimentMonthList;
     }
+
+    public List<ComplimentMonthDto> getMonthComplimentParent(Long userId, Long childId, String inputOutputDate) {
+        Child child = childRepository.findById(childId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Account account = accountRepository.findByChild(child)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(inputOutputDate + "-01", formatter);
+
+        LocalDate startOfMonth = localDate.withDayOfMonth(1);
+        LocalDate endOfMonth = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        List<ComplimentMonthDto> complimentMonthList = new ArrayList<>();
+        List<Compliment> compliments = complimentRepository.findByChildAndComplimentDateBetween(child, startOfMonth, endOfMonth);
+
+        for (Compliment compliment : compliments) {
+            ComplimentMonthDto complimentMonthDto = ComplimentMonthDto.builder()
+                    .localDate(compliment.getComplimentDate())
+                    .compliment(compliment.isCompliment())
+                    .build();
+            complimentMonthList.add(complimentMonthDto);
+        }
+        return complimentMonthList;
+    }
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class CommentResponseDto {
+    private Long id;
     private String childNickname = "자녀";
     private String childComment = "";
     private LocalDateTime childCommentCreateTime;
@@ -18,7 +19,8 @@ public class CommentResponseDto {
     private boolean compliment = false;
 
     @Builder
-    public CommentResponseDto(String childNickname, String childComment, LocalDateTime childCommentCreateTime, String parentNickname, String parentComment, LocalDateTime parentCommentCreateTime, boolean compliment) {
+    public CommentResponseDto(Long id, String childNickname, String childComment, LocalDateTime childCommentCreateTime, String parentNickname, String parentComment, LocalDateTime parentCommentCreateTime, boolean compliment) {
+        this.id = id;
         this.childNickname = childNickname;
         this.childComment = childComment;
         this.childCommentCreateTime = childCommentCreateTime;

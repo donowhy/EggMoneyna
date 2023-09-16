@@ -35,6 +35,7 @@ public class CommentService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
 
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .childNickname("자녀")
                 .childComment(comment.getChildComment())
                 .childCommentCreateTime(comment.getChildCommentCreateTime())
@@ -56,6 +57,7 @@ public class CommentService {
         comment.addChildComment(commentRequestDto.getComment());
 
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .childNickname("자녀")
                 .childComment(comment.getChildComment())
                 .childCommentCreateTime(comment.getChildCommentCreateTime())
@@ -75,6 +77,7 @@ public class CommentService {
         comment.addChildComment(commentRequestDto.getComment());
 
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .childNickname("자녀")
                 .childComment(comment.getChildComment())
                 .childCommentCreateTime(comment.getChildCommentCreateTime())
@@ -94,6 +97,7 @@ public class CommentService {
         comment.removeChildComment();
 
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .childNickname("자녀")
                 .childComment(comment.getChildComment())
                 .childCommentCreateTime(comment.getChildCommentCreateTime())
