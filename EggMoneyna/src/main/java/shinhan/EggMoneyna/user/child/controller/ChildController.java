@@ -74,8 +74,8 @@ public class ChildController {
     @Operation(summary = "아이 정보 홈",
             description = "아이 정보 홈. Authorize만 한다면 내 정보와 관련된 모든 것을 불러올 수 있다.",
             tags = { "Child Controller" })
-    @GetMapping("/getMyHome")
-    public GetChildHomeResponse getChildHome(@UserInfo UsersInfo usersInfo){
-        return childService.getChildHome(usersInfo.getId());
+    @GetMapping("/getMyHome/{inputDate}")
+    public GetChildHomeResponse getChildHome(@UserInfo UsersInfo usersInfo, @PathVariable String inputDate){
+        return childService.getChildHome(usersInfo.getId(), inputDate);
     }
 }

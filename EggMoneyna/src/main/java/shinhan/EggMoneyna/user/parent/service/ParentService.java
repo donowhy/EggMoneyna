@@ -105,12 +105,6 @@ public class ParentService {
     public ParentResponse getMyInfo(Long id){
         Parent parent = parentRepository.findById(id).orElseThrow();
 
-        List<Child> childrenByParentId = parentRepository.findChildrenByParentId(id);
-
-        List<String> childNames = childrenByParentId.stream()
-                .map(Child::getChildName)
-                .collect(Collectors.toList());
-
         List<Child> childrenEggMoneyNa = parentRepository.findChildrenEggMoneyNa(id);
 
         List<String> eggMoneyNa = childrenEggMoneyNa.stream()
@@ -118,9 +112,9 @@ public class ParentService {
                 .collect(Collectors.toList());
 
 
+
         return ParentResponse.builder()
                 .parentId(parent.getParentName())
-                .childNicknames(childNames)
                 .eggMoneynaChild(eggMoneyNa)
                 .pocketMoneyDate(parent.getPocketMoneyDate())
                 .pocketMoney(parent.getPocketMoney())
@@ -145,6 +139,7 @@ public class ParentService {
                     .id(child.getId())
                     .childName(child.getChildName())
                     .age(age)
+                    .gender(child.getGender())
                     .build();
 
             myChildsResponse.add(build);
@@ -190,6 +185,7 @@ public class ParentService {
             int age = Period.between(child.getBirthday(), currentDate).getYears();
             log.info("age={}", age);
             log.info("child = {}",child.getChildName());
+            log.info("id = {}", child.getId());
             MyChildsEggList build = MyChildsEggList.builder()
                     .childId(child.getId())
                     .childName(child.getChildName())
