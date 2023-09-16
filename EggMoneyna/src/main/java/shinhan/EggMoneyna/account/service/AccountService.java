@@ -32,7 +32,7 @@ public class AccountService {
 	private final ParentRepository parentRepository;
 
 	// 생성
-	public Long create(Long id) {
+	public Long childCreate(Long id) {
 		log.info("account create");
 		Random random = new Random();
 
@@ -45,35 +45,44 @@ public class AccountService {
 		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
 		Long accountNumber = Long.parseLong(joined);
 
-		Account account = null;
+		Child child = childRepository.findById(id).orElseThrow();
+		Account account = Account.builder()
+				.nickName("에그머니나")
+				.bankCode(BankCode.SHINHAN)
+				.accountNumber(accountNumber)
+				.balance(0)
+				.child(child)
+				.build();
+		child.setAccount(account);
+		accountRepository.save(account);
 
-		if(childRepository.findById(id).isPresent()){
-			log.info("child");
-			Child child = childRepository.findById(id).orElseThrow();
-			account = Account.builder()
-					.nickName("에그머니나")
-					.bankCode(BankCode.SHINHAN)
-					.accountNumber(accountNumber)
-					.balance(0)
-					.child(child)
-					.build();
-			child.setAccount(account);
-		}
-		else {
-			log.info("parent");
-			Parent parent = parentRepository.findById(id).orElseThrow();
+		return account.getId();
+	}
 
-			account = Account.builder()
-					.nickName("에그머니나")
-					.bankCode(BankCode.SHINHAN)
-					.accountNumber(accountNumber)
-					.balance(5000000)
-					.parent(parent)
-					.build();
+	public Long parentCreate(Long id) {
+		log.info("parent Account create");
+		Random random = new Random();
 
-			parent.setAccount(account);
+		ArrayList<Object> arr = new ArrayList<>();
+		for(int i=0; i<12; i++){
+			int randomNum = random.nextInt(10);
+			arr.add(randomNum);
 		}
 
+		String joined = arr.stream().map(String::valueOf).collect(Collectors.joining(""));
+		Long accountNumber = Long.parseLong(joined);
+
+		Parent parent = parentRepository.findById(id).orElseThrow();
+
+		Account account = Account.builder()
+				.nickName("에그머니나")
+				.bankCode(BankCode.SHINHAN)
+				.accountNumber(accountNumber)
+				.balance(5000000)
+				.parent(parent)
+				.build();
+
+		parent.setAccount(account);
 		accountRepository.save(account);
 
 		return account.getId();

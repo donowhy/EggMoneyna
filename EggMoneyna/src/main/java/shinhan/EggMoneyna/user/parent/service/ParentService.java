@@ -49,7 +49,7 @@ public class ParentService {
 
         parentRepository.saveAndFlush(parent);
 
-        accountService.create(parent.getId());
+        accountService.parentCreate(parent.getId());
 
         ParentLoginRequest parentLoginRequest = ParentLoginRequest.builder()
                 .parentId(parent.getParentId())

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaOrange
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
@@ -41,19 +42,22 @@ fun DayClickContent(selectedDay: LocalDate) {
     LazyColumn(modifier = Modifier.padding(12.sdp)) {
         val selectedDay = Clock.System.todayIn(TimeZone.currentSystemDefault())
         items(5) {
-            SpendingListItem(selectedDay)
+//            SpendingListItem(selectedDay)
         }
 
     }
 }
 
 @Composable
-fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate) {
+fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.sdp, end = 16.sdp, top = 10.sdp, bottom = 10.sdp)
-            .padding(start = 4.sdp),
+            .padding(start = 4.sdp)
+            .noRippleClickable {
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -112,6 +116,6 @@ fun CustomCalendarPreview() {
         CustomCalendar {
 
         }
-        DayClickContent(selectedDay)
+//        DayClickContent(selectedDay)
     }
 }
