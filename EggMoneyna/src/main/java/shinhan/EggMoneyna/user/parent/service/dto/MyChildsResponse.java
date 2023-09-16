@@ -1,18 +1,17 @@
 package shinhan.EggMoneyna.user.parent.service.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ParentSaveResponse {
-    private Long id;
-    private String parentId;
-    private String parentToken;
-    private String role;
+public class MyChildsResponse {
+
+    private String childId;
+    private int age;
+    private Boolean isGirl;
 }

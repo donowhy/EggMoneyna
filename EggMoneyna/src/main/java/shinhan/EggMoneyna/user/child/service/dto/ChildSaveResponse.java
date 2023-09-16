@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class ChildSaveResponse {
     private Long id;
     private String childId;
-    private String childToken;
+    private Boolean isGirl;
+    private LocalDate birthday;
 
 }

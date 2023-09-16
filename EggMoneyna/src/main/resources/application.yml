@@ -62,13 +62,13 @@ springdoc:
     - /v1/**
 
 jwt:
-  password: testPasswordtestPasswordtestPasswordtestPasswordtestPasswordtestPassword!testPassword
+  password: ENC(Bjl3aK5QCSk0QT6VXnQsptV3v8DTNqxtTcvDxggQkbZZLj83+rHFRFQFWTaP37iR+eYRFNqJn9dsAqM/E8T/Qc+flLyRp3VgfnSAXJe4zdyYepxRbf0KqoGtQqYdwPFx)
 
 
 cloud:
   aws:
     s3:
-      bucket: eggmoneynabucket
+      bucket: ENC(8d+zFkIbnxlpZiUeixqgJXVH4J5dDSdOa67zuxqmCCc=)
     credentials:
       access-key:
       secret-key:

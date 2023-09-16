@@ -12,6 +12,7 @@ import shinhan.EggMoneyna.user.follow.entity.Relation;
 import shinhan.EggMoneyna.wishbox.entity.WishBox;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -28,6 +29,10 @@ public class Child {
     private String childId;
 
     private String password;
+
+    private Boolean gender;
+
+    private LocalDate birthday;
 
     private int pocketMoney;
 
@@ -71,11 +76,14 @@ public class Child {
     private int compliment;
 
     private int consecutiveAttempt;
+
     @Builder
-    public Child(Long id, String childId, String password, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int compliment, int consecutiveAttempt) {
+    public Child(Long id, String childId, String password, Boolean gender, LocalDate birthday, int pocketMoney, int limitMoney, int pocketMoneyDate, Account account, Monster monster, int cntMonsters, MonsterEncyclopedia monsterEncyclopedia, List<WishBox> wishBoxes, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Boolean todayCheck, List<Boolean> sevendays, List<Boolean> aMonth, int compliment, int consecutiveAttempt) {
         this.id = id;
         this.childId = childId;
         this.password = password;
+        this.gender = gender;
+        this.birthday = birthday;
         this.pocketMoney = pocketMoney;
         this.limitMoney = limitMoney;
         this.pocketMoneyDate = pocketMoneyDate;
@@ -86,14 +94,15 @@ public class Child {
         this.wishBoxes = wishBoxes;
         this.firebaseToken = firebaseToken;
         this.relations = relations;
-        this.isRelation = false;
-        this.eggMoney = false;
-        this.todayCheck = false;
+        this.isRelation = isRelation;
+        this.eggMoney = eggMoney;
+        this.todayCheck = todayCheck;
         this.sevendays = sevendays;
         this.aMonth = aMonth;
         this.compliment = compliment;
         this.consecutiveAttempt = consecutiveAttempt;
     }
+
 
     public void setLimitMoney(int limitMoney) {
         this.limitMoney = limitMoney;

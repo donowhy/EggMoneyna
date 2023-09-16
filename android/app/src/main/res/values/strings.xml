@@ -39,7 +39,6 @@
 
     <!--  mainParent  -->
     <string name="mainParentTitle">홈</string>
-    <string name="mainParentButtonAnalysis">자녀 지출 분석</string>
     <string name="mainParentButtonAdd">자녀 추가하기</string>
     <string name="mainParentListTitle">우리 아이에게 꼭 맞는 상품</string>
     <string name="mainParentItemAccountTitle">신한 MY 주니어통장</string>
@@ -67,5 +66,9 @@
     <!-- expense Analysis -->
     <string name="expense_analysis_appbar_title">자녀 지출 분석</string>
     <string name="expense_analysis_month_expense">이 달의 총 지출액</string>
+
+    <!-- setting -->
+    <!-- expense Analysis -->
+    <string name="setting_appbar_title">환경 설정</string>
 
 </resources>
