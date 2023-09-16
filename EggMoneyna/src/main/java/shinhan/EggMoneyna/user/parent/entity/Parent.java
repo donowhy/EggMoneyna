@@ -23,7 +23,7 @@ public class Parent {
     @Column(name = "parents_id")
     private Long id;
 
-    private String parentId;
+    private String parentName;
 
     private String password;
 
@@ -53,9 +53,9 @@ public class Parent {
     private Account account;
 
     @Builder
-    public Parent(Long id, String parentId, String password, String childNickname, int pocketMoney, int pocketMoneyDate, Boolean gender, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Account account) {
+    public Parent(Long id, String parentName, String password, String childNickname, int pocketMoney, int pocketMoneyDate, Boolean gender, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Account account) {
         this.id = id;
-        this.parentId = parentId;
+        this.parentName = parentName;
         this.password = password;
         this.childNickname = childNickname;
         this.pocketMoney = pocketMoney;

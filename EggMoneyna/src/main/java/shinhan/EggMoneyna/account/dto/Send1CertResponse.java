@@ -1,4 +1,4 @@
-package shinhan.EggMoneyna.monster.dto;
+package shinhan.EggMoneyna.account.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpgradeExpResponse {
-    private int exp;
+public class Send1CertResponse {
 
+    private String message;
 }

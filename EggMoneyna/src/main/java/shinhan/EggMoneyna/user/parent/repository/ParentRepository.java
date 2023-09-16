@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public interface ParentRepository extends JpaRepository<Parent, Long> {
 
-    @Query("SELECT p from Parent p WHERE p.parentId = :parentId and p.password = :password")
-    Optional<Parent> checkParentPw(@Param("parentId") String parentId, @Param("password") String password);
+    @Query("SELECT p from Parent p WHERE p.parentName = :parentName and p.password = :password")
+    Optional<Parent> checkParentPw(@Param("parentName") String parentName, @Param("password") String password);
 
     @Query("SELECT r.child from Relation r WHERE r.parent.id = :id and r.child.eggMoney = false")
     List<Child> findChildrenByParentId(@Param("id") Long id);

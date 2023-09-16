@@ -15,6 +15,8 @@ import shinhan.EggMoneyna.wishbox.repository.WishboxRepository;
 import shinhan.EggMoneyna.wishbox.service.dto.*;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class WishboxService {
     private final WishboxRepository wishboxRepository;
     private final ChildRepository childRepository;
 
-    public String create(Long id, CreateWishBoxRequestDto requestDto){
+    public Long create(Long id, CreateWishBoxRequestDto requestDto){
         log.info("id={}", id);
         Account account = childRepository.findById(id).orElseThrow().getAccount();
         Long accountNumber = account.getAccountNumber();
@@ -47,7 +49,6 @@ public class WishboxService {
         }
 
         WishBox wishbox = WishBox.builder()
-                .nickName(requestDto.getNickName())
                 .price(requestDto.getPrice())
                 .balance(0)
                 .wishName(requestDto.getWishName())
@@ -58,21 +59,20 @@ public class WishboxService {
 
         wishboxRepository.save(wishbox);
 
-        return "생성 성공";
+        return virtualNum;
     }
 
-    public void updateNickname(Long id, UpdateNicknameRequest request){
-        childRepository.findById(id).orElseThrow();
-
-        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
-        wishBox.setNickname(request.getNickname());
-    }
+//    public void updateNickname(Long id, UpdateNicknameRequest request){
+//        childRepository.findById(id).orElseThrow();
+//
+//        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
+//        wishBox.setNickname(request.getNickname());
+//    }
 
     public GetWishboxResponse getOneWishbox(Long id, GetWishboxRequest request){
         childRepository.findById(id).orElseThrow();
         WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualNumber()).orElseThrow();
         return GetWishboxResponse.builder()
-                .nickName(wishBox.getNickName())
                 .wishName(wishBox.getWishName())
                 .price(wishBox.getPrice())
                 .balance(wishBox.getBalance())
@@ -88,11 +88,12 @@ public class WishboxService {
 
         for (WishBox wishbox : wishboxByAccount) {
             responses.add(GetWishboxResponse.builder()
-                    .nickName(wishbox.getNickName())
                     .wishName(wishbox.getWishName())
                     .price(wishbox.getPrice())
                     .balance(wishbox.getBalance())
                     .virtualNumber(wishbox.getVirtualNumber())
+                    .createTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
+                    .modifyingTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
                     .build()
             );
         }
@@ -105,11 +106,45 @@ public class WishboxService {
         wishboxRepository.delete(wishBox);
     }
 
-//    public SendMoneyMyAccountResponse sendMoneyMyAccount(Long id, SendMoneyMyAccountRequest request){
-//        Child child = childRepository.findById(id).orElseThrow();
-//        Long myRealAccountNumber = child.getAccount().getAccountNumber();
-//
-//        return S
-//
-//    }
+    public SendMoneyMyAccountResponse sendMoneyMyAccount(Long id, SendMoneyMyAccountRequest request){
+        Child child = childRepository.findById(id).orElseThrow();
+        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualAccountNumber()).orElseThrow();
+        Account account = child.getAccount();
+
+        if(wishBox.getBalance() < request.getMoney()){
+            throw new RuntimeException();
+        }
+
+        wishBox.setBalance(wishBox.getBalance() - request.getMoney());
+        account.setBalance(account.getBalance() + request.getMoney());
+
+        return SendMoneyMyAccountResponse.builder()
+                .realAccountNumber(account.getAccountNumber())
+                .realAccountBalance(account.getBalance())
+                .virtualAccountNumber(request.getVirtualAccountNumber())
+                .virtualBalance(wishBox.getBalance())
+                .build();
+    }
+
+    public SendMoneyMyAccountResponse sendMoneyMyVirtualAccount (Long id, SendMoneyMyAccountRequest request){
+        Child child = childRepository.findById(id).orElseThrow();
+        WishBox wishBox = wishboxRepository.findWishBoxByVirtualNumber(request.getVirtualAccountNumber()).orElseThrow();
+        Account account = child.getAccount();
+
+        if(account.getBalance() < request.getMoney()){
+            throw new RuntimeException();
+        }
+
+        wishBox.setBalance(wishBox.getBalance() + request.getMoney());
+        account.setBalance(account.getBalance() - request.getMoney());
+
+        return SendMoneyMyAccountResponse.builder()
+                .realAccountNumber(account.getAccountNumber())
+                .realAccountBalance(account.getBalance())
+                .virtualAccountNumber(request.getVirtualAccountNumber())
+                .virtualBalance(wishBox.getBalance())
+                .build();
+    }
+
+
 }
