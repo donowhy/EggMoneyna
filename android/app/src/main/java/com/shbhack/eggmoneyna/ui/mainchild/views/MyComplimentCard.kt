@@ -27,7 +27,7 @@ import ir.kaaveh.sdpcompose.ssp
 fun MyComplimentCard(count: Int) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 20.sdp, vertical = 10.sdp),
+            .padding(horizontal = 20.sdp, vertical = 16.sdp),
     ) {
 
         Row(
@@ -46,8 +46,8 @@ fun MyComplimentCard(count: Int) {
             Text(
                 stringResource(id = R.string.mainChildCompliment),
                 style = TextStyle(
-                    fontSize = 12.ssp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 11.ssp,
+                    fontWeight = FontWeight.Medium,
                     color = contextTextColor
                 )
             )

@@ -22,6 +22,7 @@ import com.shbhack.eggmoneyna.ui.authuser.AuthUserCheckScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserMainScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
 import com.shbhack.eggmoneyna.ui.choosewho.ChooseWhoScreen
+import com.shbhack.eggmoneyna.ui.comment.CommentScreen
 import com.shbhack.eggmoneyna.ui.eggmoneyna.EggMoneynaScreen
 import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
@@ -43,7 +44,7 @@ fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 //    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.MAIN_PARENT
+    startDestination: String = EggMoneynaDestination.MAIN_CHILD
 ) {
 
     NavHost(
@@ -62,25 +63,25 @@ fun EggMoneynaNavGraph(
                 enterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                        animationSpec = tween(200)
+                        animationSpec = tween(360)
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                        animationSpec = tween(200)
+                        animationSpec = tween(360)
                     )
                 },
                 popEnterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                        animationSpec = tween(200)
+                        animationSpec = tween(360)
                     )
                 },
                 popExitTransition = {
                     slideOutOfContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                        animationSpec = tween(200)
+                        animationSpec = tween(360)
                     )
                 },
                 content = content
@@ -140,6 +141,9 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.SETTING) {
             SettingScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.EXPENSE_COMMENT) {
+            CommentScreen(navController)
         }
     }
 }
