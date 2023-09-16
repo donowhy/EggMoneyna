@@ -28,67 +28,19 @@ public class MonsterEncyclopedia extends BaseTimeEntity {
 
     private String worldView;
 
-    @ElementCollection
-    private List<ShinhanMong> SOL = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> MOLI = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> RINO = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> SHOO = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> DOREMI = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> LULULALA = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> PLI = new ArrayList<>();
-
-    @ElementCollection
-    private List<ShinhanMong> LAY = new ArrayList<>();
+    @OneToMany(mappedBy = "monsterEncyclopedia")
+    private List<EncyclopediaDetail> encyclopediaDetails;
 
     @OneToOne
     @JoinColumn(name = "childs_id")
     @JsonIgnore
     private Child child;
 
-
-    @Embeddable
-    public static class ShinhanMong{
-        Boolean bl;
-        String name;
-        String story;
-        LocalDateTime registerDate;
-
-        public ShinhanMong(Boolean bl, String name, String story, LocalDateTime registerDate) {
-            this.bl = bl;
-            this.name = name;
-            this.story = story;
-            this.registerDate = LocalDateTime.now();
-        }
-
-        public ShinhanMong() {
-
-        }
-    }
-
     @Builder
-    public MonsterEncyclopedia(Long id, String worldView, List<ShinhanMong> SOL, List<ShinhanMong> MOLI, List<ShinhanMong> RINO, List<ShinhanMong> SHOO, List<ShinhanMong> DOREMI, List<ShinhanMong> LULULALA, List<ShinhanMong> PLI, List<ShinhanMong> LAY, Child child) {
+    public MonsterEncyclopedia(Long id, String worldView, List<EncyclopediaDetail> encyclopediaDetails, Child child) {
         this.id = id;
         this.worldView = worldView;
-        this.SOL = SOL;
-        this.MOLI = MOLI;
-        this.RINO = RINO;
-        this.SHOO = SHOO;
-        this.DOREMI = DOREMI;
-        this.LULULALA = LULULALA;
-        this.PLI = PLI;
-        this.LAY = LAY;
+        this.encyclopediaDetails = encyclopediaDetails;
         this.child = child;
     }
 }

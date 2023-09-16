@@ -85,7 +85,7 @@ public class ParentController {
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "내 자녀 모두 조회",
+    @Operation(summary = "계좌 활성화 안된 내 자녀 모두 조회",
             description = "내 자녀의 이름 나이 성별 , 성별이 true면 여자",
             tags = { "Parent Controller" })
     @GetMapping("/findMyChilds")
@@ -107,7 +107,7 @@ public class ParentController {
             description = "계정 활성화 되어있는 자녀들 조회" ,
             tags = { "Parent Controller" })
     @GetMapping("/findMyEggMoneyChilds")
-    public List<MyChildsResponse> findEggMoneyMyOneChild(@UserInfo UsersInfo usersInfo){
+    public List<MyChildsEggList> findEggMoneyMyOneChild(@UserInfo UsersInfo usersInfo){
         return parentService.findMyEggMoneyChilds(usersInfo.getId());
     }
 }

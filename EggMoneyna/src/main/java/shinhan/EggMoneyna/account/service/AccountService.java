@@ -14,6 +14,7 @@ import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.entity.BankCode;
 
 import shinhan.EggMoneyna.account.repository.AccountRepository;
+import shinhan.EggMoneyna.account.service.dto.Send1CertRequest;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
@@ -103,14 +104,12 @@ public class AccountService {
 
 	}
 
-	public Send1CertResponse send1Cert (Long id){
+	public Send1CertResponse send1Cert (Send1CertRequest request){
 
 		Random rand = new Random();
 		String randomNum = String.valueOf(rand.nextInt((999 - 101) + 1) + 101);
 
-		Parent parent = parentRepository.findById(id).orElseThrow();
-
-		Account account = parent.getAccount();
+		Account account = accountRepository.findByAccountNumber(request.getAccountNumber()).orElseThrow();
 
 		InputOutput inputOutput = InputOutput.builder()
 				.brandName("신한은행")
@@ -125,42 +124,16 @@ public class AccountService {
 		inputOutputRepository.save(inputOutput);
 
 		return Send1CertResponse.builder()
-				.message(randomNum)
-				.build();
-	}
-
-	public Send1CertResponse send1CertChild (Long id){
-
-		Random rand = new Random();
-		String randomNum = String.valueOf(rand.nextInt((999 - 101) + 1) + 101);
-
-		Child child = childRepository.findById(id).orElseThrow();
-
-		Account account = child.getAccount();
-
-		InputOutput inputOutput = InputOutput.builder()
-				.brandName("신한은행")
-				.brandImg("신한은행")
-				.bigCategory("1원이체")
-				.smallCategory("신한" + randomNum)
-				.output(0)
-				.input(1)
-				.account(account)
-				.build();
-
-		inputOutputRepository.save(inputOutput);
-
-		return Send1CertResponse.builder()
-				.message(randomNum)
+				.certNumber(Long.valueOf(randomNum))
 				.build();
 	}
 
 
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
-	public Check1CertParentResponse checkParentAccount(Long id, String random) {
-		Parent parent = parentRepository.findById(id).orElseThrow();
-		Account account = parent.getAccount();
+	public Check1CertParentResponse checkParentAccount(Long number, String random) {
+		Account account = accountRepository.findByAccountNumber(number).orElseThrow();
+		Parent parent = account.getParent();
 
 		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
 
@@ -190,10 +163,9 @@ public class AccountService {
 	}
 
 	// 1원 보냈을 때 정확한 계좌인건지 확인 메서드
-	public Check1CertChildResponse checkChildAccount(Long id, String random) throws RuntimeException {
-		Child child = childRepository.findById(id).orElseThrow();
-		Account account = child.getAccount();
-
+	public Check1CertChildResponse checkChildAccount(Long number, String random) throws RuntimeException {
+		Account account = accountRepository.findByAccountNumber(number).orElseThrow();
+		Child child = account.getChild();
 		PageRequest pageRequest = PageRequest.of(0, 1); // Get only the first result
 
 		List<InputOutput> shinhans = inputOutputRepository.findLatestByAccountAndSendUser(account, "신한은행");
@@ -215,10 +187,19 @@ public class AccountService {
 
 		String childToken = jwtProvider.createChildToken(child);
 
-		return Check1CertChildResponse.builder()
-				.isRight(equals)
-				.childToken(childToken)
-				.build();
+		if(!child.getEggMoney()) {
+			return Check1CertChildResponse.builder()
+					.isRight(equals)
+					.isAccountActivate(child.getEggMoney())
+					.build();
+		}else {
+			return Check1CertChildResponse.builder()
+					.isRight(equals)
+					.childToken(childToken)
+					.isAccountActivate(child.getEggMoney())
+					.build();
+		}
+
 
 	}
 

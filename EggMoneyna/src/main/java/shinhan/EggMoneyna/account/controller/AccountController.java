@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import shinhan.EggMoneyna.account.dto.*;
 import shinhan.EggMoneyna.account.entity.Account;
 import shinhan.EggMoneyna.account.service.AccountService;
+import shinhan.EggMoneyna.account.service.dto.Send1CertRequest;
 import shinhan.EggMoneyna.jwt.UserInfo;
 import shinhan.EggMoneyna.jwt.UsersInfo;
 
@@ -56,21 +57,12 @@ public class AccountController {
 
 
     @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "1원 이체 부모",
+    @Operation(summary = "1원 이체",
             description = "값 3개 반환",
             tags = { "Account Controller" })
     @PostMapping("/send1CertParent")
-    public Send1CertResponse send1Cert (@UserInfo UsersInfo usersInfo){
-        return accountService.send1Cert(usersInfo.getId());
-    }
-
-    @SecurityRequirement(name = "Bearer Authentication")
-    @Operation(summary = "1원 이체 아이",
-            description = "값 3개 반환",
-            tags = { "Account Controller" })
-    @PostMapping("/send1CertChild")
-    public Send1CertResponse send1CertChild (@UserInfo UsersInfo usersInfo){
-        return accountService.send1CertChild(usersInfo.getId());
+    public Send1CertResponse send1Cert (Send1CertRequest request){
+        return accountService.send1Cert(request);
     }
 
 
