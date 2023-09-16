@@ -37,6 +37,8 @@ public class Parent {
     @Column()
     private int pocketMoneyDate;
 
+    private Boolean gender;
+
     private String firebaseToken;
 
     @OneToMany(mappedBy = "parent")
@@ -50,15 +52,15 @@ public class Parent {
     @OneToOne(fetch = FetchType.LAZY)
     private Account account;
 
-
     @Builder
-    public Parent(Long id, String parentId, String password, String childNickname, int pocketMoney, int pocketMoneyDate, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Account account) {
+    public Parent(Long id, String parentId, String password, String childNickname, int pocketMoney, int pocketMoneyDate, Boolean gender, String firebaseToken, List<Relation> relations, Boolean isRelation, Boolean eggMoney, Account account) {
         this.id = id;
         this.parentId = parentId;
         this.password = password;
         this.childNickname = childNickname;
         this.pocketMoney = pocketMoney;
         this.pocketMoneyDate = pocketMoneyDate;
+        this.gender = gender;
         this.firebaseToken = firebaseToken;
         this.relations = relations;
         this.isRelation = isRelation;

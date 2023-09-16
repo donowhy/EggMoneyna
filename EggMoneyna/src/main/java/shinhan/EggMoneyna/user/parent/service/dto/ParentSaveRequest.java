@@ -5,4 +5,5 @@ import lombok.Getter;
 @Getter
 public class ParentSaveRequest {
     private String parentId;
+    private Boolean role;
 }

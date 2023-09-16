@@ -40,9 +40,11 @@ public class ParentService {
 
     public ParentSaveResponse save(ParentSaveRequest request){
 
+
         Parent parent = Parent.builder()
                 .parentId(request.getParentId())
                 .password("123")
+                .gender(request.getRole())
                 .build();
 
         parentRepository.saveAndFlush(parent);
@@ -55,9 +57,16 @@ public class ParentService {
 
         returnParentToken login = login(parentLoginRequest);
 
+        String isMom = "엄마";
+
+        if(request.getRole() == false){
+            isMom = "아빠";
+        }
+
         return ParentSaveResponse.builder()
                 .id(parent.getId())
                 .parentId(parent.getParentId())
+                .role(isMom)
                 .parentToken("Bearer " + login.getParentToken())
                 .build();
     }

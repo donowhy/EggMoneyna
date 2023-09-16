@@ -63,6 +63,7 @@ public class ParentController {
         parentService.updatePocketMoney(usersInfo.getId(), money);
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "부모 계정 삭제",
         description = "Authorize 후 부모 계정",
         tags = { "Parent Controller" })
@@ -70,6 +71,7 @@ public class ParentController {
     public void delete(@UserInfo UsersInfo usersInfo){
         parentService.delete(usersInfo.getId());
     }
+
 
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -81,6 +83,7 @@ public class ParentController {
         return parentService.getMyInfo(usersInfo.getId());
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "내 자녀 모두 조회",
             description = "내 자녀의 이름 나이 성별 , 성별이 true면 여자",
             tags = { "Parent Controller" })
@@ -89,11 +92,21 @@ public class ParentController {
         return parentService.findMyChilds(usersInfo.getId());
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "한 자녀 조회",
             description = "한 자녀에 대해서 계좌 및 계좌 내역, 이름, 생일, 나이, 용돈 일자, 용돈이 얼마인지" ,
             tags = { "Parent Controller" })
     @GetMapping("/findMyOneChild")
     public MyChildResponse findMyOneChild(@UserInfo UsersInfo usersInfo){
         return parentService.findMyOnechild(usersInfo.getId());
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "계정 활성화 되어있는 자녀들 조회",
+            description = "계정 활성화 되어있는 자녀들 조회" ,
+            tags = { "Parent Controller" })
+    @GetMapping("/findMyEggMoneyChilds")
+    public List<MyChildsResponse> findEggMoneyMyOneChild(@UserInfo UsersInfo usersInfo){
+        return parentService.findMyEggMoneyChilds(usersInfo.getId());
     }
 }
