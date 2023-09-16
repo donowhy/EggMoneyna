@@ -50,7 +50,7 @@ public class MonsterService {
         Monster monster = Monster.builder()
                 .name(Monster.getRandomMong())
                 .status(MonsterStatus.Egg)
-                .benefit(monsterSaveRequestDto.getBenefitEnum())
+                .benefit(monsterSaveRequestDto.getBenefit())
                 .child(child)
                 .feel(Feel.NOMAL)
                 .build();
