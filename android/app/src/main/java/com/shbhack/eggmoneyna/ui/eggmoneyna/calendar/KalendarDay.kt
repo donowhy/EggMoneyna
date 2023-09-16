@@ -18,7 +18,9 @@ import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -90,36 +92,39 @@ fun KalendarDay(
                 selectedRange
             )
             .circleLayout()
-            .wrapContentSize()
-            .defaultMinSize(kalendarDayKonfig.size),
+            .wrapContentSize(),
         contentAlignment = Alignment.Center
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = date.dayOfMonth.toString(),
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center),
             textAlign = TextAlign.Center,
             fontSize = kalendarDayKonfig.textSize,
             color = if (selected) kalendarDayKonfig.selectedTextColor else kalendarDayKonfig.textColor,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold
         )
 
-        kalendarEvents.events
-            .filter { it.date == date }
-            .forEachIndexed { index, _ ->
+        val eventsOnThisDay = kalendarEvents.events.filter { it.date == date }
+        if (eventsOnThisDay.isNotEmpty()) {
 
-                // indicator 커스텀
-                Box(modifier = Modifier.padding(top = 24.sdp)) {
-                    KalendarIndicator(
-                        modifier = Modifier,
-                        index = index,
-                        size = 4.sdp,
-                        color = Color.Gray
-                    )
-                }
+            eventsOnThisDay.forEachIndexed { index, _ ->
+                KalendarIndicator(
+                    modifier = Modifier.padding(top = 24.sdp),
+                    index = index,
+                    size = 4.sdp,
+                    color = Color.Gray
+                )
             }
-
+        } else {
+            KalendarIndicator(
+                modifier = Modifier.padding(top = 24.sdp),
+                index = 0,
+                size = 4.sdp,
+                color = Color.Transparent
+            )
+        }
     }
 }
 

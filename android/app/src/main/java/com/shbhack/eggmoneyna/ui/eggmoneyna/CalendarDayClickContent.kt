@@ -109,7 +109,7 @@ fun SpendingListItem(selectedDay: kotlinx.datetime.LocalDate) {
 fun CustomCalendarPreview() {
     val selectedDay = Clock.System.todayIn(TimeZone.currentSystemDefault())
     Column {
-        CustomCalendar() {
+        CustomCalendar {
 
         }
         DayClickContent(selectedDay)
