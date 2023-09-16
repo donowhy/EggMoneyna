@@ -71,7 +71,8 @@
     
     <!-- eggMoneyna -->
     <string name="eggmoneyna_appbar_title">에그money나</string>
-    <string name="eggmoneyna_rest_money_title">나의 용돈 잔액</string>
+    <string name="eggmoneyna_rest_money_title_parent">자녀 용돈 잔액</string>
+    <string name="eggmoneyna_rest_money_title_child">나의 용돈 잔액</string>
 
     <!-- shinhanMong -->
     <string name="shinhanmong_appbar_title">신한몽</string>
@@ -82,7 +83,8 @@
     <string name="shinhanmong_collection_appbar_title">신한몽 도감</string>
 
     <!-- expense Analysis -->
-    <string name="expense_analysis_appbar_title">자녀 지출 분석</string>
+    <string name="expense_analysis_appbar_title_parent">자녀 지출 분석</string>
+    <string name="expense_analysis_appbar_title_child">나의 지출 분석</string>
     <string name="expense_analysis_month_expense">이 달의 총 지출액</string>
 
     <!-- setting -->

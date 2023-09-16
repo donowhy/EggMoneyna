@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.himanshoe.kalendar.KalendarEvent
 import com.himanshoe.kalendar.KalendarEvents
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
@@ -85,8 +86,10 @@ fun EggMoneynaScreen(
         kalendarEvents = KalendarEvents(eventsList)
     }
 
-
-
+    var title =
+        if (AppPreferences.isParent()) stringResource(id = R.string.eggmoneyna_rest_money_title_parent) else stringResource(
+            id = R.string.eggmoneyna_rest_money_title_child
+        )
 
     Scaffold(
         topBar = {
@@ -105,7 +108,7 @@ fun EggMoneynaScreen(
                 item {
                     ColorBackgroundWithText(
                         EggmoneynaPurple,
-                        stringResource(id = R.string.eggmoneyna_rest_money_title),
+                        title,
                         "500,000원"
                     )
                 }
