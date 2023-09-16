@@ -45,10 +45,6 @@ fun MainChildScreen(navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
-        LaunchedEffect(Unit) {
-            val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiLquYDsp4TsmIEyIiwiaWF0IjoxNjk0ODMyNTA5LCJleHAiOjE2OTU0MzczMDl9.kku4sw82Qt-OuURr-9j2WxGGdqeDgd4NtIsDsymNw2c"
-            AppPreferences.initToken(token)
-        }
         val scrollState = rememberScrollState()
         Box(
             modifier = Modifier
