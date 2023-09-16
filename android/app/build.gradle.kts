@@ -69,14 +69,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // 서버통신을 위한 Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:3.11.0")
-
-    // 느슨한 통신규칙을 위해서 gson
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.google.code.gson:gson:2.10.1")
+    // Retrofit & OkHttp
     implementation ("com.squareup.retrofit2:converter-scalars:2.1.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
