@@ -39,7 +39,7 @@ fun ChildMoneyInfoCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 15.sdp)
-            .coloredShadow(color = Color.Black.copy(0.2f), 10.sdp, 3.sdp, 0.sdp, 0.sdp, 0.5f)
+            .coloredShadow(color = Color.Black.copy(0.05f), 10.sdp, 8.sdp, 0.sdp, 0.sdp, 0.5f)
             .background(color = Color.White, shape = RoundedCornerShape(10.sdp))
             .noRippleClickable {
                 moneyOnClick()
