@@ -18,7 +18,9 @@ object EggMoneynaDestination {
     const val SHINHAN_MON = "shinhan_mon"
     const val SHINHAN_MON_COLLECTION = "shinhan_mon_collection"
     const val SHINHAN_MON_COLLECTION_DETAIL = "shinhan_mon_collection_detail"
-    const val WISH_BOX = "wish_box"
+    const val WISH_BOX_EXIST = "wish_box_exist"
+    const val WISH_BOX_N0T_EXIST = "wish_box_not_exist"
+    const val WISH_BOX_SAVE_MONEY = "wish_box_save_money"
     const val EXPENSE_ANALYSIS = "expense_analysis"
     const val EXTERNAL_LINK = "external_link"
 }

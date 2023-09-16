@@ -35,7 +35,7 @@ public class ChildService {
 
         childRepository.saveAndFlush(child);
 
-        accountService.create(child.getId());
+        accountService.childCreate(child.getId());
 
         ChildLoginRequest childLoginRequest = ChildLoginRequest.builder()
                 .childId(child.getChildId())
