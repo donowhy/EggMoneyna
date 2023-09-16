@@ -31,6 +31,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,6 +51,13 @@ public class InputOutputService {
     private String bucket;
 
     final String EXTENSION = ".jpg";
+
+    final String[] smallCategory1 = {"편의점"};
+    final String[] smallCategory2 = {"분식", "패스트푸드", "한식", "일식", "중식", "서양식"};
+    final String[] smallCategory3 = {"오락"};
+    final String[] smallCategory4 = {"기타도소매", "종합소매점"};
+    final String[] smallCategory5 = {"커피", "아이스크림/빙수"};
+
     public HashMap<String, String> brandMap = new HashMap<String, String>() {
         {
             put("배스킨라빈스", "BaskinRobbins");
@@ -57,7 +65,7 @@ public class InputOutputService {
             put("설빙", "Sulbing");
             put("세븐일레븐", "SevenEleven");
             put("씨유(CU)", "CU");
-            put("아트박스", "ARTBOX");
+            put("아트박스(ARTBOX)", "ARTBOX");
             put("죠스떡볶이", "JawsTopokki");
             put("지에스25(GS25)", "GS25");
             put("투썸플레이스", "ATwosomePlace");
@@ -99,13 +107,15 @@ public class InputOutputService {
                 break;
             }
         }
-        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory, brandImage);
+        String changeSmallCategory = changeSmallCategory(smallCategory);
+
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, changeSmallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
         account.inBalance(addInputOutRequestDto.getInput());
 
         return AddInputOutputResponseDto.builder()
                 .bigCategory(bigCategory)
-                .smallCategory(smallCategory)
+                .smallCategory(changeSmallCategory)
                 .input(addInputOutRequestDto.getInput())
                 .output(addInputOutRequestDto.getOutput())
                 .build();
@@ -142,13 +152,15 @@ public class InputOutputService {
                 break;
             }
         }
-        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, smallCategory, brandImage);
+        String changeSmallCategory = changeSmallCategory(smallCategory);
+
+        InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, changeSmallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
         account.outBalance(addInputOutRequestDto.getInput());
 
         return AddInputOutputResponseDto.builder()
                 .bigCategory(bigCategory)
-                .smallCategory(smallCategory)
+                .smallCategory(changeSmallCategory)
                 .input(addInputOutRequestDto.getInput())
                 .output(addInputOutRequestDto.getOutput())
                 .build();
@@ -282,5 +294,22 @@ public class InputOutputService {
         }
 
         return itemsNode;
+    }
+
+    public String changeSmallCategory(String category) {
+        log.info(category);
+        if (Arrays.stream(smallCategory1).anyMatch(category::equals)) {
+            return "퍈의점";
+        } else if (Arrays.stream(smallCategory2).anyMatch(category::equals)) {
+            return "외식";
+        } else if (Arrays.stream(smallCategory3).anyMatch(category::equals)) {
+            return "오락";
+        } else if (Arrays.stream(smallCategory4).anyMatch(category::equals)) {
+            return "쇼핑";
+        } else if (Arrays.stream(smallCategory5).anyMatch(category::equals)) {
+            return "카페";
+        } else {
+            return "기타";
+        }
     }
 }
