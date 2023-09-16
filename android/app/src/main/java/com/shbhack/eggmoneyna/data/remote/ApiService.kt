@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.remote
 
+import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
 import com.shbhack.eggmoneyna.data.model.MonsterResponseDto
@@ -25,10 +26,10 @@ interface ApiService {
 
 
     // 신한몽
-    @POST("/monsters/save")
+    @POST("monsters/save")
     suspend fun save(): NetworkResponse<MonsterSaveResponseDto, ErrorResponse>
 
-    @GET("/monsters/getMyMong")
+    @GET("monsters/getMyMong")
     suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse>
 
 
@@ -37,9 +38,13 @@ interface ApiService {
     suspend fun getInputOutput(@Path("inputOuputDate") inputOuputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
     // 코멘트
-    @POST("/comment/{inputOutputId}")
+    @POST("comment/{inputOutputId}")
     suspend fun writeComment(
         @Path("inputOutputDate") inputOutputDate: String,
         @Body writeCommentRequest: WriteCommentRequest
     ): NetworkResponse<MonsterResponseDto, ErrorResponse>
+
+    // 월 칭찬 조회 (yyyy-MM)
+    @POST("compliment/month/{inputOutputDate}")
+    suspend fun getCompliment(@Path("inputOutputDate") inputOuputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse>
 }

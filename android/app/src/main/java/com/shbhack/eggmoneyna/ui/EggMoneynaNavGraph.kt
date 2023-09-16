@@ -44,7 +44,7 @@ fun EggMoneynaNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 //    startDestination: String = EggMoneynaDestination.SPLASH
-    startDestination: String = EggMoneynaDestination.WISH_BOX_EXIST
+    startDestination: String = EggMoneynaDestination.MAIN_PARENT
 ) {
 
     NavHost(

@@ -66,4 +66,12 @@ object DateUtils {
         return "+${daysDifference}일"
     }
 
+    fun formatToYearMonth(dateString: String): String {
+        return if (dateString.matches("""\d{4}-\d{2}-\d{2}""".toRegex())) {
+            dateString.substring(0, 7)
+        } else {
+            throw IllegalArgumentException("Invalid date format: $dateString")
+        }
+    }
+
 }

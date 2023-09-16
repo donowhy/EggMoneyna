@@ -41,6 +41,7 @@ import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
 import com.shbhack.eggmoneyna.ui.eggmoneyna.viewModel.EggMoneynaViewModel
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
 import com.shbhack.eggmoneyna.ui.theme.keyColor1
+import com.shbhack.eggmoneyna.util.DateUtils
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 import kotlinx.datetime.Clock
@@ -49,17 +50,19 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 
 private const val TAG = "EggMoneynaScreen_진영"
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EggMoneynaScreen(
     navController: NavController, eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel()
 ) {
     var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
+    val complements by eggMoneynaViewModel.complimentsState.collectAsState()
     val inputOutput by eggMoneynaViewModel.inputOutputsState.collectAsState()
 
-//    LaunchedEffect(Unit) {
-//        eggMoneynaViewModel.getInputOutput(selectedDay.toString())
-//    }
+    LaunchedEffect(Unit) {
+        eggMoneynaViewModel.getCompliments(DateUtils.formatToYearMonth(selectedDay.toString()))
+    }
 
     LaunchedEffect(selectedDay) {
         eggMoneynaViewModel.getInputOutput(selectedDay.toString())
@@ -68,6 +71,20 @@ fun EggMoneynaScreen(
     LaunchedEffect(inputOutput) {
         Log.d(TAG, "EggMoneynaScreen: ${inputOutput.inputOutputs}")
     }
+
+    var kalendarEvents by remember { mutableStateOf(KalendarEvents()) }
+
+    LaunchedEffect(complements) {
+        val eventsList = complements.map {
+            KalendarEvent(
+                date = LocalDate.parse(it.localDate),
+                eventName = "eventName",
+                eventDescription = if (it.compliment) "Received a compliment" else "No compliment"
+            )
+        }
+        kalendarEvents = KalendarEvents(eventsList)
+    }
+
 
 
 
@@ -94,25 +111,26 @@ fun EggMoneynaScreen(
                 }
                 item {
                     CustomCalendar(
-                        KalendarEvents(
-                            listOf(
-                                KalendarEvent(
-                                    LocalDate(2023, 9, 11),
-                                    "",
-                                    ""
-                                ),
-                                KalendarEvent(
-                                    LocalDate(2023, 9, 14),
-                                    "dd",
-                                    "dd"
-                                ),
-                                KalendarEvent(
-                                    LocalDate(2023, 9, 17),
-                                    "dd",
-                                    "dd"
-                                )
-                            )
-                        )
+                        kalendarEvents
+//                        KalendarEvents(
+//                            listOf(
+//                                KalendarEvent(
+//                                    LocalDate(2023, 9, 11),
+//                                    "",
+//                                    ""
+//                                ),
+//                                KalendarEvent(
+//                                    LocalDate(2023, 9, 14),
+//                                    "dd",
+//                                    "dd"
+//                                ),
+//                                KalendarEvent(
+//                                    LocalDate(2023, 9, 17),
+//                                    "dd",
+//                                    "dd"
+//                                )
+//                            )
+//                        )
                     ) { localDate ->
                         // 날짜 선택 할 때마다 지출 내역 불러오기
 
@@ -120,9 +138,9 @@ fun EggMoneynaScreen(
                     }
                 }
                 items(inputOutput.inputOutputs) { item ->
-//                    SpendingListItem(selectedDay, item) {
-//                        navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
-//                    }
+                    SpendingListItem(selectedDay, item) {
+                        navController.navigate(EggMoneynaDestination.EXPENSE_COMMENT)
+                    }
                 }
                 item {
                     Spacer(modifier = Modifier.size(32.sdp))
