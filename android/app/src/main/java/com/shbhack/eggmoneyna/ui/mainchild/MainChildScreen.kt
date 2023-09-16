@@ -74,13 +74,13 @@ fun MainChildScreen(navController: NavController) {
                 MyLastMoneyCard("500,000원") {
                     navController.navigate(EggMoneynaDestination.EGGMONEYNA)
                 }
-                Spacer(modifier = Modifier.height(15.sdp))
+                Spacer(modifier = Modifier.height(16.sdp))
                 MyLimitCard(limit = "50,000원", last = "10,000원")
-                Spacer(modifier = Modifier.height(20.sdp))
+                Spacer(modifier = Modifier.height(16.sdp))
                 MyWishBoxCard {
                     navController.navigate(EggMoneynaDestination.WISH_BOX)
                 }
-                Spacer(modifier = Modifier.height(15.sdp))
+                Spacer(modifier = Modifier.height(16.sdp))
 
                 Row {
                     Box(
@@ -102,7 +102,7 @@ fun MainChildScreen(navController: NavController) {
                             // 출석
                         }
                     }
-                    Spacer(modifier = Modifier.width(15.sdp))
+                    Spacer(modifier = Modifier.width(16.sdp))
                     Box(
                         modifier = Modifier
                             .width(0.sdp)

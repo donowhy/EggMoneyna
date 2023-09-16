@@ -44,7 +44,7 @@ fun MyWishBoxCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.sdp, vertical = 10.sdp),
+                .padding(horizontal = 24.sdp, vertical = 16.sdp),
         ) {
 
             Row(

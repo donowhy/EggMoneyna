@@ -31,12 +31,13 @@ import ir.kaaveh.sdpcompose.ssp
 fun MyAttendanceCard(date: Int, onClick: () -> Unit) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 20.sdp, vertical = 10.sdp),
+            .padding(horizontal = 20.sdp, vertical = 16.sdp),
     ) {
 
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(start = 2.sdp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
@@ -51,12 +52,14 @@ fun MyAttendanceCard(date: Int, onClick: () -> Unit) {
                 stringResource(id = R.string.mainChildAttendance),
                 style = TextStyle(
                     fontSize = 12.ssp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Medium,
                     color = contextTextColor
                 )
             )
         }
-        Spacer(modifier = Modifier.height(0.sdp).weight(1f))
+        Spacer(modifier = Modifier
+            .height(0.sdp)
+            .weight(1f))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
@@ -72,9 +75,11 @@ fun MyAttendanceCard(date: Int, onClick: () -> Unit) {
                     fontSize = 10.ssp
                 )
             }
-            Spacer(modifier = Modifier
-                .width(0.sdp)
-                .weight(1f))
+            Spacer(
+                modifier = Modifier
+                    .width(0.sdp)
+                    .weight(1f)
+            )
             Text(
                 "${date}/30",
                 style = TextStyle(
