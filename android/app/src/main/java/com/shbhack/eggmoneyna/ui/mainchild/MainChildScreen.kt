@@ -17,11 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.card.coloredShadow
 import com.shbhack.eggmoneyna.ui.common.lottie.LottieLoader
@@ -41,6 +43,10 @@ fun MainChildScreen(navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
+        LaunchedEffect(Unit) {
+            val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiLquYDsp4TsmIEyIiwiaWF0IjoxNjk0ODMyNTA5LCJleHAiOjE2OTU0MzczMDl9.kku4sw82Qt-OuURr-9j2WxGGdqeDgd4NtIsDsymNw2c"
+            AppPreferences.initToken(token)
+        }
         val scrollState = rememberScrollState()
         Box(
             modifier = Modifier

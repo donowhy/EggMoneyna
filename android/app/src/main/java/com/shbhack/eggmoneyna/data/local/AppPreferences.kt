@@ -2,7 +2,10 @@ package com.shbhack.eggmoneyna.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.GsonBuilder
+
+private const val TAG = "AppPreferences_신한"
 
 object AppPreferences {
     private lateinit var preferences: SharedPreferences
@@ -31,6 +34,7 @@ object AppPreferences {
     fun isParent() = preferences.getBoolean(IS_PARENT, false)
 
     fun initToken(token: String) {
+        Log.d(TAG, "initToken: $token")
         preferences.edit().putString(TOKEN, token)
             .apply()
     }

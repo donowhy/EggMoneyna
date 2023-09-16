@@ -1,6 +1,7 @@
 package com.shbhack.eggmoneyna.ui.eggmoneyna
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.himanshoe.kalendar.KalendarEvent
@@ -33,6 +36,7 @@ import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.component.ColorBackgroundWithText
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
+import com.shbhack.eggmoneyna.ui.eggmoneyna.viewModel.EggMoneynaViewModel
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
 import com.shbhack.eggmoneyna.ui.theme.keyColor1
 import ir.kaaveh.sdpcompose.sdp
@@ -42,12 +46,18 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 
+private const val TAG = "EggMoneynaScreen_진영"
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EggMoneynaScreen(
-    navController: NavController
+    navController: NavController, eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel()
 ) {
     var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
+    Log.d(TAG, "EggMoneynaScreen: ${selectedDay.toString()}")
+    LaunchedEffect(Unit) {
+        eggMoneynaViewModel.getInputOutput(selectedDay.toString())
+    }
+
     Scaffold(
         topBar = {
             TopWithBack(
