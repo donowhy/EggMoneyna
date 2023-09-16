@@ -39,8 +39,10 @@ public class ComplimentService {
     private final ParentRepository parentRepository;
     private final ComplimentRepository complimentRepository;
 
-    public ComplimentResponseDto switchCompliment(Long usersId, Long inputOutputId) {
+    public ComplimentResponseDto switchCompliment(Long usersId, Long childId, Long inputOutputId) {
         Parent parent = parentRepository.findById(usersId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
+        Child child = childRepository.findById(childId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         InputOutput inputOutput = inputOutputRepository.findById(inputOutputId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_INPUTOUTPUT_ID));
