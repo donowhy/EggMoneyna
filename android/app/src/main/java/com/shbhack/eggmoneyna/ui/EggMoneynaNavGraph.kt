@@ -1,11 +1,15 @@
 package com.shbhack.eggmoneyna.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -14,7 +18,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.MainActivity
-import com.shbhack.eggmoneyna.ui.selectchild.SelectChildScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserCheckScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserMainScreen
 import com.shbhack.eggmoneyna.ui.authuser.AuthUserSend1WonScreen
@@ -25,11 +28,14 @@ import com.shbhack.eggmoneyna.ui.expense.ExpenseAnalysisScreen
 import com.shbhack.eggmoneyna.ui.mainchild.MainChildScreen
 import com.shbhack.eggmoneyna.ui.mainparent.MainParentScreen
 import com.shbhack.eggmoneyna.ui.onboarding.OnBoardingScreen
+import com.shbhack.eggmoneyna.ui.selectchild.SelectChildScreen
 import com.shbhack.eggmoneyna.ui.setting.SettingScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.ShinhanMongMainScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.ShinhanMongCollectionScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.detail.ShinhanMongCollectionDetailScreen
 import com.shbhack.eggmoneyna.ui.splash.SplashScreen
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -82,6 +88,15 @@ fun EggMoneynaNavGraph(
             )
         }
 
+        defaultSlideTransitions(EggMoneynaDestination.EXTERNAL_LINK) {
+            DisposableEffect(Unit) {
+                val uri = Uri.parse("https://shinhanblog.com/759")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                activity.startActivity(intent)
+                navController.navigateUp()
+                onDispose {  }
+            }
+        }
         defaultSlideTransitions(EggMoneynaDestination.SPLASH) {
             SplashScreen(navController, activity)
         }

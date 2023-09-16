@@ -3,6 +3,7 @@ package com.shbhack.eggmoneyna.ui.common.top
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +21,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
+import ir.kaaveh.sdpcompose.sdp
+import ir.kaaveh.sdpcompose.ssp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,29 +35,32 @@ fun TopWithBack(
         navigationIcon = {
             Row(
                 modifier = Modifier
-                    .height(60.dp),
+                    .height(60.sdp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        ImageVector.vectorResource(R.drawable.icon_back),
-                        contentDescription = "back"
-                    )
-                }
+
+                Icon(
+                    ImageVector.vectorResource(R.drawable.icon_back),
+                    contentDescription = "back",
+                    modifier = Modifier.padding(8.sdp).noRippleClickable {
+                        navController.popBackStack()
+                    }
+                )
+
             }
         },
         title = {
             Row(
                 modifier = Modifier
-                    .height(60.dp),
+                    .height(60.sdp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.ssp
                 )
             }
         })

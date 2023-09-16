@@ -42,7 +42,6 @@ fun KalendarIndicator(
 ) {
     Box(
         modifier = modifier
-            .padding(horizontal = 1.dp)
             .clip(shape = CircleShape)
             .background(color = color)
             .size(size = size)

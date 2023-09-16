@@ -11,12 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.shbhack.eggmoneyna.R
-import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
+import ir.kaaveh.sdpcompose.sdp
+import ir.kaaveh.sdpcompose.ssp
 
 @Composable
 fun ColorBackgroundWithText(color: Color, title: String, content: String) {
@@ -25,17 +22,17 @@ fun ColorBackgroundWithText(color: Color, title: String, content: String) {
             .fillMaxWidth()
             .wrapContentHeight()
             .background(color = color)
-            .padding(32.dp)
+            .padding(26.sdp)
     ) {
         Text(
-            text = title, fontWeight = FontWeight.Medium, fontSize = 18.sp, color = Color.White
+            text = title, fontWeight = FontWeight.Medium, fontSize = 16.ssp, color = Color.White
         )
         Spacer(
-            modifier = Modifier.size(4.dp)
+            modifier = Modifier.size(4.sdp)
         )
         Text(
             text = content, fontWeight = FontWeight.SemiBold,
-            fontSize = 28.sp, color = Color.White
+            fontSize = 20.ssp, color = Color.White
         )
     }
 }

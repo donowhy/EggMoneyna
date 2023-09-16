@@ -62,20 +62,8 @@ fun ExpenseAnalysisScreen(navController: NavController) {
     val categoryList by emailViewModel.categoryState.collectAsState()
 
     // 1f -> 1000원
-    val lineChartData1 = listOf<LineChartData>(
-        LineChartData(
-            points = listOf(
-                LineChartData.Point(10f, "월"),
-                LineChartData.Point(10f, "화"),
-                LineChartData.Point(10f, "수"),
-                LineChartData.Point(10f, "목"),
-                LineChartData.Point(10f, "금"),
-                LineChartData.Point(10f, "토"),
-                LineChartData.Point(10f, "일")
-            ),
-            startAtZero = true,
-            lineDrawer = SolidLineDrawer(color = Color(0xFFFFD8B6))
-        ),
+    val lineChartData = listOf<LineChartData>(
+        // 수입
         LineChartData(
             points = listOf(
                 LineChartData.Point(5f, "월"),
@@ -89,6 +77,7 @@ fun ExpenseAnalysisScreen(navController: NavController) {
             startAtZero = true,
             lineDrawer = SolidLineDrawer(color = Color(0xFFFF96AF))
         ),
+        // 지출
         LineChartData(
             points = listOf(
                 LineChartData.Point(0f, "월"),
@@ -163,7 +152,7 @@ fun ExpenseAnalysisScreen(navController: NavController) {
                 thickness = 1.sdp
             )
             Spacer(modifier = Modifier.size(16.sdp))
-            LineChartView(lineChartData1)
+            LineChartView(lineChartData)
             Spacer(modifier = Modifier.size(12.sdp))
             Divider(
                 modifier = Modifier.padding(top = 12.sdp),
@@ -206,8 +195,6 @@ val predefinedColors =
 
 @Composable
 fun PieChartView(categoryList: List<ExpenseCategory>) {
-
-
     val slices = categoryList.mapIndexed { index, category ->
         val colorIndex = index % predefinedColors.size
         PieChartData.Slice(

@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RelationParentChild {
-	private String ParentToken;
+public class RelationEggMoney {
 	private Long pId;
 	private String parentId;
+	private String childToken;
 	private Long cId;
 	private String childId;
 
