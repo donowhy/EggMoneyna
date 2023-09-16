@@ -2,6 +2,7 @@ package com.shbhack.eggmoneyna.ui.setting
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,13 +38,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
+import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
+import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.keyColor1
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
@@ -176,7 +180,16 @@ fun SettingScreen(navController: NavController, viewModel: SettingViewModel = hi
             }
 
 
-
+            Text(
+                text = "로그아웃",
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 64.sdp, end = 16.sdp)
+                    .clickable {
+                        AppPreferences.logout()
+                    },
+            )
             Button(
                 onClick = {
                     // 버튼 클릭시 수행할 동작
