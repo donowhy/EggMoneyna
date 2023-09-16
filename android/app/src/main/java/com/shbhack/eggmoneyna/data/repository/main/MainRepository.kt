@@ -18,6 +18,12 @@ interface MainRepository {
     // 당일 입출금 조회
     suspend fun getInputOutput(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
+    // 당일 입출금 조회 - 부모
+    suspend fun getParentInputOutput(
+        @Path("childId") childId: String,
+        @Path("inputOutputDate") inputOutputDate: String
+    ): NetworkResponse<InputOutputsResponse, ErrorResponse>
+
     // 월 칭찬 여부
     suspend fun getCompliment(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse>
 

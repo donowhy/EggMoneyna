@@ -49,6 +49,13 @@ interface ApiService {
     @POST("inputoutput/all/{inputOutputDate}")
     suspend fun getInputOutput(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
+    // 당일 입출금 조회 - 부모
+    @POST("inputoutput/{childId}/all/{inputOutputDate}")
+    suspend fun getParentInputOutput(
+        @Path("childId") childId: String,
+        @Path("inputOutputDate") inputOutputDate: String
+    ): NetworkResponse<InputOutputsResponse, ErrorResponse>
+
     // 코멘트
 
     // 코멘트 작성 (아이)

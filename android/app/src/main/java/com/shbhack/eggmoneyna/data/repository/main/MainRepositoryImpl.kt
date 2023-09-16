@@ -22,6 +22,13 @@ class MainRepositoryImpl @Inject constructor(
         return apiService.getInputOutput(inputOutputDate)
     }
 
+    override suspend fun getParentInputOutput(
+        childId: String,
+        inputOutputDate: String
+    ): NetworkResponse<InputOutputsResponse, ErrorResponse> {
+        return apiService.getParentInputOutput(childId, inputOutputDate)
+    }
+
     override suspend fun getCompliment(inputOuputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse> {
         return apiService.getCompliment(inputOuputDate)
     }

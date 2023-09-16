@@ -33,7 +33,23 @@ class EggMoneynaViewModel @Inject constructor(
     fun getInputOutput(date: String) {
         viewModelScope.launch {
             val response = repository.getInputOutput(date)
-            Log.d(TAG, "getInputOutput: $response")
+            Log.d(TAG, "getInputOutput 아이: $response")
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _inputOutputsState.emit(response.body)
+                }
+
+                else -> {
+                    Log.d(TAG, "getInputOutput: 통신 실패")
+                }
+            }
+        }
+    }
+
+    fun getInputOutput(childId: String, date: String) {
+        viewModelScope.launch {
+            val response = repository.getParentInputOutput(childId, date)
+            Log.d(TAG, "getInputOutput 부모: $response")
             when (response) {
                 is NetworkResponse.Success -> {
                     _inputOutputsState.emit(response.body)

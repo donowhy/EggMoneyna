@@ -60,6 +60,7 @@ fun EggMoneynaScreen(
     eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel(),
     commentViewModel: CommentViewModel
 ) {
+    val isParent = AppPreferences.isParent()
     var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
     val complements by eggMoneynaViewModel.complimentsState.collectAsState()
     val inputOutput by eggMoneynaViewModel.inputOutputsState.collectAsState()
@@ -71,7 +72,12 @@ fun EggMoneynaScreen(
     }
 
     LaunchedEffect(selectedDay) {
-        eggMoneynaViewModel.getInputOutput(selectedDay.toString())
+        if (isParent) {
+            AppPreferences.getChildId()
+                ?.let { eggMoneynaViewModel.getInputOutput(it, selectedDay.toString()) }
+        } else {
+            eggMoneynaViewModel.getInputOutput(selectedDay.toString())
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.shbhack.eggmoneyna.ui.comment
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -65,6 +67,7 @@ fun CommentScreen(navController: NavController, viewModel: CommentViewModel) {
     var isCommented by remember {
         mutableStateOf(false)
     }
+    val localContext = LocalContext.current
     LaunchedEffect(selectedItem, commentValue) {
         // selectedItem이 null이 아닐 때만 로직 실행
         selectedItem?.let {
@@ -110,6 +113,7 @@ fun CommentScreen(navController: NavController, viewModel: CommentViewModel) {
                             item.brandImg
                         ) {
                             // 칭찬하기 클릭
+                            Toast.makeText(localContext, "자녀를 칭찬하였습니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
