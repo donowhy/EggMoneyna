@@ -107,7 +107,7 @@ public class InputOutputService {
                 break;
             }
         }
-        String changeSmallCategory = changeSmallCategory(smallCategory);
+        String changeSmallCategory = "입금";
 
         InputOutput inputOutput = addInputOutRequestDto.of(account, comment, bigCategory, changeSmallCategory, brandImage);
         inputOutputRepository.save(inputOutput);
