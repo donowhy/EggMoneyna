@@ -9,7 +9,6 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -34,8 +33,8 @@ import com.shbhack.eggmoneyna.ui.shinhanmong.ShinhanMongMainScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.ShinhanMongCollectionScreen
 import com.shbhack.eggmoneyna.ui.shinhanmong.collection.detail.ShinhanMongCollectionDetailScreen
 import com.shbhack.eggmoneyna.ui.splash.SplashScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.shbhack.eggmoneyna.ui.wishbox.WishBoxExistScreen
+import com.shbhack.eggmoneyna.ui.wishbox.WishBoxNotExistScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -94,7 +93,7 @@ fun EggMoneynaNavGraph(
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 activity.startActivity(intent)
                 navController.navigateUp()
-                onDispose {  }
+                onDispose { }
             }
         }
         defaultSlideTransitions(EggMoneynaDestination.SPLASH) {
@@ -126,6 +125,12 @@ fun EggMoneynaNavGraph(
         }
         defaultSlideTransitions(EggMoneynaDestination.MAIN_PARENT) {
             MainParentScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.WISH_BOX_EXIST) {
+            WishBoxExistScreen(navController)
+        }
+        defaultSlideTransitions(EggMoneynaDestination.WISH_BOX_N0T_EXIST) {
+            WishBoxNotExistScreen(navController)
         }
         defaultSlideTransitions(EggMoneynaDestination.SHINHAN_MON) {
             ShinhanMongMainScreen(navController)
