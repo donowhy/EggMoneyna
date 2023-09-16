@@ -1,5 +1,7 @@
 package com.shbhack.eggmoneyna.data.remote
 
+import com.shbhack.eggmoneyna.data.model.BalanceResponse
+import com.shbhack.eggmoneyna.data.model.CollectionResponseDto
 import com.shbhack.eggmoneyna.data.model.CommentResponseDto
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
@@ -40,13 +42,23 @@ interface ApiService {
     @POST("monsters/save")
     suspend fun save(@Body monsterSaveRequestDto: MonsterSaveRequestDto): NetworkResponse<MonsterSaveResponseDto, ErrorResponse>
 
-    @GET("monsters/getMyMong")
-    suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse>
+    @GET("monsters/getMyMongDetail")
+    suspend fun getMyMongDetail(): NetworkResponse<MonsterResponseDto, ErrorResponse>
+
+    @GET("monsters/getDogam")
+    suspend fun getDogam(): NetworkResponse<List<CollectionResponseDto>, ErrorResponse>
 
 
     // 당일 입출금 조회
     @POST("inputoutput/all/{inputOutputDate}")
     suspend fun getInputOutput(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
+
+    // 당일 입출금 조회 - 부모
+    @POST("inputoutput/{childId}/all/{inputOutputDate}")
+    suspend fun getParentInputOutput(
+        @Path("childId") childId: String,
+        @Path("inputOutputDate") inputOutputDate: String
+    ): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
     // 코멘트
 
@@ -106,5 +118,9 @@ interface ApiService {
 
     @GET("parent/findMyChilds")
     suspend fun getAllUnActivatedChild(): NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse>
+
+    // 내 계좌 잔액 조회
+    @GET("/accounts")
+    suspend fun getMyBalance(): NetworkResponse<BalanceResponse, ErrorResponse>
 
 }

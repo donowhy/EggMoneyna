@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.repository.main
 
+import com.shbhack.eggmoneyna.data.model.BalanceResponse
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
@@ -21,6 +22,13 @@ class MainRepositoryImpl @Inject constructor(
         return apiService.getInputOutput(inputOutputDate)
     }
 
+    override suspend fun getParentInputOutput(
+        childId: String,
+        inputOutputDate: String
+    ): NetworkResponse<InputOutputsResponse, ErrorResponse> {
+        return apiService.getParentInputOutput(childId, inputOutputDate)
+    }
+
     override suspend fun getCompliment(inputOuputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse> {
         return apiService.getCompliment(inputOuputDate)
     }
@@ -39,6 +47,10 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getAllUnActivatedChild(): NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse> {
         return apiService.getAllUnActivatedChild()
+    }
+
+    override suspend fun getMyBalance(): NetworkResponse<BalanceResponse, ErrorResponse> {
+        return apiService.getMyBalance()
     }
 
 }

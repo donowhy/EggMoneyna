@@ -13,24 +13,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shbhack.eggmoneyna.data.model.HistoryItem
+import com.shbhack.eggmoneyna.util.DateUtils
 
 @Composable
-fun ShinhanMongPointItem(pointItem: PointItem) {
+fun ShinhanMongPointItem(pointItem: HistoryItem) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp)
     ) {
         PointItemRowText(
-            text1 = pointItem.name,
-            text2 = "+${pointItem.point} P",
+            text1 = pointItem.content,
+            text2 = "+${pointItem.exp} EXP",
             14,
             Color.Black,
             FontWeight.Medium
             )
         PointItemRowText(
-            text1 = pointItem.date,
-            text2 = "${pointItem.totalPoint} P",
+            text1 = DateUtils.formatyyyymmdd(pointItem.updateTime),
+            text2 = "${pointItem.prefix} EXP",
             12,
             Color.Gray,
             FontWeight.Normal
@@ -53,5 +55,5 @@ fun PointItemRowText(text1: String, text2: String, fontSize: Int, fontColor: Col
 @Preview(showBackground = true)
 @Composable
 fun ShinhanMongPointViewPreview() {
-    ShinhanMongPointItem(PointItem())
+//    ShinhanMongPointItem(PointItem())
 }

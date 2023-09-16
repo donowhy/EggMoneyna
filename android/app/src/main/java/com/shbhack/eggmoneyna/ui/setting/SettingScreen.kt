@@ -1,5 +1,8 @@
 package com.shbhack.eggmoneyna.ui.setting
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -41,13 +46,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.data.local.AppPreferences
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
-import com.shbhack.eggmoneyna.ui.common.util.noRippleClickable
 import com.shbhack.eggmoneyna.ui.theme.keyColor1
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
@@ -56,6 +61,7 @@ import ir.kaaveh.sdpcompose.ssp
 @Composable
 fun SettingScreen(navController: NavController, viewModel: SettingViewModel = hiltViewModel()) {
     val threshold by viewModel.thresholdState.collectAsState()
+    val localContext = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -173,7 +179,7 @@ fun SettingScreen(navController: NavController, viewModel: SettingViewModel = hi
                         )
                     )
 
-                    Toggle()
+                    Toggle(localContext)
                 }
 
 
@@ -209,9 +215,24 @@ fun SettingScreen(navController: NavController, viewModel: SettingViewModel = hi
 }
 
 @Composable
-fun Toggle() {
-    var isChecked by remember { mutableStateOf(false) }
+fun Toggle(localContext: Context) {
 
+    var isChecked by remember { mutableStateOf(false) }
+    LaunchedEffect(isChecked) {
+        if (isChecked) {
+            AlertDialog.Builder(localContext)
+                .setTitle("권한 요청")
+                .setMessage("요약 기능을 사용하려면 알림 접근 권한이 필요합니다.")
+                .setPositiveButton("이동") { _,  _ ->
+                    localContext.startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+                }
+                .setNegativeButton("취소") { _,  _ ->
+                    isChecked = !isChecked
+                }
+                .create()
+                .show()
+        }
+    }
     Switch(
         checked = isChecked,
         onCheckedChange = { isChecked = !isChecked },

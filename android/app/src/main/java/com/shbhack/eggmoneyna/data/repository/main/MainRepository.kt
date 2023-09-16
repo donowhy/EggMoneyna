@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.repository.main
 
+import com.shbhack.eggmoneyna.data.model.BalanceResponse
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
@@ -17,6 +18,12 @@ interface MainRepository {
     // 당일 입출금 조회
     suspend fun getInputOutput(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<InputOutputsResponse, ErrorResponse>
 
+    // 당일 입출금 조회 - 부모
+    suspend fun getParentInputOutput(
+        @Path("childId") childId: String,
+        @Path("inputOutputDate") inputOutputDate: String
+    ): NetworkResponse<InputOutputsResponse, ErrorResponse>
+
     // 월 칭찬 여부
     suspend fun getCompliment(@Path("inputOutputDate") inputOutputDate: String): NetworkResponse<List<ComplimentDto>, ErrorResponse>
 
@@ -30,4 +37,7 @@ interface MainRepository {
     suspend fun checkChildAuth(@Body checkChildAuthDto: checkAuthDto): NetworkResponse<checkChildAuthResponseDto, ErrorResponse>
 
     suspend fun getAllUnActivatedChild(): NetworkResponse<List<getAllUnActivatedChildResponseDto>, ErrorResponse>
+
+    // 내 계좌 잔액 조회
+    suspend fun getMyBalance(): NetworkResponse<BalanceResponse, ErrorResponse>
 }

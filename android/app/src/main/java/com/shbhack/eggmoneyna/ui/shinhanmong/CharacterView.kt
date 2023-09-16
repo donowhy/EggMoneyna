@@ -20,13 +20,13 @@ import com.shbhack.eggmoneyna.ui.theme.logoColor
 import ir.kaaveh.sdpcompose.sdp
 
 @Composable
-fun CharacterView(onClick: () -> Unit = {}) {
+fun CharacterView(gif: Int, onClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(keyColorLight1)
     ) {
-        EggAnimationView()
+        EggAnimationView(gif)
         Surface(
             modifier = Modifier
                 .align(Alignment.BottomEnd)

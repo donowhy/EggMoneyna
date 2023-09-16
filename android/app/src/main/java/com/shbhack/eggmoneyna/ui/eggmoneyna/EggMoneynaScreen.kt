@@ -1,12 +1,12 @@
 package com.shbhack.eggmoneyna.ui.eggmoneyna
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.himanshoe.kalendar.KalendarEvent
 import com.himanshoe.kalendar.KalendarEvents
 import com.shbhack.eggmoneyna.R
@@ -44,6 +43,7 @@ import com.shbhack.eggmoneyna.ui.eggmoneyna.viewModel.EggMoneynaViewModel
 import com.shbhack.eggmoneyna.ui.theme.EggmoneynaPurple
 import com.shbhack.eggmoneyna.ui.theme.keyColor1
 import com.shbhack.eggmoneyna.util.DateUtils
+import com.shbhack.eggmoneyna.util.MoneyUtils
 import ir.kaaveh.sdpcompose.sdp
 import ir.kaaveh.sdpcompose.ssp
 import kotlinx.datetime.Clock
@@ -60,21 +60,26 @@ fun EggMoneynaScreen(
     eggMoneynaViewModel: EggMoneynaViewModel = hiltViewModel(),
     commentViewModel: CommentViewModel
 ) {
+    val isParent = AppPreferences.isParent()
     var selectedDay by remember { mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault())) }
     val complements by eggMoneynaViewModel.complimentsState.collectAsState()
     val inputOutput by eggMoneynaViewModel.inputOutputsState.collectAsState()
+    val balance by eggMoneynaViewModel.balanceState.collectAsState()
 
     LaunchedEffect(Unit) {
         eggMoneynaViewModel.getCompliments(DateUtils.formatToYearMonth(selectedDay.toString()))
+        eggMoneynaViewModel.getMyBalance()
     }
 
     LaunchedEffect(selectedDay) {
-        eggMoneynaViewModel.getInputOutput(selectedDay.toString())
+        if (isParent) {
+            AppPreferences.getChildId()
+                ?.let { eggMoneynaViewModel.getInputOutput(it, selectedDay.toString()) }
+        } else {
+            eggMoneynaViewModel.getInputOutput(selectedDay.toString())
+        }
     }
 
-    LaunchedEffect(inputOutput) {
-        Log.d(TAG, "EggMoneynaScreen: ${inputOutput.inputOutputs}")
-    }
 
     var kalendarEvents by remember { mutableStateOf(KalendarEvents()) }
 
@@ -93,6 +98,7 @@ fun EggMoneynaScreen(
         if (AppPreferences.isParent()) stringResource(id = R.string.eggmoneyna_rest_money_title_parent) else stringResource(
             id = R.string.eggmoneyna_rest_money_title_child
         )
+    val money = if (balance.balance == 0) 500000 else balance.balance
 
     Scaffold(
         topBar = {
@@ -112,7 +118,7 @@ fun EggMoneynaScreen(
                     ColorBackgroundWithText(
                         EggmoneynaPurple,
                         title,
-                        "500,000원"
+                        "${MoneyUtils.convertAddComma(money)}원"
                     )
                 }
                 item {
@@ -120,7 +126,6 @@ fun EggMoneynaScreen(
                         kalendarEvents
                     ) { localDate ->
                         // 날짜 선택 할 때마다 지출 내역 불러오기
-
                         selectedDay = localDate
                     }
                 }
@@ -140,6 +145,7 @@ fun EggMoneynaScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(32.sdp)
                     .padding(start = 16.sdp, end = 16.sdp)
                     .align(Alignment.BottomCenter),
                 shape = ShapeDefaults.Medium,

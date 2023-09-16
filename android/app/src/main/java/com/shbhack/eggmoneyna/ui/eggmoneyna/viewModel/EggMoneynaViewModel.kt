@@ -3,6 +3,7 @@ package com.shbhack.eggmoneyna.ui.eggmoneyna.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shbhack.eggmoneyna.data.model.BalanceResponse
 import com.shbhack.eggmoneyna.data.model.ComplimentDto
 import com.shbhack.eggmoneyna.data.model.InputOutputsResponse
 import com.shbhack.eggmoneyna.data.repository.main.MainRepository
@@ -26,10 +27,29 @@ class EggMoneynaViewModel @Inject constructor(
     private val _complimentsState = MutableStateFlow<List<ComplimentDto>>(emptyList())
     val complimentsState: StateFlow<List<ComplimentDto>> = _complimentsState.asStateFlow()
 
+    private val _balanceState = MutableStateFlow(BalanceResponse(0))
+    val balanceState: StateFlow<BalanceResponse> = _balanceState.asStateFlow()
+
     fun getInputOutput(date: String) {
         viewModelScope.launch {
             val response = repository.getInputOutput(date)
-            Log.d(TAG, "getInputOutput: $response")
+            Log.d(TAG, "getInputOutput 아이: $response")
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _inputOutputsState.emit(response.body)
+                }
+
+                else -> {
+                    Log.d(TAG, "getInputOutput: 통신 실패")
+                }
+            }
+        }
+    }
+
+    fun getInputOutput(childId: String, date: String) {
+        viewModelScope.launch {
+            val response = repository.getParentInputOutput(childId, date)
+            Log.d(TAG, "getInputOutput 부모: $response")
             when (response) {
                 is NetworkResponse.Success -> {
                     _inputOutputsState.emit(response.body)
@@ -53,6 +73,22 @@ class EggMoneynaViewModel @Inject constructor(
 
                 else -> {
                     Log.d(TAG, "getCompliments: 통신 실패")
+                }
+            }
+        }
+    }
+
+    fun getMyBalance() {
+        viewModelScope.launch {
+            val response = repository.getMyBalance()
+            Log.d(TAG, "getMyBalance: $response")
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _balanceState.emit(response.body)
+                }
+
+                else -> {
+                    Log.d(TAG, "getMyBalance: 통신 실패")
                 }
             }
         }

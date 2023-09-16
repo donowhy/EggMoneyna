@@ -1,5 +1,6 @@
 package com.shbhack.eggmoneyna.data.repository.monster
 
+import com.shbhack.eggmoneyna.data.model.CollectionResponseDto
 import com.shbhack.eggmoneyna.data.model.ErrorResponse
 import com.shbhack.eggmoneyna.data.model.MonsterResponseDto
 import com.shbhack.eggmoneyna.data.model.MonsterSaveRequestDto
@@ -15,8 +16,13 @@ class MonsterRepositoryImpl @Inject constructor(
         return apiService.save(monsterSaveRequestDto)
     }
 
-    override suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse> {
-        return apiService.getMyMong()
+    override suspend fun getMyMongDetail(): NetworkResponse<MonsterResponseDto, ErrorResponse> {
+        return apiService.getMyMongDetail()
     }
+
+    override suspend fun getDogam(): NetworkResponse<List<CollectionResponseDto>, ErrorResponse> {
+        return apiService.getDogam()
+    }
+
 
 }
