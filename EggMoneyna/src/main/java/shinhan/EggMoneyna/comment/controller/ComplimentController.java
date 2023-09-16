@@ -24,4 +24,10 @@ public class ComplimentController {
         return ResponseEntity.ok(complimentService.switchCompliment(usersInfo.getId(), inputOutputId));
     }
 
+//    @Operation(summary = "칭찬 여부 월 조회", description = "yyyy-MM 형식으로 특정 월에 대한 ", tags = { "Compliment Controller" })
+//    @PostMapping("month/{inputOutputDate}")
+//    public ResponseEntity<ComplimentResponseDto> switchCompliment(@UserInfo UsersInfo usersInfo, @PathVariable String inputOutputDate) {
+//        return ResponseEntity.ok(complimentService.getMonthCompliment(usersInfo.getId(), inputOutputDate));
+//    }
+
 }

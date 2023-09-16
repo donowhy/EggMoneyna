@@ -11,14 +11,7 @@ import shinhan.EggMoneyna.users.entity.Users;
 public class CommentRequestDto {
     private String comment;
 
-    public Comment of(Users users, InputOutput inputOutput) {
-        if (users.getIsParents()) {
-            return Comment.builder()
-                    .parentComment(comment)
-                    .isParent(true)
-                    .inputOutput(inputOutput)
-                    .build();
-        }
+    public Comment of(InputOutput inputOutput) {
         return Comment.builder()
                 .childComment(comment)
                 .isChild(true)
