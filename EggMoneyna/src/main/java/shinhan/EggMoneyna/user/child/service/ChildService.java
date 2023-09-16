@@ -95,7 +95,6 @@ public class ChildService {
 
         List<InputOutput> inputs = inputOutputRepository.findByAccountAndOutputAndCreateTimeBetween(child.getAccount(), 0, startOfDay, endOfDay);
 
-
         List<Boolean> sevendays = child.getSevendays();
 
         List<Boolean> aMonth = child.getAMonth();
