@@ -13,7 +13,7 @@ interface MonsterRepository {
     // 신한몽
     suspend fun save(@Body monsterSaveRequestDto: MonsterSaveRequestDto): NetworkResponse<MonsterSaveResponseDto, ErrorResponse>
 
-    suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse>
+    suspend fun getMyMongDetail(): NetworkResponse<MonsterResponseDto, ErrorResponse>
 
 
 }

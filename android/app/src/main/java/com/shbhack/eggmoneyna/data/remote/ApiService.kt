@@ -40,8 +40,8 @@ interface ApiService {
     @POST("monsters/save")
     suspend fun save(@Body monsterSaveRequestDto: MonsterSaveRequestDto): NetworkResponse<MonsterSaveResponseDto, ErrorResponse>
 
-    @GET("monsters/getMyMong")
-    suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse>
+    @GET("monsters/getMyMongDetail")
+    suspend fun getMyMongDetail(): NetworkResponse<MonsterResponseDto, ErrorResponse>
 
 
     // 당일 입출금 조회

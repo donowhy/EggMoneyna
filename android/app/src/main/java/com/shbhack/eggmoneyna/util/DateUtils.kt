@@ -111,5 +111,9 @@ object DateUtils {
         return dateTime.format(outputFormatter)
     }
 
+    fun formatyyyymmdd(input: String): String {
+        return input.split("T")[0]
+    }
+
 
 }

@@ -15,8 +15,9 @@ class MonsterRepositoryImpl @Inject constructor(
         return apiService.save(monsterSaveRequestDto)
     }
 
-    override suspend fun getMyMong(): NetworkResponse<MonsterResponseDto, ErrorResponse> {
-        return apiService.getMyMong()
+    override suspend fun getMyMongDetail(): NetworkResponse<MonsterResponseDto, ErrorResponse> {
+        return apiService.getMyMongDetail()
     }
+
 
 }

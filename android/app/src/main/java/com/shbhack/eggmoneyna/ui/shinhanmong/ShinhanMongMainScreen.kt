@@ -2,24 +2,76 @@ package com.shbhack.eggmoneyna.ui.shinhanmong
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.shbhack.eggmoneyna.R
 import com.shbhack.eggmoneyna.ui.EggMoneynaDestination
 import com.shbhack.eggmoneyna.ui.common.top.TopWithBack
+import com.shbhack.eggmoneyna.ui.shinhanmong.viewmodel.MonsterViewModel
 
 @Composable
-fun ShinhanMongMainScreen(navController: NavController) {
+fun ShinhanMongMainScreen(
+    navController: NavController,
+    viewModel: MonsterViewModel = hiltViewModel()
+) {
     val pointItemList = listOf(PointItem(), PointItem(), PointItem())
+    val monsterInfo by viewModel.monsterState.collectAsState()
+    var gif by remember { mutableStateOf(0) }
+    LaunchedEffect(Unit) {
+        viewModel.getMyMongDetail()
+    }
+
+    LaunchedEffect(monsterInfo) {
+        if ((monsterInfo?.status ?: "Egg") != "Egg") {
+            if ((monsterInfo?.historyList?.size ?: 0) > 0) {
+                var monster = monsterInfo!!.historyList[0].monster
+                when(monster.name) {
+                    "SOL" -> {
+                        when(monster.feel) {
+                            "NOMAL" -> R.drawable.gif_sol_normal
+                            "SAD" -> R.drawable.gif_sol_sad
+                            "HAPPY" -> R.drawable.gif_sol_happy
+                        }
+                    }
+                    "MOLI" -> {
+                        when(monster.feel) {
+                            "NOMAL" -> R.drawable.gif_mori_normal
+                            "SAD" -> R.drawable.gif_mori_sad
+                            "HAPPY" -> R.drawable.gif_mori_happy
+                        }
+                    }
+                    "PLY" -> {
+                        when(monster.feel) {
+                            "NOMAL" -> R.drawable.gif_ply_normal
+                            "SAD" -> R.drawable.gif_ply_sad
+                            "HAPPY" -> R.drawable.gif_ply_happy
+                        }
+                    }
+                }
+
+            }
+
+        }
+    }
+
+
 
     Scaffold(
         topBar = {
@@ -33,7 +85,7 @@ fun ShinhanMongMainScreen(navController: NavController) {
                 .padding(it)
         ) {
             item {
-                CharacterView {
+                CharacterView(gif) {
                     navController.navigate(
                         EggMoneynaDestination.SHINHAN_MON_COLLECTION
                     )
@@ -47,9 +99,14 @@ fun ShinhanMongMainScreen(navController: NavController) {
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            items(pointItemList.size) { idx ->
-                ShinhanMongPointItem(pointItemList[idx])
+            monsterInfo?.let { monster ->
+                items(monster.historyList) { item ->
+                    ShinhanMongPointItem(item)
+                }
             }
+//            items(pointItemList.size) { idx ->
+//                ShinhanMongPointItem(pointItemList[idx])
+//            }
         }
     }
 }
