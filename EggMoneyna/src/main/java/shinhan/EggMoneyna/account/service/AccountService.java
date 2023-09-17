@@ -17,6 +17,7 @@ import shinhan.EggMoneyna.account.entity.BankCode;
 import shinhan.EggMoneyna.account.repository.AccountRepository;
 import shinhan.EggMoneyna.account.service.dto.CheckRequset;
 import shinhan.EggMoneyna.account.service.dto.Send1CertRequest;
+import shinhan.EggMoneyna.comment.entity.Comment;
 import shinhan.EggMoneyna.global.error.code.ErrorCode;
 import shinhan.EggMoneyna.global.error.exception.BadRequestException;
 import shinhan.EggMoneyna.inputoutput.entity.InputOutput;
@@ -126,6 +127,14 @@ public class AccountService {
 
 		log.info("account={}",account.getAccountNumber());
 
+		Comment comment = Comment.builder()
+				.childComment("")
+				.parentComment("")
+				.compliment(false)
+				.isChild(false)
+				.isParent(false)
+				.build();
+
 		InputOutput inputOutput = InputOutput.builder()
 				.brandName("신한은행")
 				.brandImg("신한은행")
@@ -134,6 +143,7 @@ public class AccountService {
 				.output(0)
 				.input(1)
 				.account(account)
+				.comment(comment)
 				.build();
 
 		inputOutputRepository.save(inputOutput);

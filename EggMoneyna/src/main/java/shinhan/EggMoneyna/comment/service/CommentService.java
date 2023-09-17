@@ -31,6 +31,7 @@ public class CommentService {
     public CommentResponseDto getComment(Long inputOutputId) {
         InputOutput inputOutput = inputOutputRepository.findById(inputOutputId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_INPUTOUTPUT_ID));
+        log.info(String.valueOf(inputOutput.getId()));
         Comment comment = commentRepository.findByInputOutput(inputOutput)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_COMMENT_ID));
 
